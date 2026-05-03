@@ -6,8 +6,6 @@ Thumbs.db
 *.iml
 
 # Laravel platform app
-apps/platform/.env
-apps/platform/.env.testing.local
 apps/platform/vendor/
 apps/platform/node_modules/
 apps/platform/storage/logs/*
@@ -34,4 +32,3 @@ apps/pos/build/
 apps/pos/windows/flutter/ephemeral/
 apps/pos/windows/runner/Debug/
 apps/pos/windows/runner/Release/
-
