@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.vas.VASAppleFragment">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="MerchantID" />
+
+            <EditText
+                android:id="@+id/vas_merchant_id"
+                style="@style/request_edit"
+                android:hint="Max 5 merchant ID’s connect by '#'. \nEach merchant ID (0, 36]"/>
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="URL Mode" />
+
+            <EditText
+                android:id="@+id/vas_url_mode"
+                style="@style/request_edit"
+                android:hint="0 - Full VAS Mode\n1 -URL mod"
+                android:digits="01"
+                android:inputType="number"/>
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="URL" />
+
+            <EditText
+                android:id="@+id/vas_url"
+                style="@style/request_edit"
+                android:hint="Merchant URL, \nEg. www.apple.com"/>
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+              style="@style/request_text"
+              android:text="Key File Mapping" />
+
+            <EditText
+              android:id="@+id/vas_key_file_mapping"
+              style="@style/request_edit"
+              android:hint="Key File Name, \nEg. VAS_KEY3.PEM"/>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

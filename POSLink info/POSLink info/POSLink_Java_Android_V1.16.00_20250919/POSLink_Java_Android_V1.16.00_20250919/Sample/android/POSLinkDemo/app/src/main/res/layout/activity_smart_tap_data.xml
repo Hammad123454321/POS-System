@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  = COPYRIGHT
+           PAX Computer Technology(Shenzhen) CO., LTD PROPRIETARY INFORMATION
+    This software is supplied under the terms of a license agreement or nondisclosure
+    agreement with PAX Computer Technology(Shenzhen) CO., LTD and may not be copied or
+    disclosed except in accordance with the terms in that agreement.
+      Copyright (C) 2018-? PAX Computer Technology(Shenzhen) CO., LTD All rights reserved.
+
+  ============================================================================
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        >
+
+        <Button
+            android:id="@+id/vas_special_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/return_back"/>
+
+        <Button
+            android:id="@+id/vas_special_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/save"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_for_split"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line"
+        android:layout_marginBottom="5.0dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/vas_btn_cap"
+                        style="@style/request_text"
+                        android:text="GoogleVASCap" />
+
+                    <EditText
+                        android:id="@+id/vas_google_vas_cap"
+                        style="@style/request_edit"
+                        android:enabled="false"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        style="@style/request_text"
+                        android:text="CollectID" />
+
+                    <EditText
+                        android:id="@+id/vas_collect_id"
+                        style="@style/request_edit"
+                        />
+                </TableRow>
+                <TableRow>
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        style="@style/request_text"
+                        android:text="Security" />
+
+                    <EditText
+                        android:id="@+id/vas_security"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        style="@style/request_text"
+                        android:text="EndTap" />
+
+                    <EditText
+                        android:id="@+id/vas_endtap"
+                        style="@style/request_edit"
+                        />
+                </TableRow>
+
+            </TableLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <Button-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="1"/>-->
+<!--            <Button-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="1"/>-->
+<!--            <Button-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="1"/>-->
+
+<!--        </LinearLayout>-->
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/gray_btn_bg_pressed_color">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/white"
+            >
+
+            <Button
+                android:id="@+id/vas_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/payment_ext_passthru_add"/>
+
+            <Button
+                android:id="@+id/vas_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/delete"/>
+
+        </RelativeLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+        </androidx.viewpager.widget.ViewPager>
+
+
+    </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

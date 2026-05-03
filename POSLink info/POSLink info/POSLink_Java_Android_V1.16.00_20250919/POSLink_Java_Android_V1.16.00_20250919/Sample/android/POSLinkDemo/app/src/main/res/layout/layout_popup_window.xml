@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/gray_button_background">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/insert2"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:text="Has insertAnyTime cache."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/swipe"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:text="Has swipeAnyTime cache."/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:textAllCaps="false"
+        android:text="StartDetectAnyTime"
+        android:background="@drawable/bg_textbox_btn"
+        android:layout_margin="5dp"
+        android:id="@+id/btn_start_detect"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_textbox_btn"
+        android:layout_margin="5dp"
+        android:textAllCaps="false"
+        android:text="StartSwipeAnyTime"
+        android:id="@+id/btn_start_swipe"
+        android:layout_gravity="center"
+        />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_textbox_btn"
+        android:layout_margin="5dp"
+        android:textAllCaps="false"
+        android:text="StopDetectAnyTime"
+        android:id="@+id/btn_stop"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

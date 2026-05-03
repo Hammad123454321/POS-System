@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="Type" />
+
+            <EditText
+                android:id="@+id/new_service_type"
+                style="@style/request_edit"
+                />
+        </TableRow>
+
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="Title" />
+
+            <EditText
+                android:id="@+id/new_service_title"
+                style="@style/request_edit"
+                />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="URI" />
+
+            <EditText
+                android:id="@+id/new_service_uri"
+                style="@style/request_edit"
+                />
+        </TableRow>
+
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.pax.poslink.widget.AlwaysMarqueeTextView
+            style="@style/response_text_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Result"
+            android:gravity="center|left"/>
+
+        <TextView
+            android:id="@+id/tv_new_service_data"
+            style="@style/response_edit_special_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="20dip"
+            android:layout_marginBottom="20dip"
+            android:layout_marginRight="10dip"/>
+
+    </LinearLayout>
+</LinearLayout>

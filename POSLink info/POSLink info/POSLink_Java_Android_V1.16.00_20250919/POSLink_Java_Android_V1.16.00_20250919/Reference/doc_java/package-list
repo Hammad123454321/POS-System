@@ -1,0 +1,9 @@
+com.pax.poslink
+com.pax.poslink.base
+com.pax.poslink.constant
+com.pax.poslink.customFormManage
+com.pax.poslink.entity
+com.pax.poslink.formManage
+com.pax.poslink.log
+com.pax.poslink.proxy
+com.pax.poslink.util

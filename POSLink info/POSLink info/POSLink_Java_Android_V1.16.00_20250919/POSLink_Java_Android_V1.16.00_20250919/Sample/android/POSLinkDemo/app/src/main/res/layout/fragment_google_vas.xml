@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.vas.VASAppleFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <Button
+                android:id="@+id/vas_btn_cap"
+                style="@style/request_text"
+                android:text="GoogleVASCap" />
+
+            <EditText
+                android:id="@+id/vas_google_vas_cap"
+                style="@style/request_edit"
+                android:enabled="false"
+                />
+        </TableRow>
+
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="CollectID" />
+
+            <EditText
+                android:id="@+id/vas_collect_id"
+                style="@style/request_edit"
+                />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="StoreLocalID" />
+
+            <EditText
+                android:id="@+id/vas_store_local_id"
+                style="@style/request_edit" />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="TerminalID" />
+
+            <EditText
+                android:id="@+id/vas_terminal_id"
+                style="@style/request_edit" />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="MerchantName" />
+
+            <EditText
+                android:id="@+id/vas_merchant_name"
+                style="@style/request_edit" />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="MerchantCategory" />
+
+            <EditText
+                android:id="@+id/vas_merchant_category"
+                style="@style/request_edit" />
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="Security" />
+
+            <EditText
+                android:id="@+id/vas_security"
+                style="@style/request_edit"
+                android:hint="0 --- Normal \n1 --- Securely \n2 --- Pre_signature \n3 --- Need not a right auth."/>
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="EndTap" />
+
+            <EditText
+                android:id="@+id/vas_endtap"
+                style="@style/request_edit"
+                android:hint="0 --- Normal flow if error\n1 --- End tap if error"/>
+        </TableRow>
+        <TableRow>
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="OSE TO PPSE" />
+
+            <EditText
+                android:id="@+id/vas_OSETOPPSE"
+                style="@style/request_edit" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/vsa_btn_type"
+                style="@style/request_text"
+                android:text="ServiceType" />
+
+
+            <LinearLayout
+                android:id="@+id/vas_security_type"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_select"
+                android:orientation="vertical">
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="All service"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="All services except PPSE"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PPSE"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Loyalty"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Offer"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gift Card 1"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Private Label Card "/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cloud Based Wallet"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile Marketing Platform"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Wallet Customer"/>
+            </LinearLayout>
+        </TableRow>
+
+    </TableLayout>
+
+    </ScrollView>
+
+</LinearLayout>

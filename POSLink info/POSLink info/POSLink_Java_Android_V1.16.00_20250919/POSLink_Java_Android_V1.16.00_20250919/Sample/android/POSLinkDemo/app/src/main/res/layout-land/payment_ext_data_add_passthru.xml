@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/payment_ext_passthru"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:addStatesFromChildren="true">
+
+    <RelativeLayout
+        android:layout_width="0.0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/payment_ext_passthru_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:text="@string/payment_ext_passthru_cancel"/>
+
+
+        <Button
+            android:id="@+id/payment_ext_passthru_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:text="@string/save"/>
+
+        <ImageView
+            android:id="@+id/line_for_split2"
+            android:layout_width="match_parent"
+            android:layout_height="5.0px"
+            android:layout_below="@+id/payment_ext_passthru_save"
+            android:background="@drawable/line"
+            android:layout_marginBottom="5.0dp"/>
+
+        <LinearLayout
+            android:id="@+id/payment_ext_passthru_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line_for_split2"
+            android:orientation="horizontal">
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="@string/payment_ext_passthru_type_prompt" />
+
+            <Spinner
+                android:id="@+id/payment_ext_passthru_type"
+                style="@style/request_edit_list"
+                android:entries="@array/payment_ext_passthru_type_prompt"
+                android:prompt="@string/hint_select"/>
+
+            <Button
+                android:id="@+id/payment_ext_passthru_add"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/payment_ext_passthru_add" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_ext_passthru_board">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line1"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit1"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line2"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit2"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line3"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit3"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line4"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit4"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line5"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit5"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line6"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit6"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line7"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit7"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line8"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit8"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line9"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit9"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line10"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit10"
+                        style="@style/request_edit" />
+                </TableRow>
+
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line11"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit11"
+                        style="@style/request_edit" />
+                </TableRow>
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line12"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit12"
+                        style="@style/request_edit" />
+                </TableRow>
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line13"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit13"
+                        style="@style/request_edit" />
+                </TableRow>
+                <TableRow>
+
+                    <com.pax.poslink.widget.AlwaysMarqueeTextView
+                        android:id="@+id/payment_ext_passthru_line14"
+                        style="@style/request_text"
+                        android:text="@string/payment_ext_passthru_name_null" />
+
+                    <EditText
+                        android:id="@+id/payment_ext_passthru_edit14"
+                        style="@style/request_edit" />
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="5.0px"
+        android:layout_height="match_parent"
+        android:background="@drawable/shadow" />
+
+    <LinearLayout
+        android:layout_width="0.0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.pax.poslink.widget.AlwaysMarqueeTextView
+            style="@style/response_text_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_ext_passthru_data"
+            android:gravity="center|left"/>
+
+        <TextView
+            android:id="@+id/payment_ext_passthru_data"
+            style="@style/response_edit_special_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="20dip"
+            android:layout_marginBottom="20dip"
+            android:layout_marginRight="10dip"/>
+
+    </LinearLayout>
+</LinearLayout>

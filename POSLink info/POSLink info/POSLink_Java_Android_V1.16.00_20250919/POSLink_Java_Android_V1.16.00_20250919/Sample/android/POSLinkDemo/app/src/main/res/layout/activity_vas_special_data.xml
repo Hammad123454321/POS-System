@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  = COPYRIGHT
+           PAX Computer Technology(Shenzhen) CO., LTD PROPRIETARY INFORMATION
+    This software is supplied under the terms of a license agreement or nondisclosure
+    agreement with PAX Computer Technology(Shenzhen) CO., LTD and may not be copied or
+    disclosed except in accordance with the terms in that agreement.
+      Copyright (C) 2018-? PAX Computer Technology(Shenzhen) CO., LTD All rights reserved.
+
+  ============================================================================
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        >
+
+        <Button
+            android:id="@+id/vas_special_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/return_back"/>
+
+        <Button
+            android:id="@+id/vas_special_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/save"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_for_split"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line"
+        android:layout_marginBottom="5.0dp"/>
+
+    <FrameLayout
+        android:id="@+id/vas_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

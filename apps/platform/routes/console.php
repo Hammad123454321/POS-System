@@ -1,0 +1,24 @@
+<?php
+
+use App\Console\Commands\FlagStaleCardInDoubtCommand;
+use App\Console\Commands\ReapEditLeasesCommand;
+use App\Console\Commands\ReconcileFiservPaymentsCommand;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+
+Artisan::command('inspire', function () {
+    $this->comment(Inspiring::quote());
+})->purpose('Display an inspiring quote');
+
+Schedule::command(ReapEditLeasesCommand::class)
+    ->everyTenSeconds()
+    ->withoutOverlapping();
+
+Schedule::command(ReconcileFiservPaymentsCommand::class)
+    ->hourly()
+    ->withoutOverlapping();
+
+Schedule::command(FlagStaleCardInDoubtCommand::class)
+    ->everyFiveMinutes()
+    ->withoutOverlapping();

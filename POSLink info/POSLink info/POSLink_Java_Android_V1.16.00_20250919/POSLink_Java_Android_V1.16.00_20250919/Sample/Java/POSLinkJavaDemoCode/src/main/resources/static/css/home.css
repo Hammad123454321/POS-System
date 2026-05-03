@@ -1,0 +1,100 @@
+.body {
+    background-color: #f8f9fa !important;
+}
+a.anchor {
+    display: block;
+    position: relative;
+    top: -40px;
+    visibility: hidden;
+}
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 5em;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.fragment-container {
+    display: block;
+    white-space: nowrap;
+    padding-bottom: 2em;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.fragment-title {
+    padding: 2em;
+    text-align:center;
+}
+
+.fragment-body {
+    padding-left: 1em;
+    padding-right: 1em;
+    display: block;
+}
+
+.btn {
+    border: 1px solid #88212529;
+}
+
+.btn-start-poslink_wrapper {
+    display: block;
+    text-align:center;
+    margin: auto;
+    margin-top: 1em;
+}
+.btn-start-poslink {
+    width: 70%;
+    background-color: #212529;
+    color: white;
+}
+
+.left-half {
+    width:50%;
+    max-height: 27em;
+    overflow:auto;
+    display: inline-block;
+    vertical-align: top;
+}
+.right-half {
+    width:50%;
+    max-height: 27em;
+    overflow:auto;
+    display: inline-block;
+    vertical-align: top;
+}
+.half-btn-container {
+    width:50%;
+    display: inline-block;
+}
+.items-center {
+    margin: auto;
+}
+.item-single {
+    display:block;
+    text-align:center;
+    word-wrap:break-word;
+}
+
+.item-label {
+    width:25% !important;
+    text-align: right;
+    display: inline-block;
+    margin-left: -10%;
+}
+
+.fix-input-width {
+    max-width:35% !important;
+    width: 35% !important;
+    min-width: 8em;
+}
+
+@media screen and (max-width: 750px) {
+    .item-label {
+        max-width:35% !important;
+        display: block;
+        margin-left: 0%;
+    }
+}

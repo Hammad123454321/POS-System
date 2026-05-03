@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <Button
+            android:id="@+id/bt_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/return_back" />
+
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/save" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/line_for_split"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5.0dp"
+        android:background="@drawable/line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="Key Type" />
+                <EditText
+                    android:id="@+id/mac_key_type"
+                    style="@style/request_edit"
+                    android:digits="0123"
+                    android:inputType="number"/>
+            </TableRow>
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="Work Mode" />
+                <EditText
+                    android:id="@+id/mac_work_mode"
+                    android:digits="01234"
+                    android:inputType="number"
+                    style="@style/request_edit"/>
+            </TableRow>
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="Key Slot" />
+                <EditText
+                    android:id="@+id/mac_key_slot"
+                    android:inputType="number"
+                    style="@style/request_edit"/>
+            </TableRow>
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="Data" />
+                <EditText
+                    android:id="@+id/mac_data"
+                    style="@style/request_edit"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</LinearLayout>

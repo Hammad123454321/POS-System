@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="px576">576px</dimen>
+    <dimen name="d36">20px</dimen>
+    <dimen name="d37">80px</dimen>
+    <dimen name="d38">10px</dimen>
+    <dimen name="sp4">40px</dimen>
+    <dimen name="sp5">30px</dimen>
+    <dimen name="d40">100px</dimen>
+    <dimen name="d41">90px</dimen>
+    <dimen name="d42">160px</dimen>
+    <dimen name="d43">130px</dimen>
+
+
+    <dimen name="space_size_normal_large">15dp</dimen>
+    <dimen name="space_margin_top_small">10dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">64dp</dimen>
+    <dimen name="component_vertical_margin">16dp</dimen>
+
+    <!-- new font size -->
+    <dimen name="font_size_tiny">12sp</dimen>
+    <dimen name="font_size_smallest_small">18sp</dimen>
+    <dimen name="font_size_smallest">14sp</dimen>
+    <dimen name="font_size_smaller">15sp</dimen>
+    <dimen name="font_size_small">17sp</dimen>
+    <dimen name="font_size_normal_small">19sp</dimen>
+    <dimen name="font_size_normal">20sp</dimen>
+    <dimen name="font_size_large">23sp</dimen>
+    <dimen name="font_size_larger_small">24sp</dimen>
+    <dimen name="font_size_larger">25sp</dimen>
+    <dimen name="font_size_largest">60sp</dimen>
+
+
+    <dimen name="common_circle_width">3dp</dimen>
+    <dimen name="progress_circle_radius">34dp</dimen>
+</resources>

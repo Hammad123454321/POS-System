@@ -1,0 +1,220 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="generator" content="pandoc"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <title>Appendix</title>
+    <style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+
+    </style>
+	<link rel="stylesheet" href="appendix.css"/>
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<h1 id="host-specific-remarks" class="7">Host Specific Remarks</h1>
+<ul>
+    <li>
+	<h2 id="bluefin-specifics" class="8">Bluefin Specifics</h2>
+	</li>
+	<ul>
+	    <li><h3 id="pos-echo-data" class="9">POS Echo Data</h3></li>
+        <p>
+		Terminal will map this as "&amp;custom_data=&lt;PAX&gt;POS Echo Data&lt;/PAX&gt;" in request
+        message.
+		</p>
+	</ul>
+    <li><h2 id="heartland-portico-specifics" class="8">Heartland Portico Specifics</h2></li>
+    <ul>
+	<li><h3 id="ecr-transaction-id" class="9">ECR Transaction ID</h3></li>
+	    <p>Terminal will map it to the &lt;ClientTxnId&gt; field in transaction request message. The &lt;ClientTxnId&gt;
+		can only accept numeric value which means the current "ECR reference number" cannot not be
+		used. Can be as long as 50 digits.</p>
+    <li><h3 id="adjustment" class="9">Adjustment</h3></li>
+	    <p>Heartland Portico Gateway only support transaction "edit", so POS needs to send total amount
+		(base amount + tip amount) to the terminal when using HREF to do Tip Adjustment, since the
+		terminal doesn't know the original sale amount when the adjustment is taken place on a different
+		terminal, it will just send the amount whatever the POS system sends.</p>
+		<p>When the adjustment is done on the same terminal and use OrigRefNum, the POS just needs to send
+		the tip amount to the terminal to do Tip Adjustment.</p>
+	</ul>
+    <li><h2 id="tsys-sierra-specifics" class="8">TSYS Sierra Specifics</h2></li>
+	<ul>
+	<li><h3 id="gateway-id" class="9">Gateway ID</h3></li>
+	    <p>Used to identify the Gateway, Aggregator, VAR, or other entity processing through the various
+		TSYS Acquiring Solutions platforms. With max length as 10.</p>
+	<li><h3 id="emv-tag-list">EMV Tag List</h3></li>
+	    <p>
+		The following list of EMV tags are mandatory and must be sent on any transaction that contains Integrated
+		Chip Card (ICC) EMV (group 3 version 55). If either or both of these tags are missing the transaction will be rejected.
+		<table>
+          <tbody>
+            <tr class="odd">
+            <td><strong>Tag</strong></td>
+            <td><strong>Tag name</strong></td>
+            <td><strong>Description</strong></td>
+            </tr>
+            <tr class="even">
+            <td>DF78</td>
+            <td>Device Serial Number</td>
+            <td>The manufacturer's unique serial number of the device that interacts with the chip card. (variable 1 - 20)
+			It is for Contact and Contactless.
+			The format is ASCII.
+            </td>
+            </tr>
+            <tr class="odd">
+            <td>DF79</td>
+            <td>Kernel Version Number</td>
+            <td>The version number of the kernel used to process the chip data in the transaction. (variable 1 - 32)
+			It is for Contact kernel only. The format is HEX.
+            </td>
+            </tr>
+		  </tbody>
+		</table>
+		</p>
+	</ul>
+    <li><h2 id="transIT-specifics" class="8">TransIT Specifics</h2></li>
+	<ul>
+	    <li><h3 id="transaction-adjustment" class="9">Transaction Adjustment</h3></li>
+		<p>
+		Transaction adjustment supports four types of amounts: base transaction amount, tip amount, surcharge fee, and tax amount.
+		Transaction amount in the ECR-Terminal request message is base transaction amount + tax amount. So, the total amount when all values are set will be transaction amount+tip amount+surcharge fee.
+		BroadPOS TransIT app supports transaction adjustment through local reference numer and host reference number.
+		Using Local Reference Number:
+		If user doesn't pass tip amount, tax amount, and surcharge fee, the BroadPOS app will set the missing values with original transactions corresponding amounts.
+		Using Host Reference Number:
+		If user doesn't pass tip amount, tax amount, and surcharge fee, the BroadPOS app will set these values to "0" in the host request message.
+		Note: Transaction adjustment API is only supported by BroadPOS TransIT app.
+		</p>
+	</ul>
+	<li><h2 id="first-data-rapid-connect-specifics" class="8">First Data Rapid Connect Specifics</h2></li>
+	<ul>
+	    <li><h3 id="ecr-transaction-id" class="9">ECR Transaction ID</h3></li>
+		<p>
+		Terminal will map it to the <RefNum> field in transaction request message, numeric only with maximum length of 12.
+		</p>
+	</ul>
+	<ul>
+		<li><h3 id="ewic-data" class="9">eWIC Data</h3></li>
+		<p>
+			The fields in the PASSTHRUDATA for EBT eWIC transactions. This group can be repeated up to 50 times in a request. In case of a denial or exception this group can also be repeated up to 50 times in a response.
+		</p>
+	</ul>
+	<li><h2 id="shift4-specifics" class="8">Shift4 Specifics</h2></li>
+	<ul>
+	    <li><h3 id="incremental-auth" class="9">INCREMENTAL AUTH</h3></li>
+		<p>
+		If perform incremental auth by HRef, users need to set transaction amount and original transaction amount.
+		If perform incremental auth by Reference Number, users just need to set transaction amount.
+		</p>
+	</ul>
+	<li><h2 id="vantiv-specifics" class="8">Vantiv Specifics</h2></li>
+	<ul>
+	    <li><h3 id="customized-data" class="9">Customized Data</h3></li>
+		<p>
+		Terminal will map customized data to ‘G038-Customer Discretionary Data’.
+		The max length of CUSTOMIZEDATA1 is 35. The max length of CUSTOMIZEDATA2 and CUSTOMIZEDATA3 is 20.
+		It’s used in authorization request message to send up to 3 user defined data fields from the POS to the Front End. 
+		</p>
+	</ul>
+	<li><h2 id="bridge-pay-specifics" class="8">BridgePay Specifics</h2></li>
+	<p>Terminal will map <code>CUSTOMIZEDATA1</code> to Custom Fields, <code>CUSTOMIZEDATA2</code> to Memo, and <code>CUSTOMIZEDATA3</code> to SoftwareVendor in the Host Request Message.</p>
+	<p>Custom Fields supports up to an 800-character alphanumeric string. Contains plain text representations of custom fields.</p>
+	<p>Example:</p>
+	<pre>
+&lt;CustomFields&gt;
+    &lt;Color&gt;Red&lt;/Color&gt;
+    &lt;Shape&gt;Circle&lt;/Shape&gt;
+&lt;/CustomFields&gt;
+</pre>
+
+	<p>Memo supports up to a 60-character alphanumeric string. The following characters are not allowed: &ldquo;, *, &amp;, &lt;, &gt;.</p>
+
+	<p>SoftwareVendor supports up to 250 characters. May only contain the following characters: a-z, A-Z, 0-9, spaces and dashes.</p>
+	<ul>
+		<li><h3 id="configurable-parameters-definition">Configurable Parameters Definition</h3></li>
+		<p>
+		<table>
+			<tbody>
+			<tr class="odd">
+				<td><strong>Parameter</strong></td>
+				<td><strong>Length (byte)</strong></td>
+				<td><strong>Description</strong></td>
+				<td><strong>R/W</strong></td>
+			</tr>
+			<tr class="even">
+				<td>ServiceUser</td>
+				<td>150</td>
+				<td>The merchant user name for the service fee.</td>
+				<td>W</td>
+			</tr>
+			<tr class="even">
+				<td>ServicePassword</td>
+				<td>50</td>
+				<td>The merchant password for the service fee.</td>
+				<td>W</td>
+			</tr>
+			<tr class="even">
+				<td>MerchantAccountCode</td>
+				<td>10</td>
+				<td>
+					The merchant account code for the current service user account.<br/>
+					<b>Note</b>: if offline transactions exist in the database, this will not be allowed to change. This field is allowed to be changed when online transactions are in the database.
+				</td>
+				<td>R/W</td>
+			</tr>
+			</tbody>
+		</table>
+		</p>
+	</ul>
+	<li><h2 id="jet-pay-specifics" class="8">JetPay Specifics</h2></li>
+	<ul>
+		<li><h3 id="customized-data" class="9">Customized Data</h3></li>
+		<p>
+			Terminal will map CustomizeData2 to UDField2, and CustomizeData3 to UDField3 in the Host Request Message.
+			These fields can support up to 36 character alphanumeric strings.
+			This is used in the authorization request message to send user defined fields from the POS to host.
+		</p>
+		<li><h3 id="batch-number" class="9">Batch number (Batch ID)</h3></li>
+		<p>
+			Batch number (or BatchID) will not be supported on the Unattended version of this application, as the processor will automatically capture the transaction on the backend. <br>
+			The ECR may encounter the following as a result: <br>
+			1.Batch Number will not return in the transaction or report Response of a POSLink command. <br>
+			2.ECR cannot perform setvar or getvar on batchNum parameter without error. <br>
+			3.If Auto Clear Database is not enabled on the terminal, then ECR must call Batch Clear to prevent the database from reaching capacity.
+		</p>
+	</ul>
+	<li><h2 id="seamless-specifics" class="8">Seamless Specifics</h2></li>
+	<ul>
+		<li><h3 id="ecr-transaction-id" class="9">ECR Transaction ID</h3></li>
+		<p>
+			The terminal will map ECR Transaction ID to the host’s Idempotency Key in the payment request message to the host as an alphanumeric string up to 64 characters long.
+			If ECR Transaction ID is not set in the request, the terminal will generate and the send the default one by using SN and timestamp.
+			If host returns Idempotency Key, the terminal will map it to ECR Trans ID in the response.
+		</p>
+	</ul>
+	<li><h2 id="moneris-specifics" class="8">Moneris Specifics</h2></li>
+	<ul>
+		<li><h3 id="msr-tlv-data" class="9">MSR TLV Data</h3></li>
+		<p>
+			The preferred language indicator is the last byte of the discretionary data before the end sentinel. 1 is English, 2 is French, 3 is Bilingual.
+		</p>
+	</ul>
+	<li><h2 id="cardknox-specifics" class="8">CardKnox Specifics</h2></li>
+	<ul>
+		<li><h3 id="ecr-transaction-id" class="9">ECR Transaction ID</h3></li>
+		<p>
+			The terminal shall map "ECR Transaction ID" ("ECR Trans. ID" in low level specs) to the host’s "ECRTransID" field in the payment transaction request message. It accepts alphanumeric strings up to 64 characters long.
+		</p>
+	</ul>
+</ul>
+<p>
+<p>
+<p>
+</body>
+</html>

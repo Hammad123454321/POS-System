@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/payment_extData_check_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="10dip"
+    android:addStatesFromChildren="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkSaleType" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkSaleType"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkRoutingNum" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkRoutingNum"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkNum" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkNum"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkType" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkType"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkIdType" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkIdType"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_checkIdValue" />
+
+                <EditText
+                    android:id="@+id/payment_ext_checkIdValue"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_birth" />
+
+                <EditText
+                    android:id="@+id/payment_ext_birth"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_phoneNum" />
+
+                <EditText
+                    android:id="@+id/payment_ext_phoneNum"
+                    style="@style/request_edit" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

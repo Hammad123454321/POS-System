@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+    >
+
+    <com.pax.poslink.widget.AlwaysMarqueeTextView
+        android:id="@+id/name_txt"
+        style="@style/request_text"
+        android:text="@string/manage_request_name_null" />
+
+    <EditText
+        android:id="@+id/string_val_txt"
+        style="@style/request_edit" />
+
+
+</LinearLayout>

@@ -1,0 +1,292 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/commSetting_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:addStatesFromChildren="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+                <Button
+                    android:id="@+id/commSetting_btn_getSN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/commSetting_getIP"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"/>
+                <Button
+                    android:id="@+id/commSetting_btn_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/save"/>
+            </TableRow>
+
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_commType"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/commSetting_commType"
+                    style="@style/request_edit_list"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:entries="@array/commSetting_types"
+                    android:textColor="@android:color/black"
+                    android:prompt="@string/hint_select"/>
+            </TableRow>
+
+            <TableRow android:gravity="center">
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_timeout"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:id="@+id/commSetting_timeout"
+                        style="@style/request_edit"
+                        android:layout_width="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/commSetting_timeUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/commSetting_timeout"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/commSetting_timeout"
+                        android:layout_alignTop="@+id/commSetting_timeout"
+                        android:layout_marginRight="7.0dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/commSetting_timeUnit"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_serialPort"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/commSetting_serialPort"
+                    style="@style/request_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/edit_select"/>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_baudRate"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/commSetting_baudRate"
+                    style="@style/request_edit_list"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:entries="@array/commSetting_baudRate"
+                    android:textColor="@android:color/black"
+                    android:prompt="@string/hint_select"/>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_destIP"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/commSetting_destIP"
+                    style="@style/request_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/edit_select"/>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_destPort"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/commSetting_destPort"
+                    style="@style/request_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/edit_select"
+                    android:inputType="number"/>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_mac"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/commSetting_mac"
+                    style="@style/request_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/edit_select"/>
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="DeviceName"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/commSetting_device"
+                    style="@style/request_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/edit_select"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/commsetting_host_container"
+                >
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_host"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/commSetting_host"
+                    style="@style/request_edit_list"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:entries="@array/commSetting_host"
+                    android:textColor="@android:color/black"
+                    android:prompt="@string/hint_select"/>
+            </TableRow>
+
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/commSetting_enable_proxy"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/comm_setting_enable_proxy"
+                    style="@style/request_edit_list"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:entries="@array/comm_setting_enable_proxy"
+                    android:textColor="@android:color/black"
+                    android:prompt="@string/hint_select"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"/>
+                <Button
+                    android:id="@+id/commSetting_btn_scan"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/commSetting_scan" />
+            </TableRow>
+            <TableRow>
+
+                <Button
+                    android:id="@+id/commSetting_btn_startlistener"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="StartService" />
+                <TextView
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"/>
+                <Button
+                    android:id="@+id/commSetting_btn_stoplistener"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="StopService" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

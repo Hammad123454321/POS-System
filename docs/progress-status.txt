@@ -1,0 +1,9 @@
+PROJECT STATUS
+
+Done:
+- Phase 1a, 1b, 2, 3, and 4 implemented.
+- Phase 4 delivery and retail test suites passing.
+- Phase 1-3 regression test suites passing after Phase 4 integration.
+
+Left:
+- Android production POSLink SDK linkage (on hold).

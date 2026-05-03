@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POSLink Demo</string>
+    <string name="return_back">Back</string>
+    <string name="print">PRINT</string>
+    <string name="save">Save</string>
+    <string name="ok">OK</string>
+    <string name="delete">Delete</string>
+    <string name="file_browser">browser</string>
+    <!-- common -->
+    <string name="request">Request</string>
+    <string name="btn_process">Start to Process</string>
+    <string name="response">Response</string>
+    <string name="hint_select">--Please Select--</string>
+    <string name="SAFInfo">SAF Information</string>
+    <!-- payment -->
+    <string name="payment_request">Request</string>
+    <string name="payment_btn_process">Start to Process</string>
+    <string name="payment_btn_cancel">Cancel Process</string>
+    <string name="payment_request_tenderType">EDC Type</string>
+    <string name="payment_request_transType">Trans Type</string>
+    <string name="payment_request_amount">Amount</string>
+    <string name="payment_request_cashbackAmt">Cash Back Amt</string>
+    <string name="payment_request_clerkId">Clerk ID</string>
+    <!-- <string name="payment_request_csspath">CssPath*</string>
+    <string name="payment_request_customfields">CustomFields*</string>
+    <string name="payment_request_userid">UserID*</string>
+    <string name="payment_request_password">PassWord*</string>
+    <string name="payment_request_customername">CustomerName*</string> -->
+    <string name="payment_request_sigsavepath">Sig Save Path</string>
+    <string name="payment_request_zip">Zip</string>
+    <string name="payment_request_tipAmt">Tip Amt</string>
+    <string name="payment_request_taxAmt">Tax Amt</string>
+    <string name="payment_request_fuelAmt">Fuel Amt</string>
+    <string name="payment_request_street">Street</string>
+    <string name="payment_request_street2">Street2</string>
+    <string name="payment_request_surchargeAmt">Surcharge Amt</string>
+    <!-- <string name="payment_request_serverid">ServerID*</string>
+    <string name="payment_request_autosubmit">AutoSubmit*</string> -->
+    <string name="payment_request_PONum">PO Num</string>
+    <string name="payment_request_orgRefNum">Orig Ref Num</string>
+    <!-- <string name="payment_request_misc3amt">Misc3Amt*</string>
+    <string name="payment_request_misc2amt">Misc2Amt*</string>
+    <string name="payment_request_misc1amt">Misc1Amt*</string>
+    <string name="payment_request_merchantkey">MerchantKey*</string> -->
+    <string name="payment_request_invNum">Inv Num</string>
+    <string name="payment_request_ecrRefNum">ECR Ref Num</string>
+    <string name="payment_request_orig_ecrRefNum">Orig ECR Ref Num</string>
+    <string name="payment_request_ecrTxnID">ECR Trans ID</string>
+    <string name="payment_request_authCode">Auth Code</string>
+    <string name="payment_request_extData">Ext Data</string>
+
+    <string name="payment_response">Response</string>
+    <string name="payment_response_authCode">Auth Code</string>
+    <string name="payment_response_approvedAmt">Approved Amt</string>
+    <string name="payment_response_approvedTipAmt">Approved Tip Amt</string>
+    <string name="payment_response_approvedCashBackAmount">Approved CashBack Amt</string>
+    <string name="payment_response_approvedMerchantFee">Approved Merchant Fee</string>
+    <string name="payment_response_approvedTaxAmount">Approved Tax Amt</string>
+    <string name="payment_response_avsResponse">Avs Response</string>
+    <string name="payment_response_bogusAccountNum">Bogus Account Num</string>
+    <string name="payment_response_cardType">Card Type</string>
+    <string name="payment_response_cvResponse">Cv Response</string>
+    <string name="payment_response_hostCode">Host Code</string>
+    <string name="payment_response_hostResponse">Host Response</string>
+    <string name="payment_response_message">Message</string>
+    <string name="payment_response_refNum">Ref Num</string>
+    <!-- <string name="payment_response_rawresponse">RawResponse*</string> -->
+    <string name="payment_response_remainingBalance">Remaining Balance</string>
+    <string name="payment_response_extraBalance">Extra Balance</string>
+    <string name="payment_response_requestedAmt">Requested Amt</string>
+    <string name="payment_response_resultCode">Result Code</string>
+    <string name="payment_response_resultTxt">Result Txt</string>
+    <string name="payment_response_timestamp">Timestamp</string>
+    <string name="payment_response_sigfilename">Sig File Name</string>
+    <string name="payment_response_sigdata">Sig Data</string>
+    <string name="payment_response_extData">Ext Data</string>
+    <string name="payment_response_vasCode">VASCode</string>
+    <string name="payment_response_vasData">VASData</string>
+    <string name="payment_response_NDEFData">NDEFData</string>
+    <string name="payment_response_receipt">Show Receipt</string>
+    <string name="payment_response_tic">TranIntgClass</string>
+    <string name="payment_response_gateway_id">Gateway Transaction ID</string>
+    <string name="payment_response_host_detail_message">Host Detailed Message</string>
+    <string name="payment_response_transaction_remaining_amount">TransactionRemainingAmount</string>
+    <string name="payment_response_retrieval_reference_number">RetrievalReferenceNumber</string>
+    <string name="payment_response_edc_type">EDC Type</string>
+    <string name="payment_response_masked_pan">Masked PAN</string>
+    <string name="payment_response_track1_data">Track1 Data</string>
+    <string name="payment_response_track2_data">Track2 Data</string>
+    <string name="payment_response_track3_data">Track3 Data</string>
+    <string name="payment_response_ps2000">PaymentService 2000</string>
+    <string name="payment_response_authorization_response">Authorization Response</string>
+    <string name="payment_response_issuer_response_code">Issuer Response Code</string>
+    <string name="payment_response_ecr_transaction_id">ECR Trans.ID</string>
+    <string name="payment_response_host_time_stamp">Host Time Stamp</string>
+    <string name="payment_response_accountReferenceID">Payment Account Reference ID</string>
+
+    <string name="tor_info_response_record_type">Record Type</string>
+    <string name="tor_info_response_reversal_time_stamp">Reversal Time Stamp</string>
+    <string name="tor_info_response_host_response_code">Host Response Code</string>
+    <string name="tor_info_response_host_response_message">Host Response Message</string>
+    <string name="tor_info_response_host_reference_number">Host Reference Number</string>
+    <string name="tor_info_response_gateway_transaction_id">Gateway Transaction ID</string>
+    <string name="tor_info_response_orig_amount">Orig Amount</string>
+    <string name="tor_info_response_masked_pan">Masked PAN</string>
+    <string name="tor_info_response_batch_no">Batch No</string>
+    <string name="tor_info_response_reversal_auth_code">Reversal Auth Code</string>
+    <string name="tor_info_response_orig_trans_type">Orig Trans Type</string>
+    <string name="tor_info_response_orig_trans_date_time">Orig Trans Date Time</string>
+    <string name="tor_info_response_orig_trans_auth_code">Orig Trans Auth Code</string>
+    
+    <string name="response_addlrspdata_aci">ACI</string>
+    <string name="response_addlrspdata_trans_id">TransID</string>
+    <string name="response_addlrspdata_card_level_result">CardLevelResult</string>
+    <string name="response_addlrspdata_source_reason_code">SourceReasonCode</string>
+    <string name="response_addlrspdata_bank_net_data">BankNetData</string>
+    <string name="response_addlrspdata_pos_entry_mode_chg">POSEntryModeChg</string>
+    <string name="response_addlrspdata_tran_edit_errcode">TranEditErrCode</string>
+    <string name="response_addlrspdata_disc_proc_code">DiscProcCode</string>
+    <string name="response_addlrspdata_disc_pos_entry">DiscPOSEntry</string>
+    <string name="response_addlrspdata_disc_resp_code">DiscRespCode</string>
+    <string name="response_addlrspdata_pos_data">POSData</string>
+    <string name="response_addlrspdata_disc_trans_qualifier">DiscTransQualifier</string>
+    <string name="response_addlrspdata_disc_nrid">DiscNRID</string>
+    <string name="response_addlrspdata_trnmsn_date_time">trnmsnDateTime</string>
+    <string name="response_addlrspdata_orig_stan">origSTAN</string>
+    <string name="response_addlrspdata_cvv_error_code">cvvErrorCode</string>
+    <string name="response_addlrspdata_xcode_resp">xCodeResp</string>
+    <string name="response_addlrspdata_ath_ntwk_id">AthNtwkID</string>
+    <string name="response_addlrspdata_term_entry_capablt">TermEntryCapablt</string>
+    <string name="response_addlrspdata_pos_entry_mode">POSEntryMode</string>
+    <string name="response_addlrspdata_serv_code">ServCode</string>
+    <string name="response_addlrspdata_spend_qind">SpendQInd</string>
+    <string name="response_addlrspdata_wlt_id">WltID</string>
+    <string name="response_addlrspdata_local_date_time">localDateTime</string>
+    <string name="response_addlrspdata_emv_tags">EMV Tags</string>
+
+
+
+
+
+
+
+    <!-- manage -->
+    <string name="manage_request">Request</string>
+    <string name="manage_btn_process">Start to Process</string>
+    <string name="manage_request_transType">Command Type</string>
+    <string name="manage_request_edcType">EDC Type</string>
+    <string name="manage_request_trans">Trans Type</string>
+    <string name="manage_request_name_null"> </string>
+    <string name="manage_request_timeOut">TimeOut</string>
+    <string name="manage_request_timeOutUnit">0.1S</string>
+    <string name="manage_request_extData">Ext Data</string>
+    <string name="manage_request_sigsavepath">Save sig path</string>
+    <string name="manage_response">Response</string>
+    <string name="manage_response_resultCode">Result Code</string>
+    <string name="manage_response_resultTxt">Result Text</string>
+    <string name="manage_response_sn">SN</string>
+    <string name="manage_response_varValue">Var Value</string>
+    <string name="manage_response_varValue1">Var Value1</string>
+    <string name="manage_response_varValue2">Var Value2</string>
+    <string name="manage_response_varValue3">Var Value3</string>
+    <string name="manage_response_varValue4">Var Value4</string>
+    <string name="manage_response_modelName">Model Name</string>
+    <string name="manage_response_priFirmwareVer">OS Version</string>
+    <string name="manage_response_macAddress">MAC Address</string>
+    <string name="manage_response_linesPerScreen">Lines Per Screen</string>
+    <string name="manage_response_charsPerLine">Chars Per Line</string>
+    <string name="manage_response_buttonId">Button ID</string>
+    <string name="manage_response_sigFileName">Sig File Name</string>
+    <string name="manage_response_detail">Detail</string>
+    <string name="manage_response_entryMode">Entry Mode</string>
+    <string name="manage_response_expiry">Expiry Date</string>
+    <string name="manage_response_KSN">KSN</string>
+    <string name="manage_response_PAN">Account Number</string>
+    <string name="manage_response_PINBLOCK">PINBLOCK</string>
+    <string name="manage_response_QRCode">QR Code</string>
+    <string name="manage_response_track1">Track1 Data</string>
+    <string name="manage_response_track2">Track2 Data</string>
+    <string name="manage_response_track3">Track3 Data</string>
+    <string name="manage_response_text">Text</string>
+    <string name="manage_response_authorizationRet">Authorization Result</string>
+    <string name="manage_response_signatureFlag">Signature Flag</string>
+    <string name="manage_response_EMVTLVData">EMV TLV Data</string>
+    <string name="manage_response_extData">Ext Data</string>
+    <string name="wait_remove_card">Please Remove Card&#8230;</string>
+
+    <!-- batch -->
+    <string name="batch_request_transType">Command Type</string>
+    <string name="batch_request_edcType">EDC Type</string>
+    <string name="batch_request_timestamp">Timestamp</string>
+    <string name="batch_request_SAFIndicator">SAF Indicator</string>
+    <string name="batch_request_extdata">ExtData</string>
+    <string name="batch_response_resultCode">Result Code</string>
+    <string name="batch_response_resultTxt">Result Txt</string>
+    <string name="batch_response_creditCount">Credit Count</string>
+    <string name="batch_response_creditAmount">Credit Amount</string>
+    <string name="batch_response_debitCount">Debit Count</string>
+    <string name="batch_response_debitAmount">Debit Amount</string>
+    <string name="batch_response_ebtCount">EBT Count</string>
+    <string name="batch_response_ebtAmount">EBT Amount</string>
+    <string name="batch_response_giftCount">Gift Count</string>
+    <string name="batch_response_giftAmount">Gift Amount</string>
+    <string name="batch_response_loyaltyCount">Loyalty Count</string>
+    <string name="batch_response_loyaltyAmount">Loyalty Amount</string>
+    <string name="batch_response_cashCount">Cash Count</string>
+    <string name="batch_response_cashAmount">Cash Amount</string>
+    <string name="batch_response_checkCount">CHECK Count</string>
+    <string name="batch_response_checkAmount">CHECK Amount</string>
+    <string name="batch_response_timestamp">Timestamp</string>
+    <string name="batch_response_tid">TID</string>
+    <string name="batch_response_mid">MID</string>
+    <string name="batch_response_hostTraceNum">Host Trace Num</string>
+    <string name="batch_response_batchNum">Batch Num</string>
+    <string name="batch_response_authCode">Auth Code</string>
+    <string name="batch_response_hostCode">Host Code</string>
+    <string name="batch_response_hostResponse">Host Response</string>
+    <string name="batch_response_message">Message</string>
+    <string name="batch_response_extData">Ext Data</string>
+    <string name="batch_response_hostSettledAmount">Host Settled Amount</string>
+    <string name="batch_response_hostSettledCount">Host Settled Count</string>
+    <string name="batch_response_hostSettledReturnAmount">Host Settled Return Amount</string>
+    <string name="batch_response_hostSettledReturnCount">Host Settled Return Count</string>
+    <string name="batch_response_totalTax">Total Tax</string>
+    <string name="batch_response_taxType">Tax Type</string>
+    <string name="batch_response_creditTotalTaxAmount">Credit Total Tax Amount</string>
+    <string name="batch_response_debitTotalTaxAmount">Debit Total Tax Amount</string>
+    <string name="batch_response_EBTTotalTaxAmount">EBT Total Tax Amount</string>
+    <string name="batch_response_giftTotalTaxAmount">Gift Total Tax Amount</string>
+    <string name="batch_response_loyaltyTotalTaxAmount">Loyalty Total Tax Amount</string>
+    <string name="batch_response_checkTotalTaxAmount">Check Total Tax Amount</string>
+    <string name="batch_response_QRCodeTotalTaxAmount">QRCode Total Tax Amount</string>
+    <string name="batch_response_cashTotalTax">Cash Total Tax</string>
+
+    <string name="batch_response_CreditTipAmount">CreditTipAmount</string>
+    <string name="batch_response_DebitTipAmount">DebitTipAmount</string>
+    <string name="batch_response_GiftTipAmount">GiftTipAmount</string>
+    <string name="batch_response_LoyaltyTipAmount">LoyaltyTipAmount</string>
+    <string name="batch_response_CashTipAmount">CashTipAmount</string>
+    <string name="batch_response_QRCodeTipAmount">QRCodeTipAmount</string>
+
+    <string name="batch_response_CreditTipCount">CreditTipCount</string>
+    <string name="batch_response_DebitTipCount">DebitTipCount</string>
+    <string name="batch_response_GiftTipCount">GiftTipCount</string>
+    <string name="batch_response_LoyaltyTipCount">LoyaltyTipCount</string>
+    <string name="batch_response_CashTipCount">CashTipCount</string>
+    <string name="batch_response_QRCodeTipCount">QRCodeTipCount</string>
+
+    <string name="batch_response_QRCodeCount">QRCodeCount</string>
+    <string name="batch_response_QRCodeAmount">QRCodeAmount</string>
+
+    <string name="batch_response_MerchantTotals">Merchant Totals</string>
+    <string name="batch_response_hostResponseCode">Host Response Code</string>
+    <string name="batch_response_hostResponseMessage">Host Response Message</string>
+
+
+
+    <string name="report_request_transType">Trans Type</string>
+    <string name="report_request_edcType">EDC Type</string>
+    <string name="report_request_cardType">Card Type</string>
+    <string name="report_request_paymentType">Payment Type</string>
+    <string name="report_request_recordNum">Record Num</string>
+    <string name="report_request_refNum">Ref Num</string>
+    <string name="report_request_authCode">Auth Code</string>
+    <string name="report_request_ecrRefNum">ECR Ref Num</string>
+    <string name="report_request_orig_ecrRefNum">Orig ECR Ref Num</string>
+    <string name="report_request_ExtData">ExtData</string>
+    <string name="report_response_resultCode">Result Code</string>
+    <string name="report_response_resultTxt">Result Txt</string>
+    <string name="report_response_edcType">EDC Type</string>
+    <string name="report_response_totalRecord">Total Record</string>
+    <string name="report_response_recordNumber">Record Number</string>
+    <string name="report_response_paymentType">Trans Type</string>
+    <string name="report_response_origPaymentType">Orig Trans Type</string>
+    <string name="report_response_hostTraceNum">Host Trace Num</string>
+    <string name="report_response_batchNum">Batch Num</string>
+    <string name="report_response_authCode">Auth Code</string>
+    <string name="report_response_hostCode">Host Code</string>
+    <string name="report_response_hostResponse">Host Response</string>
+    <string name="report_response_message">Message</string>
+    <string name="report_response_approvedAmount">Approved Amount</string>
+    <string name="report_response_remainingBalance">Remaining Balance</string>
+    <string name="report_response_extraBalance">Extra Balance</string>
+    <string name="report_response_bogusAccountNum">Bogus Account Num</string>
+    <string name="report_response_cardType">Card Type</string>
+    <string name="report_response_cvResponse">Cv Response</string>
+    <string name="report_response_refNum">Ref Num</string>
+    <string name="report_response_transactionIdentifier">Transaction Identifier</string>
+    <string name="report_response_ecrRefNum">ECR Ref Num</string>
+    <string name="report_response_orig_ecrRefNum">Orig ECR Ref Num</string>
+    <string name="report_response_timestamp">Timestamp</string>
+    <string name="report_response_clerkId">Clerk ID</string>
+    <string name="report_response_shiftId">Shift ID</string>
+    <string name="report_response_reportType">Report Type</string>
+    <string name="report_response_creditCount">Credit Count</string>
+    <string name="report_response_creditAmount">Credit Amount</string>
+    <string name="report_response_debitCount">Debit Count</string>
+    <string name="report_response_debitAmount">Debit Amount</string>
+    <string name="report_response_ebtCount">EBT Count</string>
+    <string name="report_response_ebtAmount">EBT Amount</string>
+    <string name="report_response_giftCount">Gift Count</string>
+    <string name="report_response_giftAmount">Gift Amount</string>
+    <string name="report_response_loyaltyCount">Loyalty Count</string>
+    <string name="report_response_loyaltyAmount">Loyalty Amount</string>
+    <string name="report_response_cashCount">Cash Count</string>
+    <string name="report_response_cashAmount">Cash Amount</string>
+    <string name="report_response_checkCount">CHECK Count</string>
+    <string name="report_response_checkAmount">CHECK Amount</string>
+    <string name="report_response_transTotal">Trans Total</string>
+    <string name="report_response_extData">Ext Data</string>
+    <string name="report_response_SAFinfo">SAF Information</string>
+    <string name="report_response_VisaCnt">Visa Count</string>
+    <string name="report_response_VisaAmount">Visa Amount</string>
+    <string name="report_response_MCCnt">Mastercard Count</string>
+    <string name="report_response_MCAmount">Mastercard Amount</string>
+    <string name="report_response_AmexCnt">AMEX Count</string>
+    <string name="report_response_AmexAmount">AMEX Amount</string>
+    <string name="report_response_DinersCnt">Diners Count</string>
+    <string name="report_response_DinersAmount">Diners Amount</string>
+    <string name="report_response_DiscoverCnt">Discover Count</string>
+    <string name="report_response_DiscoverAmount">Discover Amount</string>
+    <string name="report_response_JCBCnt">JCB Count</string>
+    <string name="report_response_JCBAmount">JCB Amount</string>
+    <string name="report_response_enRouteCnt">enRoute Count</string>
+    <string name="report_response_enRouteAmount">enRoute Amount</string>
+    <string name="report_response_ExtendedCnt">Extended Count</string>
+    <string name="report_response_ExtendedAmount">Extended Amount</string>
+    <string name="report_response_VisafleetCnt">VisaFleetCount</string>
+    <string name="report_response_VisafleetAmount">VisaFleetAmount</string>
+    <string name="report_response_MCfleetCnt">MastercardFleetCount</string>
+    <string name="report_response_MCfleetAmount">MastercardFleetAmount</string>
+    <string name="report_response_fleetoneCnt">FleetOneCount</string>
+    <string name="report_response_fleetoneAmount">FleetOneAmount</string>
+    <string name="report_response_fleetwideCnt">FleetWideCount</string>
+    <string name="report_response_fleetwideAmount">FleetWideAmount</string>
+    <string name="report_response_fuelmanCnt">FuelmanCount</string>
+    <string name="report_response_fuelmanAmount">FuelmanAmount</string>
+    <string name="report_response_gascardCnt">GascardCount</string>
+    <string name="report_response_gascardAmount">GascardAmount</string>
+    <string name="report_response_voyagerCnt">VoyagerCount</string>
+    <string name="report_response_voyagerAmount">VoyagerAmount</string>
+    <string name="report_response_wrightexpressCnt">WrightExpressCount</string>
+    <string name="report_response_wrightexpressAmount">WrightExpressAmount</string>
+
+    <string name="report_response_interacCount">InteracCount</string>
+    <string name="report_response_interacAmount">InteracAmount</string>
+    <string name="report_response_CUPCount">CUPCount</string>
+    <string name="report_response_CUPAmount">CUPAmount</string>
+    <string name="report_response_maestroCount">MaestroCount</string>
+    <string name="report_response_maestroAmount">MaestroAmount</string>
+    <string name="report_response_sinclairCount">SinclairCount</string>
+    <string name="report_response_sinclairAmount">SinclairAmount</string>
+    <!--    payload-->
+    <string name="payload_response_resultCode">Result Code</string>
+    <string name="payload_response_resultTxt">Result Txt</string>
+    <string name="payload_response_payload">Payload</string>
+
+    <!-- comm setting -->
+    <string name="commSetting_getIP">Get IP</string>
+    <string name="commSetting_scan">Scan</string>
+    <string name="commSetting_commType">Comm Type</string>
+    <string name="commSetting_timeUnit">MS</string>
+    <string name="commSetting_timeout">TimeOut</string>
+    <string name="commSetting_serialPort">Serial Port</string>
+    <string name="commSetting_baudRate">Baud Rate</string>
+    <string name="commSetting_host">Host</string>
+    <string name="commSetting_enable_proxy">EnableProxy</string>
+    <string name="commSetting_destIP">Dest IP</string>
+    <string name="commSetting_destPort">Dest Port</string>
+    <string name="commSetting_mac">Mac Addr</string>
+
+    <string name="bt_selectDevice">Select a device to connect</string>
+    <string name="bt_notPaired">No paired device</string>
+    <string name="bt_notFound">No device found</string>
+    <string name="bt_title_pairedDevices">Paired devices</string>
+    <string name="bt_title_otherDevices">Other devices</string>
+
+    <!--  detail -->
+    <string name="sigDetail_sigFilePath">Sig File Path</string>
+    <string name="sigDetail_returnBack">Return</string>
+    <string name="sigDetail_sigData">Sig Data</string>
+    <string name="sigDetail_showImage">Show Sig Image</string>
+    <string name="sigDetail_bmpFilePath">Image File Path</string>
+    <string name="sigDetail_bmpSaveBtn">Save Image</string>
+
+    <!-- payment extData -->
+    <string name="payment_ext_account">Account</string>
+    <string name="payment_ext_expDate">Exp Date</string>
+    <string name="payment_ext_CVV">CVV</string>
+    <string name="payment_ext_EBTFoodStampVoucher">EBT Food Stamp Voucher</string>
+    <string name="payment_ext_voucherNum">Voucher Num</string>
+    <string name="payment_ext_force">Force</string>
+    <string name="payment_ext_firstName">First Name</string>
+    <string name="payment_ext_lastName">Last Name</string>
+    <string name="payment_ext_countryCode">Country Code</string>
+    <string name="payment_ext_stateCode">State Code</string>
+    <string name="payment_ext_cityName">City Name</string>
+    <string name="payment_ext_email">Email Address</string>
+    <string name="payment_ext_ebt">EBTType</string>
+    <string name="payment_ext_checkSaleType">Check Sale Type</string>
+    <string name="payment_ext_checkRoutingNum">Check Routing Num</string>
+    <string name="payment_ext_checkNum">Check Num</string>
+    <string name="payment_ext_checkType">Check Type</string>
+    <string name="payment_ext_checkIdType">Check Id Type</string>
+    <string name="payment_ext_checkIdValue">Check Id Value</string>
+    <string name="payment_ext_birth">Birth</string>
+    <string name="payment_ext_phoneNum">Phone Num</string>
+    <string name="payment_ext_timestamp">Timestamp</string>
+    <string name="payment_ext_origecrrefnum">OrigECRRefNum</string>
+    <string name="payment_ext_shiftId">Shift ID</string>
+    <string name="payment_ext_customerCode">Customer Code</string>
+    <string name="payment_ext_taxExempt">Tax Exempt</string>
+    <string name="payment_ext_taxExemptId">Tac Exempt Id</string>
+    <string name="payment_ext_MerchantTaxID">Merchant Tax ID</string>
+    <string name="payment_ext_DestinationZipCode">Destination Zip Code</string>
+    <string name="payment_ext_ProductDescription">Product Description</string>
+    <string name="payment_ext_LocalTax">LocalTax</string>
+    <string name="payment_ext_NationalTax">NationalTax</string>
+    <string name="payment_ext_CustomerTaxID">CustomerTaxID</string>
+    <string name="payment_ext_SummaryCommodityCode">SummaryCommodityCode</string>
+    <string name="payment_ext_DiscountAmt">DiscountAmt</string>
+    <string name="payment_ext_FreightAmt">FreightAmt</string>
+    <string name="payment_ext_DutyAmt">DutyAmt</string>
+    <string name="payment_ext_ShipFromZipCode">ShipFromZipCode</string>
+    <string name="payment_ext_VATInvoiceRefNum">VATInvoiceRefNum</string>
+    <string name="payment_ext_OrderDate">OrderDate</string>
+    <string name="payment_ext_VATTaxAmt">VATTaxAmt</string>
+    <string name="payment_ext_VATTaxRate">VATTaxRate</string>
+    <string name="payment_ext_AlternateTaxAmt">AlternateTaxAmt</string>
+    <string name="payment_ext_AlternateTaxID">AlternateTaxID</string>
+    <string name="payment_ext_MOTOECommerceMode">MOTO E-commerce Mode</string>
+    <string name="payment_ext_MOTOECommerceTransType">MOTO E-commerce Trans Type</string>
+    <string name="payment_ext_ECommerceSecureType">E-commerce Secure Type</string>
+    <string name="payment_ext_MOTOECommerceOrderNum">MOTO E-commerce Order Num</string>
+    <string name="payment_ext_installment">Installments</string>
+    <string name="payment_ext_currentInstallment">Current Installment</string>
+    <string name="payment_ext_tableNum">Table Num</string>
+    <string name="payment_ext_guestNum">Guest Num</string>
+    <string name="payment_ext_sigCapture">Signature Capture</string>
+    <string name="payment_ext_ticketNum">Ticket Num</string>
+    <string name="payment_ext_HRefNum">HRef Num</string>
+    <string name="payment_ext_tipRequest">Tip Request</string>
+    <string name="payment_ext_signUploadFlag">SignUpload Flag</string>
+    <string name="payment_ext_reportStatus">Report Status</string>
+    <string name="payment_ext_token">Token</string>
+    <string name="payment_ext_tokenRequest">Token Request</string>
+    <string name="payment_ext_cardType">Card Type</string>
+    <string name="payment_ext_cardTypeBitmap">Card Type Bitmap</string>
+    <string name="payment_ext_passthruData">Passthru Data</string>
+    <string name="payment_ext_odometer">Odometer</string>
+    <string name="payment_ext_vehicleNo">Vehicle No</string>
+    <string name="payment_ext_jobNo">Job No</string>
+    <string name="payment_ext_driverId">Driver ID</string>
+    <string name="payment_ext_employeeNo">Employee No</string>
+    <string name="payment_ext_licenseNo">LicenseNo</string>
+    <string name="payment_ext_jobId">Job ID</string>
+    <string name="payment_ext_departmentNo">Department No</string>
+    <string name="payment_ext_customerData">Customer Data</string>
+    <string name="payment_ext_userId">User ID</string>
+    <string name="payment_ext_vehicleId">Vehicle ID</string>
+    <string name="payment_ext_returnReason">Return Reason</string>
+    <string name="payment_ext_origTransTime">Orig Trans Time</string>
+    <string name="payment_ext_DisProgPrompts">DisProgPrompts</string>
+    <string name="payment_ext_EntryModeBitmap">EntryMode Bitmap</string>
+    <string name="payment_ext_GetSign">Get Sign</string>
+    <string name="payment_ext_ReceiptPrint">ReceiptPrint</string>
+    <string name="payment_ext_CPmode">CPMode</string>
+    <string name="payment_ext_origTransDate">Orig Trans Date</string>
+    <string name="payment_ext_origPAN">Orig PAN</string>
+    <string name="payment_ext_origExpiryDate">Orig Expiry Date</string>
+    <string name="payment_ext_gatewayId">Gateway ID</string>
+    <string name="payment_ext_FleetPromptCode">FleetPromptCode</string>
+
+    <string name="payment_ext_posEchoData">POS Echo Data</string>
+    <string name="payment_ext_track1_data">Track1 Data</string>
+    <string name="payment_ext_track2_data">Track2 Data</string>
+    <string name="payment_ext_track3_data">Track3 Data</string>
+    <string name="payment_ext_MMID">MM_ID</string>
+    <string name="payment_ext_MMName">MM_Name</string>
+    <string name="payment_ext_DebitNetwork">DebitNetwork</string>
+    <string name="payment_ext_passthru_cancel">Cancel</string>
+    <string name="payment_ext_passthru_type_prompt">payment_ext_passthru_type_prompt</string>
+    <string name="payment_ext_passthru_add">Add</string>
+    <string name="payment_ext_passthru_name_null"> </string>
+    <string name="payment_ext_passthru_data">Data</string>
+    <string name="payment_ext_gift_card_type">Gift Card Type</string>
+    <string name="payment_ext_debit_account_type">Debit Account Type</string>
+    <string name="payment_ext_host_account">Host Account</string>
+    <string name="payment_ext_host_card_type">Host Card Type</string>
+
+    <string name="payment_ext_cardbin">CardBin</string>
+    <string name="payment_ext_new_cardbin">NewCardBin</string>
+    <string name="payment_ext_program_type">ProgramType</string>
+    <string name="payment_ext_host_program_type">HostProgramType</string>
+    <string name="payment_ext_dcc_capable">DccCapable</string>
+    <string name="payment_ext_debit_capable">DebitCapable</string>
+
+
+    <!-- payment receipt -->
+
+    <!-- log setting -->
+    <string name="log_switch">Log Switch</string>
+    <string name="log_level">Log Level</string>
+    <string name="log_filepath">Log File Path</string>
+    <string name="log_filename">Log File Name</string>
+    <string name="log_set">Set</string>
+    <string name="log_view">View</string>
+    <string name="log_maxdurationdays">Log days</string>
+    <string name="log_dayUnit">Day(s)</string>
+    <!-- input dialog -->
+    <string name="input_title">Please enter SN and Token:</string>
+    <string name="input_termId">TerminalId</string>
+    <string name="input_SN">SN</string>
+    <string name="input_token">Token</string>
+    <string name="input_cancel">Cancel</string>
+
+    <!-- prompt -->
+    <string name="payment_process_prompt">Please wait while paying</string>
+    <string name="manage_process_prompt">Please wait while processing</string>
+    <string name="batch_process_prompt">Please wait while processing</string>
+    <string name="report_process_prompt">Please wait while processing</string>
+    <string name="converge_process_prompt">Please wait while processing</string>
+
+    <!-- SAF Information -->
+    <string name="batch_response_SAFTotalCnt">SAF Total Count</string>
+    <string name="batch_response_SAFTotalAmt">SAF Total Amt</string>
+    <string name="batch_response_UploadRecords">SAF Uploaded Count</string>
+    <string name="batch_response_UploadAmt">SAF Uploaded Amount</string>
+    <string name="batch_response_FailedRecords">SAF Failed Count</string>
+    <string name="batch_response_TotalFailed">SAF Failed Total</string>
+    <string name="batch_response_DeleteRecords">SAF Deleted Count</string>
+    <string name="batch_response_BatchFailedRefNum">Batch Failed RefNum</string>
+    <string name="batch_response_BatchFailedCount">Batch Failed Count</string>
+
+
+    <string name="image_desc"> </string>
+    <string name="trans_total_amount">Total Amount</string>
+    <string name="trans_confirm_btn">CONFIRM</string>
+    <string name="print_bitmap">Print Bitmap</string>
+    <string name="print_string">Print String</string>
+    <string name="cut_paper">Cut Paper</string>
+
+
+    <string name="scan_failed">Invalid Barcde Try Again</string>
+
+    <!-- multi cmd -->
+    <string name="add_request">Add Request</string>
+    <string name="update_request">Update Request</string>
+    <string name="save_request">Save Request</string>
+    <string name="response_resultCode">Result Code</string>
+    <string name="response_resultTxt">Result Txt</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_multi_request">Save %1$d Request</string>
+    <string name="processing">Processing...</string>
+    <string name="camera_invalid">Camera is not available</string>
+    <string name="pls_tap_mifare_card">Please tap MIFARE card</string>
+
+</resources>

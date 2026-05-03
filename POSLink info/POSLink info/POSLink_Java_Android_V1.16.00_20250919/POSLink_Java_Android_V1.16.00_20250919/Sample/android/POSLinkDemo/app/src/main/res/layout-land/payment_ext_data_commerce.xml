@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/payment_extData_commerce_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="10dip"
+    android:addStatesFromChildren="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_customerCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_customerCode"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_taxExempt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_taxExempt"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_taxExemptId" />
+
+                <EditText
+                    android:id="@+id/payment_ext_taxExemptId"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_MerchantTaxID" />
+
+                <EditText
+                    android:id="@+id/payment_ext_MerchantTaxID"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_DestinationZipCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_DestinationZipCode"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_ProductDescription" />
+
+                <EditText
+                    android:id="@+id/payment_ext_ProductDescription"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_LocalTax" />
+
+                <EditText
+                    android:id="@+id/payment_ext_LocalTax"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_NationalTax" />
+
+                <EditText
+                    android:id="@+id/payment_ext_NationalTax"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_CustomerTaxID" />
+
+                <EditText
+                    android:id="@+id/payment_ext_CustomerTaxID"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_SummaryCommodityCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_SummaryCommodityCode"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_DiscountAmt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_DiscountAmt"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_FreightAmt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_FreightAmt"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_DutyAmt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_DutyAmt"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_ShipFromZipCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_ShipFromZipCode"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_VATInvoiceRefNum" />
+
+                <EditText
+                    android:id="@+id/payment_ext_VATInvoiceRefNum"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_OrderDate" />
+
+                <EditText
+                    android:id="@+id/payment_ext_OrderDate"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_VATTaxAmt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_VATTaxAmt"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_VATTaxRate" />
+
+                <EditText
+                    android:id="@+id/payment_ext_VATTaxRate"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_AlternateTaxAmt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_AlternateTaxAmt"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_AlternateTaxID" />
+
+                <EditText
+                    android:id="@+id/payment_ext_AlternateTaxID"
+                    style="@style/request_edit" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

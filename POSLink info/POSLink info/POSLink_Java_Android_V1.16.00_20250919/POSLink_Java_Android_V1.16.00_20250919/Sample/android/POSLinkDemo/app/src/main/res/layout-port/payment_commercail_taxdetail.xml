@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:addStatesFromChildren="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.0px"
+        android:layout_weight="3"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_taxdetail_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:text="@string/payment_ext_passthru_cancel"/>
+
+
+        <Button
+            android:id="@+id/btn_taxdetail_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:text="@string/save"/>
+        <Button
+            android:id="@+id/btn_taxdetail_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_taxdetail_save"
+            android:layout_centerVertical="true"
+            android:text="Delete"/>
+
+        <ImageView
+            android:id="@+id/line_for_split2"
+            android:layout_width="match_parent"
+            android:layout_height="5.0px"
+            android:layout_below="@+id/btn_taxdetail_delete"
+            android:background="@drawable/line"
+            android:layout_marginBottom="5.0dp"/>
+
+        <LinearLayout
+            android:id="@+id/payment_ext_passthru_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line_for_split2"
+            android:orientation="horizontal">
+            <com.pax.poslink.widget.AlwaysMarqueeTextView
+                style="@style/request_text"
+                android:text="Tax Type" />
+
+            <Spinner
+                android:id="@+id/payment_taxdetail_taxtype"
+                style="@style/request_edit_list"
+                android:entries="@array/payment_commercial_tax_detail_taxType"
+                android:prompt="@string/hint_select"/>
+
+            <Button
+                android:id="@+id/btn_taxdetail_add"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/payment_ext_passthru_add" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/payment_ext_passthru_board">
+
+            <LinearLayout
+                android:id="@+id/taxdetail_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="5.0px"
+        android:background="@drawable/shadow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.0px"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <com.pax.poslink.widget.AlwaysMarqueeTextView
+            style="@style/response_text_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TaxDeatil"
+            android:gravity="center|left"/>
+
+        <TextView
+            android:id="@+id/tv_taxdetail_data"
+            style="@style/response_edit_special_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_marginLeft="20dip"
+            android:layout_marginBottom="20dip"
+            android:layout_marginRight="10dip"/>
+
+    </LinearLayout>
+</LinearLayout>

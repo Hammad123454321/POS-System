@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.pax.poslink">
+
+    <uses-feature android:name="android.hardware.usb.host" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-permission android:name="com.pax.permission.ICC"/>
+    <uses-permission android:name="com.pax.permission.PRINTER"/>
+    <uses-permission android:name="com.pax.permission.PICC"/>
+    <uses-permission android:name="com.pax.permission.USB_SECURITY"/>
+    <uses-permission android:name="com.pax.permission.PED"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+      tools:ignore="ProtectedPermissions" />
+
+    <!-- AIDL, targetSdkVersion greater than or equal to 30 -->
+    <queries>
+        <intent>
+            <action android:name="com.pax.us.std.poslink.aidl" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".MainApplication"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <!-- <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/> -->
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- <meta-data -->
+            <!-- android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" -->
+            <!-- android:resource="@xml/device_filter"/> -->
+        </activity>
+        <activity
+            android:name=".ui.pay.PaymentReceiptActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"/>
+        <activity
+            android:name=".ui.SigDetailActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"/>
+        <activity
+            android:name=".ui.FileManagerActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.DirectoryManagerActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.DirectoryLogActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.logsetting.LogsViewerActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard"/>
+        <activity
+            android:name=".ui.comsetting.BluetoothDeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:theme="@style/PromptDialog" />
+        <activity
+            android:name=".ui.pay.PaymentExtDataActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.pay.PaymentExtDataAddPassthruActitity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".dal.scan.ScanActivity" />
+        <activity android:name=".dal.modem.ModemActivity" />
+        <activity android:name=".dal.scan.ScanHwConfigActivity"/>
+        <activity android:name=".dal.scan.ScanResultModeActivity"/>
+        <activity android:name=".dal.scan.BarcodeConvertActivity" />
+        <activity
+            android:name=".dal.serialport.SerialPortActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <activity
+            android:name=".ui.vas.VASSpecialDataActivity"
+            android:label="VAS Special Data"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.multicmd.MultiCmdActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".dal.icc.IccActivity" />
+        <activity android:name=".ui.pay.PaymentCommercialCardActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.pay.PaymentCommercialTaxDetailActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.pay.PaymentCommercialLineItemDetailActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".dal.baseSystem.BaseSystemActivity" />
+        <activity android:name=".ui.vas.VASGoogleCapActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.vas.VASSmartTapDataActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+<!--        <activity android:name=".dal.m1card.MIFAREActivity"-->
+<!--            android:windowSoftInputMode="adjustPan|stateHidden"/>-->
+        <activity android:name=".dal.m1card.MifareActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".dal.DisablePOSMenuActivity" />
+        <activity android:name=".ui.pay.PaymentRestaurantActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentHostGateWayActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentTransactionBehaviorActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentOriginalActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentFleetCardActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.MultiMerchantActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentLodgingInfoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentLodgingRoomRatesActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentLodgingItemsActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.manage.ManageExtDataActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentAutoRentalInfoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentAutoRentalItemActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.pay.PaymentHostCredentialInformationActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".ui.manage.CustomMACInformationActivity"
+            android:label="Custom MAC Information"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.pax.poslink.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name="com.pax.poslink.ScreenSaverService"
+            android:exported="true"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

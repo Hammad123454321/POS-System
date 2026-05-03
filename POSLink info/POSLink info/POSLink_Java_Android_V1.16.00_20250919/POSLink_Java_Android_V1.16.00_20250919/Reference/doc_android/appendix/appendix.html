@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+        <title>Appendix</title>
+        <style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+        </style>
+        <link rel="stylesheet" href="appendix.css" />
+        <!--[if lt IE 9]>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <nav id="TOC">
+            <ul>
+                <li><a href="#control-character-for-text-showing">Control Character for Text Showing</a></li>
+                <li><a href="#hard-keys-definition">Hard Keys Definition</a></li>
+                <li><a href="#properties-matrix-for-each-managerequest-command">Properties Matrix for each ManageRequest command</a></li>
+                <li><a href="#printdata-data-format-for-printer">PrintData – Data format for printer</a></li>
+                <li><a href="#emv-kernel-configuration-type">EMV Kernel Configuration Type</a></li>
+				<li><a href="#special-amount-in-demo-mode">Special Amount in Demo Mode</a></li>
+                <li><a href="#conexxus-product-codes">Conexxus Product Codes</a></li>
+            </ul>
+        </nav>
+        <h2 id="control-character-for-text-showing" class="ListParagraph 8">Control Character for Text Showing</h2>
+        <table >
+            <tbody>
+                <tr class="odd">
+                    <td>Character</td>
+                    <td>Description</td>
+                    <td>Apply to Commands</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\n</strong></td>
+                    <td>Line feed</td>
+                    <td>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\C</strong></td>
+                    <td>Center alignment</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\L</strong></td>
+                    <td>Left alignment</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\R</strong></td>
+                    <td>Right alignment</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\B</strong></td>
+                    <td>Bold word</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\1</strong></td>
+                    <td>Small</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\2</strong></td>
+                    <td>Medium, Default size</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\3</strong></td>
+                    <td>Large</td>
+                    <td><p>SHOWMESSAGE</p>
+                        <p>SHOWTHANKYOU(deprecated since V1.11.00)</p>
+                        <p>SHOWMESSAGECENTER</p>
+                        <p>SHOWTEXTBOX</p>
+                        <p>SHOWDIALOG</p>
+                        <p>SHOWDIALOGFORM</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Notes:</p>
+        <p>1. “\C” “\L” “\R” will not change line automatically, please add “\n” if you want to change to next line.</p>
+        <p>2. “\B” can be used along with “\L” or “\R” or “\C” with format like “\B\R”.</p>
+        <p>3. “\B” will automatically jump to next line if there are some words before “\B”.</p>
+        <p>4. “\B” will only bold the first line.</p>
+        <p>5. “\1”, “\2”, and “\3” will only apply the font size from where the control character was started and to the end of that specific lines text.</p>
+        <h2 id="hard-keys-definition" class="ListParagraph 8">Hard Keys Definition</h2>
+        <p>Numeric Keys:</p>
+        <p>KEY0 KEY1 KEY2 KEY3 KEY4 KEY5 KEY6 KEY7 KEY8 KEY9</p>
+        <p>Control Keys:</p>
+        <p>KEYCANCEL KEYENTER KEYCLEAR</p>
+        <h2 id="properties-matrix-for-each-managerequest-command" class="ListParagraph 8">Properties Matrix for each ManageRequest command</h2>
+        <p>* = Required</p>
+        <table >
+            <tbody>
+                <tr class="odd">
+                    <td><strong>ManageRequest Command</strong></td>
+                    <td><strong>Properties</strong></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>INIT</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>GETVAR</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType*</p>
+                        <p>VarName*</p>
+                        <p>VarName1*</p>
+                        <p>VarName2*</p>
+                        <p>VarName3*</p>
+                        <p>VarName4*</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>SETVAR</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType*</p>
+                        <p>VarName*</p>
+                        <p>VarValue*</p>
+                        <p>VarName1*</p>
+                        <p>VarValue1*</p>
+                        <p>VarName2*</p>
+                        <p>VarValue2*</p>
+                        <p>VarName3*</p>
+                        <p>VarValue3*</p>
+                        <p>VarName4*</p>
+                        <p>VarValue4*</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SHOWDIALOG</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Title</p>
+                        <p>Button1</p>
+                        <p>Button2</p>
+                        <p>Button3</p>
+                        <p>Button4</p>
+						<p>ContinuousScreen</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>GETSIGNATURE</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SHOWMESSAGE</strong></td>
+                    <td><p>TransType*</p>
+                        <p>DisplayMessage</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>CLEARMESSAGE</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>RESET</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>UPDATEIMAGE</strong></td>
+                    <td>
+					<p>ImagePath*</p>
+					<p>FileType</p>
+					<p>Timeout</p>
+					</td>
+
+                </tr>
+                <tr class="odd">
+                    <td><strong>DOSIGNATURE</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>Upload</p>
+                        <p>HRefNum</p>
+                        <p>Timeout*</p>
+						<p>ContinuousScreen</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>DELETEIMAGE</strong></td>
+                    <td><p>TransType*</p>
+                        <p>ImageName*</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SHOWTHANKYOU <br>
+                        (deprecated since V1.11.00)</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Thankyou Title</p>
+                        <p>ThankYouMessage1</p>
+                        <p>ThankYouMessage2</p>
+                        <p>ThankYouTimeout*</p>
+                        <p>PinpadType</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>REBOOT</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>GETPINBLOCK</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType*</p>
+                        <p>Trans*</p>
+                        <p>Title</p>
+                        <p>AccountNumber*</p>
+                        <p>EncryptionType</p>
+                        <p>KeySlot</p>
+                        <p>NullPIN</p>
+                        <p>PinMaxLength</p>
+                        <p>PinMinLength</p>
+                        <p>PINAlgorithm</p>
+                        <p>Timeout*</p>
+                        <p>PinpadType</p>
+					    <p>KSNFlag</p>
+						</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>INPUTACCOUNT</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType*</p>
+                        <p>MagneticSwipeEntryFlag</p>
+                        <p>ManualEntryFlag</p>
+                        <p>ContactlessEntryFlag</p>
+                        <p>ScannerEntryFlag</p>
+                        <p>ExpiryDatePrompt</p>
+                        <p>EncryptionFlag</p>
+                        <p>KeySlot</p>
+                        <p>MAXAccountLength</p>
+                        <p>MINAccountLength</p>
+                        <p>Timeout*</p>
+						<p>ContinuousScreen</p>
+						</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>RESETMSR</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>INPUTTEXT</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Title*</p>
+                        <p>InputType</p>
+                        <p>MINLength</p>
+                        <p>MAXLength</p>
+                        <p>DefaultValue</p>
+                        <p>Timeout*</p>
+						<p>ContinuousScreen</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>CHECKFILE</strong></td>
+                    <td><p>TransType*</p>
+                        <p>FileName*</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>AUTHORIZECARD</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>Amount*</p>
+                        <p>CashBackAmount</p>
+                        <p>MerchantDecision</p>
+                        <p>EncryptionType</p>
+                        <p>KeySlot</p>
+                        <p>PinMaxLength</p>
+                        <p>PinMinLength</p>
+                        <p>NullPinFlag</p>
+                        <p>PINAlgorithm</p>
+                        <p>EmvKernelConfigurationSelection</p>
+                        <p>TransactionTime</p>
+                        <p>TransactionDate</p>
+                        <p>CurrencyCode</p>
+                        <p>CurrencyExponent</p>
+                        <p>TagList</p>
+                        <p>Timeout</p>
+                        <p>ExtData</p>
+                        <p>PinpadType</p>
+						<p>KSNFlag</p>
+						</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>COMPLETEONLINEEMV</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>OnlineAuthorizationResult</p>
+                        <p>ResponseCode</p>
+                        <p>AuthorizationCode</p>
+                        <p>IssuerAuthenticationData</p>
+                        <p>IssuerScript1</p>
+                        <p>IssuerScript2</p>
+                        <p>Title</p>
+                        <p>ExtData</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>REMOVECARD</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Message1</p>
+                        <p>Message2</p>
+                        <p>ExtData</p>
+						<p>PinpadType</p>
+						</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>GETEMVTLVDATA</strong></td>
+                    <td><p>TransType*</p>
+                        <p>TagList*</p>
+                        <p>TLVType*</p>
+                        <p>ExtData</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>SETEMVTLVDATA</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EMVData*</p>
+                        <p>TLVType*</p>
+                        <p>ExtData</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>INPUTACCOUNTWITHEMV</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>Trans</p>
+                        <p>Amount</p>
+                        <p>CashBackAmt</p>
+                        <p>MagneticSwipeEntryFlag</p>
+                        <p>ManualEntryFlag</p>
+                        <p>ContactlessEntryFlag</p>
+                        <p>ContactEMVEntryFlag</p>
+                        <p>FallbackSwipeEntryFlag</p>
+                        <p>FallbackInsertEntryFlag</p>
+                        <p>ScannerEntryFlag</p>
+                        <p>ExpiryDatePrompt</p>
+                        <p>ZipCodePrompt</p>
+                        <p>CVVPrompt</p>
+                        <p>EncryptionFlag</p>
+                        <p>KeySlot</p>
+                        <p>EmvKernelConfigurationSelection</p>
+                        <p>TransactionTime</p>
+                        <p>TransactionDate</p>
+                        <p>CurrencyCode</p>
+                        <p>CurrencyExponent</p>
+                        <p>MAXAccountLength</p>
+                        <p>MINAccountLength</p>
+                        <p>MerchantCategoryCode</p>
+                        <p>TagList</p>
+                        <p>Timeout*</p>
+                        <p>ExtData</p>
+                        <p>TransactionCVMLimit</p>
+                        <p>ContinuousScreen</p>
+                        <p>FallbackInsertEntryFlag</p>
+                        <p>KSNFlag</p>
+                        <p>EnableLuhnCheck(deprecated since V1.09.00)</p>
+                        <p>CustomData</p>
+                        <p>FallbackToManualEntryFlag</p>
+                        <p>CustomMACInformation</p>
+                    </td>
+                </tr>
+                <tr class="even">
+                    <td><strong>COMPLETECONTACTLESSEM <br>
+					(deprecated since V1.02.00)</strong></td>
+                    <td><p>TransType*</p>
+                        <p>IssuerAuthenticationData</p>
+                        <p>IssuerScript1</p>
+                        <p>IssuerScript2</p>
+                        <p>ExtData</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SETSAFPARAMETERS</strong></td>
+                    <td><p>TransType*</p>
+                        <p>SAFMode*</p>
+                        <p>StartDateTime</p>
+                        <p>EndDateTime</p>
+                        <p>DurationInDays</p>
+                        <p>MaxNumber</p>
+                        <p>TotalCeilingAmount</p>
+                        <p>CeilingAmountPerCardType</p>
+                        <p>HALOPerCardType</p>
+                        <p>SAFUploadMode</p>
+                        <p>AutoUploadIntervalTime</p>
+                        <p>DeleteSAFConfirmation</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>SHOWTEXTBOX</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Title</p>
+                        <p>Button1</p>
+                        <p>ButtonColor1</p>
+                        <p>Button2</p>
+                        <p>ButtonColor2</p>
+                        <p>Button3</p>
+                        <p>ButtonColor3</p>
+                        <p>Text</p>
+                        <p>Timeout*</p>
+                        <p>ButtonKey1</p>
+                        <p>ButtonKey2</p>
+                        <p>ButtonKey3</p>
+                        <p>EnableHardKey</p>
+                        <p>HardKeyList</p>
+                        <p>SignatureBox</p>
+						<p>ContinuousScreen</p>
+						<p>BarcodeType</p>
+						<p>BarcodeData</p>
+                        <p>InputTextTitle</p>
+                        <p>InputText</p>
+                        <p>InputType</p>
+                        <p>MINLength</p>
+                        <p>MAXLength</p>
+						</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>REPRINT</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>LastReceipt</p>
+                        <p>RefNum</p>
+                        <p>AuthorizationCode</p>
+                        <p>ECRRefNum</p>
+                        <p>ReceiptPrint</p>
+						</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>PRINTER</strong></td>
+                    <td><p>TransType*</p>
+                        <p>PrintData</p>
+                        <p>PrintCopy</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SHOWITEM</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Title</p>
+                        <p>TopDowm</p>
+                        <p>TaxLine</p>
+                        <p>TotalLine</p>
+                        <p>ItemData</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>CARDINSERTDETECTION</strong></td>
+                    <td>TransType*</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>TOKENADMINISTRATIVE</strong></td>
+                    <td><p>TransType*</p>
+                        <p>EDCType</p>
+                        <p>TokenCommand</p>
+                        <p>Token</p>
+                        <p>TokenSN</p>
+                        <p>ExpiryDate</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>SHOWDIALOGFORM</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Title</p>
+                        <p>Label1</p>
+                        <p>Label1Property</p>
+                        <p>Label2</p>
+                        <p>Label2Property</p>
+                        <p>Label3</p>
+                        <p>Label3Property</p>
+                        <p>Label4</p>
+                        <p>Label4Property</p>
+                        <p>ButtonType</p>
+                        <p>TimeOut*</p>
+						<p>ContinuousScreen</p></td>
+                </tr>
+				<tr class="even">
+                    <td><strong>CAMERASCAN</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Reader</p>
+                        <p>Timeout*</p></td>
+                </tr>
+				<tr class="odd">
+                    <td><strong>VASSETMERCHANTPARAMETERS</strong></td>
+                    <td><p>TransType*</p>
+                        <p>VASProgram*</p>
+                        <p>VASMode*</p>
+                        <p>GoogleSmartTapData*/ApplePayVASData*</p></td>
+                </tr>
+				<tr class="even">
+                    <td><strong>VASPUSHDATA</strong></td>
+                    <td><p>TransType*</p>
+                        <p>VASMode*</p>
+						<p>GoogleSmartTapPushServiceData*</p></td>
+                </tr>
+				<tr class="odd">
+                    <td><strong>MIFARECARD</strong></td>
+                    <td><p>TransType*</p>
+                        <p>M1Command*</p>
+                        <p>BlockNo</p>
+                        <p>Password*</p>
+						<p>PasswordType*</p>
+                        <p>BlockValue</p>
+						<p>UpdateBlockNo</p>
+                        <p>Timeout</p></td>
+                </tr>
+				<tr class="even">
+                    <td><strong>GETSAFPARAMETERS</strong></td>
+                    <td><p>TransType*</p></td>
+                </tr>
+				<tr class="odd">
+                    <td><strong>SESSIONKEYINJECTION</strong></td>
+                    <td><p>TransType*</p>
+                        <p>SourceKeyType*</p>
+                        <p>SourceKeyIndex</p>
+                        <p>DestinationKeyType*</p>
+						<p>DestinationKeyValue*</p>
+                        <p>DestinationKeyIndex*</p>
+						<p>CheckMode</p>
+                        <p>CheckBuffer</p></td>
+                </tr>
+				<tr class="even">
+                    <td><strong>MACCALCULATION</strong></td>
+                    <td><p>TransType*</p>
+                        <p>InputData*</p>
+                        <p>EncryptionBitmap</p>
+                        <p>MACKeySlot*</p>
+                        <p>MACWorkMode*</p>
+                        <p>EncryptionKeySlot</p>
+                        <p>PaddingChar</p>
+                        <p>MACKeyType</p>
+                        <p>KSNFlag</p>
+					</td>
+                </tr>
+				<tr class="odd">
+                    <td><strong>GETPEDINFORMATION</strong></td>
+                    <td><p>KeyType</p>
+                        <p>KeySlot</p></td>
+                </tr>
+				<tr class="even">
+                    <td><strong>UPDATERESOURCE</strong></td>
+                    <td>
+					<p>FilePath*</p>
+					<p>FileType</p>
+					</td>
+                </tr>
+				<tr class="odd">
+                    <td><strong>INCREASEKSN</strong></td>
+                    <td><p>KeyType</p>
+                        <p>KeySlot</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>SHOWMESSAGECENTER</strong></td>
+                    <td><p>TransType*</p>
+                        <p>Thankyou Title</p>
+                        <p>ThankYouMessage1</p>
+                        <p>ThankYouMessage2</p>
+                        <p>ThankYouTimeout*</p>
+                        <p>PinpadType</p>
+                        <p>IconName</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>CUSTOMDATAENCRYPTION</strong></td>
+                    <td><p>DataEncryptionType*</p>
+                        <p>WorkMode</p>
+                        <p>KeyIndex*</p>
+                        <p>UserData*</p>
+                        <p>InitVector</p></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="printdata-data-format-for-printer" class="ListParagraph 8">PrintData – Data format for printer</h2>
+        <table >
+            <tbody>
+                <tr class="odd">
+                    <td><strong>Control Character</strong></td>
+                    <td><strong>Description</strong></td>
+                    <td><strong>Comment</strong></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\L</strong></td>
+                    <td>Use to indicate this is the left string(default)</td>
+                    <td><p>Print text left alignment (default value)</p>
+                        <p>\L will stop at next control character or \n or new line.</p>
+                        <p>Example:</p>
+                        <p>\LLeft or Left</p>
+                        <p>Left</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\R</strong></td>
+                    <td>Use to indicate this is the right string</td>
+                    <td><p>Print text right alignment will stop at next control character or \n or new line.</p>
+                        <p>Example:</p>
+                        <p>\RRight</p>
+                        <p>Right</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\C</strong></td>
+                    <td>Use to indicate this is the central string</td>
+                    <td><p>Print text center alignment</p>
+                        <p>\C will stop at next control character or \n or new line.</p>
+                        <p>Example:</p>
+                        <p>\CCenter</p>
+                        <p>Center</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\B</strong></td>
+                    <td><strong>BOLD</strong></td>
+                    <td>Not support</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\I</strong></td>
+                    <td>Inverted string</td>
+                    <td><p>Print inverted string, the position of \I does NOT matter, it will stop at the next control character or \n or new line.</p>
+                        <p>Example:</p>
+                        <p>\Iwww or \L\Iwww or \I\Lwww</p>
+                        <p>invert</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\$Logo</strong></td>
+                    <td>Use to print header image logo</td>
+                    <td><p>It starts and terminates at new line, center align.</p>
+                        <p>Limit:384*255 or less, unless will return PRINT LOGO ERROR.</p>
+                        <p>Bit depth:1</p>
+                        <p>\$LogoIMAGENAME or \$LogoIMAGENAME\n</p>
+                        <p>First, zip picture (type: bmp), the file type in the zip package should be r, use command UPDATEIMAGE to upload image, then use command PRINT to print.</p>
+                        <p>Example:</p>
+                        <p>test.bmp properties:</p>
+                        <p>dimensions:384*255</p>
+                        <p>width:384 pixels</p>
+                        <p>height:255 pixels</p>
+                        <p>bit depth: 1</p>
+                        <p>size: 12.0kb</p>
+                        <p>attributes: A</p>
+                        <p>command: \$Logotest or \$Logotest\n</p>
+                        <p>print image:</p>
+                        <p><img src="printDataLogo.png" style="width:3.04097in;height:2.04167in" /></p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\n</strong></td>
+                    <td>Feed paper</td>
+                    <td>Carriage return, the same as enter</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\$eSig</strong></td>
+                    <td>Use to print signature</td>
+                    <td><p>It starts and terminates at new line, center align.</p>
+                        <p>Command: \$eSig\n or \$eSig</p>
+                        <p><img src="printDataSign.png" style="width:2.9625in;height:1.23542in" /></p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\$BARD,&lt;code enum&gt;,&lt;size&gt;,&lt;data length&gt;,&lt;data&gt;</strong></td>
+                    <td>Use to print bar code.</td>
+                    <td><p>It starts and terminates at new line, center align.</p>
+                        <p>Fields are separated by comma (,).</p>
+                        <p>Printing starts and terminates at new line (\n or next command) and bar code is center align.</p>
+                        <p>Example:</p>
+                        <p>1, Get the data by data length:</p>
+                        <p>\$BARD,1,1,8,12345678</p>
+                        <p><img src="printDataBar1.png" style="width:1.61597in;height:0.45in" /></p>
+                        <p>2, for EAN128, the first for data should be</p>
+                        <p>[xxxx]. Like:</p>
+                        <p>\$BARD,4,1,12,[3102]000035</p>
+                        <p><img src="printDataBar4.png" style="width:1.52847in;height:0.42014in" /></p>
+                        <p>3，for EN13, data length must be 12, like:</p>
+                        <p>\$BARD,3,1,12,123456789012</p>
+                        <p><img src="printDataBar3.png" style="width:1.56875in;height:0.44653in" /></p>
+                        <p>Barcode example:</p>
+                        <p>Enum1, CODE39:</p>
+                        <p>\$BARD,1,1,6,123456</p>
+                        <p><img src="printDataBar1.png" style="width:1.50278in;height:0.46944in" /></p>
+                        <p>Enum 2, CODE 128:</p>
+                        <p>\$BARD,2,1,8,12345678</p>
+                        <p><img src="printDataBar2.png" style="width:1.59583in;height:0.43194in" /></p>
+                        <p>Enum 3, EAN13 :</p>
+                        <p>\$BARD,3,1,12,123456789012</p>
+                        <p><img src="printDataBar3_2.png" style="width:1.56667in;height:0.44583in" /></p>
+                        <p>Enum 4, EAN128:</p>
+                        <p>\$BARD,4,1,12,[3102]000035</p>
+                        <p><img src="printDataBar4_2.png" style="width:1.52639in;height:0.55278in" /></p>
+                        <p>Enum 5, PDF417:</p>
+                        <p>\$BARD,5,2,8,12345678</p>
+                        <p><img src="printDataBar5.png" style="width:1.46806in;height:0.29028in" /></p>
+                        <p>Enum 6, GRIDMATRIX:</p>
+                        <p>\$BARD,6,8,8,12345678</p>
+                        <p><img src="printDataBar6.png" style="width:0.96319in;height:0.98889in" /></p>
+                        <p>Enum 7, QRCODE:</p>
+                        <p>\$BARD,7,8,8,12345678</p>
+                        <p><img src="printDataBar7.png" style="width:1.02292in;height:0.94028in" /></p>
+                        <p>BARD code values:</p>
+                        <p>(See table below)</p>
+                        <p>Size:</p>
+                        <p>A minimum block that can be recognized, it is made up by square which has number of size level printing points in every row and column. Value can only be: 1,2, 4, 8, 12, or 16, and other values are invalid.</p>
+                        <table >
+                            <tbody>
+                                <tr class="odd">
+                                    <td>Type</td>
+                                    <td>Enum</td>
+                                    <td>Size</td>
+                                    <td>Data Length</td>
+                                    <td>Data Type</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>CODE39</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>0-12</td>
+                                    <td>Numberic</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>CODE128</td>
+                                    <td>2</td>
+                                    <td>1, 2</td>
+                                    <td><p>Size 1: 1-26</p>
+                                        <p>Size 2: 1-10</p></td>
+                                    <td>Numberic</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>EAN13</td>
+                                    <td>3</td>
+                                    <td>1</td>
+                                    <td>12</td>
+                                    <td>Numberic</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>EAN128</td>
+                                    <td>4</td>
+                                    <td>1</td>
+                                    <td>12</td>
+                                    <td>Numberic</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>PDF417</td>
+                                    <td>5</td>
+                                    <td>2</td>
+                                    <td>1-74</td>
+                                    <td>AlphaNumberic</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>GRIDMATRIX</td>
+                                    <td>6</td>
+                                    <td>4,8,12</td>
+                                    <td><p>Size 4:</p>
+                                        <p>1-54</p>
+                                        <p>Size 8:</p>
+                                        <p>1-26</p>
+                                        <p>Size 12:</p>
+                                        <p>1- 8</p></td>
+                                    <td>AlphaNumberic</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>QRCODE</td>
+                                    <td>7</td>
+                                    <td>8,12</td>
+                                    <td><p>Size 8:</p>
+                                        <p>1-126</p>
+                                        <p>Size 12:</p>
+                                        <p>1-40</p></td>
+                                    <td>AlphaNumberic</td>
+                                </tr>
+                            </tbody>
+                        </table></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\1</strong></td>
+                    <td>Small font</td>
+                    <td><p>Print text small size.</p>
+                        <p>It will stop at the next control character or \n.</p>
+                        <p>Example:</p>
+                        <p>\1Small or Small\1Samll</p>
+                        <p>Small</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\2 </strong></td>
+                    <td>Normal font(default)</td>
+                    <td><p>Print text normal size(default).</p>
+                        <p>It will stop at the next control character or \n.</p>
+                        <p>Example:</p>
+                        <p>\2Normal or Normal\2</p>
+                        <p>Normal</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\3</strong></td>
+                    <td>Big font</td>
+                    <td><p>Print text big size.</p>
+                        <p>It will stop at the next control character or \n.</p>
+                        <p>Example:</p>
+                        <p>\3Big or Big\3Big</p>
+                        <p>Big</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\$Header</strong></td>
+                    <td>Header Info</td>
+                    <td><p>Print the BroadPOS Header Info</p>
+                        <p>It starts and terminates at new line, center align.</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\$Trailer</strong></td>
+                    <td>Trailer Info</td>
+                    <td><p>Print the BroadPOS Trailer Info</p>
+                        <p>It starts and terminates at new line, center align.</p></td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\$Disclaimer</strong></td>
+                    <td>Standard disclaimer</td>
+                    <td><p>Print the standard disclaimer</p>
+                        <p>It starts and terminates at new line, center align.</p></td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\$Date</strong></td>
+                    <td>Current date</td>
+                    <td>Print Date in MM/DD/YYYY format</td>
+                </tr>
+                <tr class="even">
+                    <td><strong>\$Time</strong></td>
+                    <td>Current time</td>
+                    <td>Print Time in HH:MM:SS format</td>
+                </tr>
+                <tr class="odd">
+                    <td><strong>\$SN#</strong></td>
+                    <td>Terminal S/N</td>
+                    <td>Print terminal’s S/N</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="emv-kernel-configuration-type">EMV Kernel Configuration Type</h2>
+        <table >
+            <tbody>
+                <tr class="odd">
+                    <td><p><strong>EMV Kernel</strong></p>
+                        <p><strong>Value </strong></p></td>
+                    <td><strong>Terminal Type</strong></td>
+                    <td><strong>Online PIN</strong></td>
+                    <td><strong>Offline Enciphered PIN</strong></td>
+                    <td><strong>Offline Plaintext PIN</strong></td>
+                    <td><strong>Signature</strong></td>
+                    <td><strong>No CVM</strong></td>
+                    <td><strong>Comments</strong></td>
+                </tr>
+                <tr class="even">
+                    <td>01</td>
+                    <td>Attended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>All CVM Supported.</td>
+                </tr>
+                <tr class="odd">
+                    <td>02</td>
+                    <td>Attended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td>“No CVM” and “Online PIN” are disabled.</td>
+                </tr>
+                <tr class="even">
+                    <td>03</td>
+                    <td>Attended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>“Online PIN” is disabled.</td>
+                </tr>
+                <tr class="odd">
+                    <td>04</td>
+                    <td>Attended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td>“No CVM” is disabled.</td>
+                </tr>
+                <tr class="even">
+                    <td>05</td>
+                    <td>Attended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td>Only “Signature” is ENABLED.</td>
+                </tr>
+                <tr class="odd">
+                    <td>06</td>
+                    <td>Attended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>Only “No CVM” is ENABLED.</td>
+                </tr>
+                <tr class="even">
+                    <td>07</td>
+                    <td>Attended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td> “Signature” is disabled.</td>
+                </tr>
+                <tr class="odd">
+                    <td>08</td>
+                    <td>Attended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>Only “No CVM” and “Signature” are ENABLED.</td>
+                </tr>
+                <tr class="even">
+                    <td>09</td>
+                    <td>Unattended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>“Signature” is disabled.</td>
+                </tr>
+                <tr class="odd">
+                    <td>10</td>
+                    <td>Unattended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td>“Signature” and “No CVM” are disabled.</td>
+                </tr>
+                <tr class="even">
+                    <td>11</td>
+                    <td>Unattended</td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>×</strong></td>
+                    <td>Only “Online PIN” is ENABLED.</td>
+                </tr>
+                <tr class="odd">
+                    <td>12</td>
+                    <td>Unattended</td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>√</strong></td>
+                    <td><strong>×</strong></td>
+                    <td><strong>√</strong></td>
+                    <td>“Signature” and “Online PIN” are disabled.</td>
+                </tr>
+            </tbody>
+        </table>
+		 <h2 id="special-amount-in-demo-mode">Special Amount in Demo Mode</h2>
+		 <table>
+		    <tbody>
+			    <tr class="odd">
+                    <td><p><strong>Index</strong></p></td>
+                    <td><p><strong>Transaction Amount</strong></p></td>
+                    <td><p><strong>Transaction Result</strong></p></td>
+                </tr>
+                <tr class="even">
+                    <td>1</td>
+                    <td>$20.01</td>
+                    <td>Auth Decline</td>
+                </tr>
+				<tr class="odd">
+                    <td>2</p></td>
+                    <td>$20.02</td>
+                    <td>Invalid Card</td>
+                </tr>
+                <tr class="even">
+                    <td>3</td>
+                    <td>$30.01</td>
+                    <td>Partial Approval $10.00</td>
+                </tr>
+				<tr class="odd">
+                    <td>4</p></td>
+                    <td>$30.02</td>
+                    <td>Partial Approval $5.00</td>
+                </tr>
+			</tbody>
+		 </table>
+        <h2 id="conexxus-product-codes">Conexxus Product Codes</h2>
+        <td>Please see the publicly available <a href="https://www.conexxus.org/public-standards">Conexxus Payment System Product Codes</a>  specification for the latest available product codes.</td>
+        <br>
+        <br>
+    </body>
+</html>

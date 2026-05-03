@@ -1,0 +1,50 @@
+//apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.0/javafx.plugin"
+group = 'com.poslink.sample'
+version = '0.0.1'
+
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+    }
+}
+
+apply plugin: 'java'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'src/libs')
+    // compile files('src/libs/POSLink_20180313.jar')
+    compile 'com.google.code.gson:gson:2.8.6'
+	compile 'com.squareup.okhttp3:okhttp:4.9.0'
+}
+
+apply plugin: 'javafx-gradle-plugin'
+// Configures plugin
+jfx {
+    mainClass = "com.poslink.sample.POSLinkSampleApplication"
+    vendor = "Pax"
+
+    bundleArguments = [
+            runtime: null
+    ]
+    jfxAppOutputDir = "build/jfx/POSLinkJavaDemo"
+    jfxMainAppJarName = "POSLinkJavaDemo.jar"
+    appName = "POSLinkJavaDemo"
+
+}
+
+
+String getProjectProperty(String propertyName) {
+    project.hasProperty(propertyName) ? project.property(propertyName) : null
+}

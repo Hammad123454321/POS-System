@@ -1,0 +1,103 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pos-platform-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pos_platform
+      POSTGRES_USER: pos_app
+      POSTGRES_PASSWORD: pos_app
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: pos-platform-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  platform-cli:
+    build:
+      context: ..
+      dockerfile: infra/platform-runtime/Dockerfile
+    container_name: pos-platform-cli
+    working_dir: /workspace/apps/platform
+    volumes:
+      - ../:/workspace
+    environment:
+      APP_ENV: testing
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: pos_platform
+      DB_USERNAME: pos_app
+      DB_PASSWORD: pos_app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - postgres
+      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+    stdin_open: true
+    command: ["bash", "-lc", "php -v"]
+
+  platform-server:
+    build:
+      context: ..
+      dockerfile: infra/platform-runtime/Dockerfile
+    container_name: pos-platform-server
+    working_dir: /workspace/apps/platform
+    volumes:
+      - ../:/workspace
+    environment:
+      APP_ENV: local
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: pos_platform
+      DB_USERNAME: pos_app
+      DB_PASSWORD: pos_app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+    command: ["bash", "-lc", "php artisan serve --host=0.0.0.0 --port=8000"]
+
+  platform-horizon:
+    build:
+      context: ..
+      dockerfile: infra/platform-runtime/Dockerfile
+    container_name: pos-platform-horizon
+    working_dir: /workspace/apps/platform
+    volumes:
+      - ../:/workspace
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: pos_platform
+      DB_USERNAME: pos_app
+      DB_PASSWORD: pos_app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - postgres
+      - redis
+    command: ["bash", "-lc", "php artisan horizon"]
+
+volumes:
+  postgres_data:
+  redis_data:

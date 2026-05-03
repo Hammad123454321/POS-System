@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.pax.poslink.widget.AlwaysMarqueeTextView
+        android:id="@+id/name_txt"
+        style="@style/request_text"
+        tools:text="nameName" />
+
+    <com.pax.poslink.view.SelectSpinner
+        android:id="@+id/value_spinner"
+        style="@style/request_edit_list"
+        android:prompt="@string/hint_select" />
+
+
+</LinearLayout>

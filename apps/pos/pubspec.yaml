@@ -1,0 +1,32 @@
+name: pos_app
+description: "Store device POS client for the multi-tenant POS platform."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  drift: ^2.32.1
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^10.0.0
+  http: ^1.6.0
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  sqlite3: ^3.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  drift_dev: ^2.32.1
+  build_runner: ^2.13.1
+
+flutter:
+  uses-material-design: true
+
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

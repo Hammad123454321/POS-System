@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/d36"
+    >
+
+    <TextView
+        android:id="@+id/tv_print_total_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        style="@style/PrintTextMediumStyle"
+        />
+
+    <TextView
+        android:id="@+id/tv_print_total"
+        android:layout_width="@dimen/d40"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/d42"
+        android:gravity="center_horizontal"
+        style="@style/PrintTextMediumStyle"
+        />
+
+    <TextView
+        android:id="@+id/tv_print_price"
+        android:layout_width="@dimen/d43"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/d38"
+        tools:text="%9.00"
+        android:gravity="right"
+        style="@style/PrintTextMediumStyle"
+        />
+</RelativeLayout>

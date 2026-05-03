@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="generator" content="pandoc"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <title>Appendix</title>
+    <style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+
+    <script src=""></script>
+    </style>
+    <link rel="stylesheet" href="docsearcher.css" />
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div>
+    <input type="text" class="searchBox" id="searchInput" placeholder="Search">
+    <div id="searchListContainer" class="searchListContainer"></div>
+</div>
+<div id="base_page">
+    <iframe align="center" width="100%" height="950em" src="guide_base.html" frameborder="no"
+            marginwidth="0" marginheight="0" scrolling="yes"></iframe>
+</div>
+
+<h2>Android Guidance</h2>
+
+<h3>Dependency</h3>
+See the README.txt under InstallPackage/libs/android/.
+
+
+<h3>Full Integration</h3>
+<p>Full Integration APIs are under the package com.pax.poslink.fullIntegration. </p>
+<p>
+    PAX provides a flexible integration interface between the client App and PAX Android BroadPOS
+    App on PAX Android devices. PAX provides a service running in the background. The service
+    handles request from client App. Client App can customize its user interface according to the
+    call back from the service. With this request and response, client App can get card information
+    from the service to do transaction.
+</p>
+<p>
+    The service currently supports InputAccountWithEMV and other related process. With these,
+    you can get card information from swipe card, dip card, and tap card to help you do a
+    transaction. The interfaces are provided with Java SDK. The Java SDK is packed in aar or jar
+    file. Client App can just make the aar file as dependence to integrate in the code.
+</p>
+<p>
+    <strong>Connect with AIDL or Connect with other communication type</strong> <br>
+    The service app on Android supports connection based on AIDL. With AIDL, you can build your application in the same device with the service app. <br>
+    If you use AIDL, you can also customize your user interface in the callback of each command. <br>
+    If you don't customize your UI, it will use the built-in UI of the service app. These happens when you use other communication type or you don't implement the callback.
+</p>
+<p>
+    <strong>Customize Your UI</strong> <br>
+    In full integration, you can customize your user interface in the steps of each API when you use Android with AIDL. <br>
+    For example, if you use <a href="../com/pax/poslink/fullIntegration/InputAccount.InputAccountCallback.html">InputAccount.InputAccountCallback</a>, you can show your UI when the call back triggered. <br>
+    When onInputAccoutStart triggered, you can show a picture and message to tell the customer to swipe, insert or tap a card.
+</p>
+<p>
+    <strong>The order of the API call</strong> <br>
+    1. Manual Entry: Just use InputAccount. <br>
+    2. Swipe Card: Just use InputAccount. <br>
+    3. Insert Card: InputAccount -> AuthorizeCard -> (Do online request by yourself) -> CompleteOnlineEMV -> RemoveCard <br>
+    4. Tap Card: InputAccount -> GetPinBlock if need to input pin. <br>
+</p>
+
+
+<h3>Initialize the whole library in Android</h3>
+<p>When using the library in Android, you have to initialize it in the start of the application.</p>
+<p>Just call the</p>
+<code>
+    POSLinkAndroid.init(getApplicationContext());
+</code>
+<p>For example:</p>
+<code>
+    public class MainApplication extends Application {
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            POSLinkAndroid.init(getApplicationContext());
+        }
+    }
+</code>
+<h3>Using USB in Android.</h3>
+<p>Add the permission to AndroidManifest.xml:</p>
+<p>&lt;uses-feature android:name=&quot;android.hardware.usb.host&quot;/&gt;</p>
+<p>See the demo for detail.</p>
+
+<h3>Peripheries</h3>
+<p>
+    Currently some hardware is supported in Our Pax Devices, such as E500. In E500, you can use
+    POSLinkPrinter, POSLinkScanner and POSLinkCashDrawer to control printer, scanner, cash drawer.
+    Check the Java doc for details.
+</p>
+<p>
+    For A80 or other devices that support modem(dial), you can use modem API with com.pax.poslink.peripheries.POSLinkModem.
+</p>
+<script src="./searchData.js"></script>
+<script src="./searchlib.js"></script>
+</body>
+</html>

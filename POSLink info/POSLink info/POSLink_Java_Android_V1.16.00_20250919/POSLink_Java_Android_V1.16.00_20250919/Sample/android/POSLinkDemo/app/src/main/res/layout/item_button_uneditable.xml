@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+
+    <com.pax.poslink.widget.AlwaysMarqueeButtonView
+        android:id="@+id/button_extdata"
+        style="@style/request_text"
+        android:text="@string/payment_request_extData"/>
+
+    <TextView
+        android:id="@+id/edtext_extData"
+        style="@style/request_edit_special"/>
+
+</LinearLayout>

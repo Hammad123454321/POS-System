@@ -1,0 +1,37 @@
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Laravel platform app
+apps/platform/.env
+apps/platform/.env.testing.local
+apps/platform/vendor/
+apps/platform/node_modules/
+apps/platform/storage/logs/*
+!apps/platform/storage/logs/.gitignore
+apps/platform/storage/framework/cache/data/*
+!apps/platform/storage/framework/cache/data/.gitignore
+apps/platform/storage/framework/sessions/*
+!apps/platform/storage/framework/sessions/.gitignore
+apps/platform/storage/framework/testing/*
+!apps/platform/storage/framework/testing/.gitignore
+apps/platform/storage/framework/views/*
+!apps/platform/storage/framework/views/.gitignore
+apps/platform/bootstrap/cache/*.php
+!apps/platform/bootstrap/cache/.gitignore
+apps/platform/database/database.sqlite
+
+# Flutter POS app
+apps/pos/.dart_tool/
+apps/pos/.idea/
+apps/pos/.flutter-plugins
+apps/pos/.flutter-plugins-dependencies
+apps/pos/.packages
+apps/pos/build/
+apps/pos/windows/flutter/ephemeral/
+apps/pos/windows/runner/Debug/
+apps/pos/windows/runner/Release/
+

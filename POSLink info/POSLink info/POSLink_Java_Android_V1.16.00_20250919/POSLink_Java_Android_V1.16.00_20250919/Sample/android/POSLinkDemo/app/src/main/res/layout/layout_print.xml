@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv_print"
+    android:layout_width="@dimen/px576"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:visibility="invisible"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/print_root_draw_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/d36"
+        >
+        <RelativeLayout
+            android:id="@+id/img_logo_container"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_logo"
+                android:layout_width="@dimen/d37"
+                android:layout_height="@dimen/d37"
+                android:src="@drawable/ic_launcher"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/img_logo"
+                android:layout_marginLeft="@dimen/d38"
+                android:text="Menu"
+                android:textColor="@color/grey6"
+                android:textSize="@dimen/sp4"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lv_print"
+            android:layout_marginTop="@dimen/d36"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            />
+
+        <include layout="@layout/layout_print_title_item"/>
+
+        <LinearLayout
+            android:id="@+id/print_other_info_container"
+            android:layout_marginTop="@dimen/d36"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            />
+
+        <ImageView
+            android:id="@+id/signature_image"
+            android:layout_width="200px"
+            android:layout_height="200px"
+            android:maxWidth="280px"
+            android:maxHeight="280px"
+            android:layout_marginTop="16px"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/signature_bottom_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5px"
+            android:textSize="28px"
+            android:textColor="@color/black"
+            android:singleLine="true"
+            android:ellipsize="none"
+            android:text="X_______________________________________"
+            />
+
+    </LinearLayout>
+
+
+</ScrollView>

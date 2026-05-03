@@ -1,0 +1,16 @@
+com.pax.poslink
+com.pax.poslink.base
+com.pax.poslink.broadpos
+com.pax.poslink.constant
+com.pax.poslink.customFormManage
+com.pax.poslink.entity
+com.pax.poslink.exceptions
+com.pax.poslink.formManage
+com.pax.poslink.fullIntegration
+com.pax.poslink.peripheries
+com.pax.poslink.peripheries.tech
+com.pax.poslink.poslink
+com.pax.poslink.print
+com.pax.poslink.proxy
+com.pax.poslink.usb
+com.pax.poslink.util

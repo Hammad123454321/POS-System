@@ -1,0 +1,20 @@
+ON-HOLD ITEMS
+Updated: 2026-04-27
+
+All previously deferred payment decisions are now resolved.
+
+Resolved decision:
+- Real PAX processor / acquirer selected: `First Data / Fiserv`
+- Resolution date: `2026-04-24`
+- Decision owner: Client
+
+Resolved decision:
+- Restaurant card capture lifecycle selected: `Immediate capture`
+- Resolution date: `2026-04-24`
+- Decision owner: Client
+
+Open on-hold items:
+- Store-to-terminal mapping and boarding details:
+  - Reason: Production POSLink SDK is now integrated with real `SALE` execution, but terminal estate mapping and final boarding values are still pending from client.
+  - Blocking path: Finalize dynamic terminal profile values consumed during device bootstrap/config once client list is shared.
+  - Owner: Client + Engineering

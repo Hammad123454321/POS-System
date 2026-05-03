@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- This is one fo my usb device info; Use UsbView.exe to get the information or Use Android code to log the information -->
+    <!-- It seems that it should be using decimal format..-->
+    <usb-device vendor-id="4660" product-id="257" />
+</resources>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="generator" content="pandoc"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <title>Appendix</title>
+    <style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+
+
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<h3>Base Usage Guide</h3>
+<p>For a successful transaction, the procedure should be:
+    Setup CommSetting --> Setup Request --> Process POSLink --> Handle Process Result --> Get Response</p>
+<code>
+    // Setup comm setting.
+    CommSetting commSetting = new CommSetting();
+    commSetting.setType(CommSetting.TCP);
+    commSetting.setDestIP("192.168.0.1");
+    commSetting.setDestPort("10009");
+    // Create a POSLink object. In Android, it needs to pass context.
+    PosLink posLink = new PosLink();
+    // Set the communication type. Currently support TCP, SSL, USB... For Android, it supports Bluetooth and more.
+    posLink.SetCommSetting(commSetting);
+    // Setup the Request. Can be PaymentRequest, ManageRequest, BatchRequest, ReportRequest
+    ManageRequest manage = new ManageRequest();
+    // Set the TransType for the request first so that POS knows which part of data of request should be used.
+    manage.TransType = manage.ParseTransType("INIT");
+    posLink.ManageRequest = manage;
+    ProcessTransResult transResult = posLink.ProcessTrans();
+    // Get the response if transResult is OK
+    ManageResponse response = poslink.ManageResponse;
+</code>
+<p>A simple payment processing:</p>
+<code>
+    // Setup comm setting.
+    CommSetting commSetting = new CommSetting();
+    commSetting.setType(CommSetting.USB);
+    // Create a POSLink object. In Android, it needs to pass context.
+    PosLink posLink = new PosLink();
+    // Set the communication type. Currently support TCP, SSL, USB... For Android, it supports Bluetooth and more.
+    posLink.SetCommSetting(commSetting);
+    // Setup the Request. Can be PaymentRequest, ManageRequest, BatchRequest, ReportRequest
+    PaymentRequest pay = new PaymentRequest();
+    // Set the TenderType and TransType for the request first so that POS knows which part of data of request should be used.
+    pay.TenderType = pay.ParseTenderType("CREDIT");
+    pay.TransType = pay.ParseTransType("SALE");
+    // Your unique ID for this transaction
+    pay.ECRRefNum = "1";
+    //Optional fields.
+    pay.Amount = "1100";
+    posLink.PaymentRequest = pay;
+    ProcessTransResult transResult = posLink.ProcessTrans();
+    // Get the response if transResult is OK
+    PaymentResponse response = poslink.PaymentResponse;
+</code>
+
+<h3>Data Attribute</h3>
+<p>
+    In this doc, for each field, it has a data attribute to indicate the type of the field. For example,
+    'n' means number.
+    See <a href="../appendixA/appendixA.html#dataattr">Data Attribute</a> for detail.
+</p>
+
+
+<h3>Customize Form Management</h3>
+<p>
+    Now some terminals support customizing the UI. If you have customize the form in the terminal, you can use POSLink to do some management.<br>
+    For example, you can use RunForm command to control the terminal to show a form. <br>
+    Also, you can set/get the variables for each form <br>
+    For more detail, please check Java doc of package com.pax.poslink.customFormManage.
+</p>
+
+</body>
+</html>

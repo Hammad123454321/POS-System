@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/payment_extData_account_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="10dip"
+    android:addStatesFromChildren="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_account" />
+
+                <EditText
+                    android:id="@+id/payment_ext_account"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_expDate" />
+
+                <EditText
+                    android:id="@+id/payment_ext_expDate"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_CVV" />
+
+                <EditText
+                    android:id="@+id/payment_ext_CVV"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_EBTFoodStampVoucher" />
+
+                <EditText
+                    android:id="@+id/payment_ext_EBTFoodStampVoucher"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_voucherNum" />
+
+                <EditText
+                    android:id="@+id/payment_ext_voucherNum"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_force" />
+
+                <EditText
+                    android:id="@+id/payment_ext_force"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_firstName" />
+
+                <EditText
+                    android:id="@+id/payment_ext_firstName"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_lastName" />
+
+                <EditText
+                    android:id="@+id/payment_ext_lastName"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_countryCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_countryCode"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_stateCode" />
+
+                <EditText
+                    android:id="@+id/payment_ext_stateCode"
+                    style="@style/request_edit" />
+            </TableRow>
+            <TableRow>
+
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_cityName" />
+
+                <EditText
+                    android:id="@+id/payment_ext_cityName"
+                    style="@style/request_edit" />
+            </TableRow>
+
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_email" />
+
+                <EditText
+                    android:id="@+id/payment_ext_email"
+                    style="@style/request_edit" />
+            </TableRow>
+
+
+            <TableRow>
+                <com.pax.poslink.widget.AlwaysMarqueeTextView
+                    style="@style/request_text"
+                    android:text="@string/payment_ext_ebt" />
+
+                <EditText
+                    android:id="@+id/payment_ext_ebt"
+                    style="@style/request_edit" />
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
