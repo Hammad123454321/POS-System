@@ -47,6 +47,16 @@ COPY apps/platform/ ./
 # installed above to introspect routes during the build).
 COPY --from=composer-stage /build/vendor ./vendor
 
+# Ensure Laravel's writable directories exist even if .dockerignore stripped
+# them out of the build context — the BladeCompiler & config cache need them.
+RUN mkdir -p storage/framework/cache/data \
+             storage/framework/sessions \
+             storage/framework/views \
+             storage/framework/testing \
+             storage/logs \
+             storage/app/public \
+             bootstrap/cache
+
 # Throwaway env so `php artisan wayfinder:generate` can bootstrap Laravel
 # during the Vite build. In-memory SQLite means no real DB is ever needed at
 # build time; this file lives only in the node-stage and is never shipped.
@@ -96,8 +106,17 @@ COPY apps/platform/ ./
 COPY --from=composer-stage /build/vendor ./vendor
 COPY --from=node-stage     /build/public/build ./public/build
 
-# Storage / cache dirs must be writable by the FrankenPHP runtime user.
-RUN chown -R www-data:www-data storage bootstrap/cache \
+# Make sure Laravel's writable subdirectories exist (.dockerignore strips
+# their contents from the build context), then hand ownership to the FrankenPHP
+# runtime user.
+RUN mkdir -p storage/framework/cache/data \
+             storage/framework/sessions \
+             storage/framework/views \
+             storage/framework/testing \
+             storage/logs \
+             storage/app/public \
+             bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
     && find storage bootstrap/cache -type d -exec chmod 775 {} \;
 
 # Entry-point warms caches and chowns storage every start, then exec's CMD.
