@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Modules\OfflineSync\Domain\Models\SyncEvent;
 use App\Modules\Audit\Domain\Models\AuditLog;
+use App\Modules\OfflineSync\Domain\Models\SyncEvent;
 use App\Modules\OrderRegister\Domain\Models\Receipt;
 use App\Modules\PlatformCore\Domain\Models\ArchiveAccessLog;
 use App\Modules\PlatformCore\Domain\Models\DeviceStatusEvent;

@@ -82,7 +82,7 @@ class AdminComboPackageController extends Controller
     }
 
     /**
-     * @param array<string,mixed> $validated
+     * @param  array<string,mixed>  $validated
      */
     private function syncChildren(ComboPackage $comboPackage, array $validated): void
     {
@@ -108,7 +108,7 @@ class AdminComboPackageController extends Controller
     }
 
     /**
-     * @param array<int,string> $catalogItemIds
+     * @param  array<int,string>  $catalogItemIds
      */
     private function assertCatalogItemsInStoreMerchant(Store $store, array $catalogItemIds): void
     {

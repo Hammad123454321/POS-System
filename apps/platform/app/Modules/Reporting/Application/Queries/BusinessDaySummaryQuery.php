@@ -7,8 +7,8 @@ use App\Modules\OrderRegister\Domain\Models\Order;
 use App\Modules\OrderRegister\Domain\Models\Payment;
 use App\Modules\OrderRegister\Domain\Models\RegisterSession;
 use App\Modules\PlatformCore\Domain\Models\Device;
-use App\Platform\Support\Time\BusinessClock;
 use App\Platform\Support\Reporting\ReportingConnection;
+use App\Platform\Support\Time\BusinessClock;
 
 class BusinessDaySummaryQuery
 {

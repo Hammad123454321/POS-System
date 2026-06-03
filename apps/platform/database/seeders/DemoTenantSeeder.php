@@ -66,10 +66,10 @@ class DemoTenantSeeder extends Seeder
         ]);
 
         $this->command->info('---');
-        $this->command->info('Merchant ID: ' . $merchant->id);
-        $this->command->info('Store ID:    ' . $store->id);
-        $this->command->info('Profile ID:  ' . $profile->id);
-        $this->command->info('Enrollment code (one-time, 15 min): ' . $plainCode);
+        $this->command->info('Merchant ID: '.$merchant->id);
+        $this->command->info('Store ID:    '.$store->id);
+        $this->command->info('Profile ID:  '.$profile->id);
+        $this->command->info('Enrollment code (one-time, 15 min): '.$plainCode);
         $this->command->info('---');
     }
 }

@@ -19,7 +19,9 @@ class Device extends Model implements AuthenticatableContract
     use UsesTenantScope;
 
     protected $guarded = [];
+
     protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected function casts(): array

@@ -1,8 +1,8 @@
 <?php
 
-use App\Modules\Catalog\Interfaces\Http\Controllers\AdminDiscountRuleController;
-use App\Modules\Catalog\Interfaces\Http\Controllers\AdminComboPackageController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminCatalogItemAddOnController;
+use App\Modules\Catalog\Interfaces\Http\Controllers\AdminComboPackageController;
+use App\Modules\Catalog\Interfaces\Http\Controllers\AdminDiscountRuleController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminModifierGroupController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminModifierOptionController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminVariantController;
@@ -25,16 +25,16 @@ use App\Modules\Payments\Interfaces\Http\Controllers\OrderTenderController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentInquiryController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentRefundController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentVoidController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminMerchantPrivacyController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceAuthController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceEnrollmentCodeController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceStatusEventController;
-use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminMerchantPrivacyController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\PosBootstrapController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\StoreFeatureFlagController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedAuditLogController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedPayrollSnapshotController;
-use App\Modules\Reporting\Interfaces\Http\Controllers\AdminDeliveryOperationalHealthController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedReceiptController;
+use App\Modules\Reporting\Interfaces\Http\Controllers\AdminDeliveryOperationalHealthController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminRetailStockMovementSummaryController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\BusinessDaySummaryController;
 use App\Modules\Restaurant\Interfaces\Http\Controllers\AdminDiningTableController;

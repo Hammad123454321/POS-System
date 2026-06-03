@@ -3,10 +3,10 @@
 namespace App\Modules\CustomerValue\Application\Privacy;
 
 use App\Modules\CustomerValue\Domain\Models\Customer;
+use App\Modules\CustomerValue\Domain\Models\MemberAccount;
 use App\Modules\OrderRegister\Domain\Models\Order;
 use App\Modules\StoredValue\Domain\Models\GiftCard;
 use App\Modules\StoredValue\Domain\Models\MembershipPlan;
-use App\Modules\CustomerValue\Domain\Models\MemberAccount;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
