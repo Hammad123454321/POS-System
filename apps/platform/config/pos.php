@@ -2,8 +2,11 @@
 
 return [
     'api' => [
-        'current_major' => 1,
-        'supported_majors' => [1],
+        'current_major' => (int) env('POS_CURRENT_API_MAJOR', 1),
+        'supported_majors' => array_map(
+            'intval',
+            explode(',', env('POS_SUPPORTED_API_MAJORS', '1')),
+        ),
         'min_supported_major' => (int) env('POS_MIN_SUPPORTED_MAJOR', 1),
         'min_supported_app_version' => env('POS_MIN_SUPPORTED_APP_VERSION', '0.1.0'),
         'sunset_at' => env('POS_SUNSET_AT'),
@@ -78,7 +81,46 @@ return [
         'register_close_variance_ratio_basis_points' => 100,
     ],
 
+    'reporting' => [
+        'connection' => env('POS_REPORTING_DB_CONNECTION', 'pgsql_reporting'),
+        'fallback_to_primary' => filter_var(env('POS_REPORTING_FALLBACK_TO_PRIMARY', true), FILTER_VALIDATE_BOOL),
+    ],
+
+    'retention' => [
+        'sync_events_days' => (int) env('POS_RETENTION_SYNC_EVENTS_DAYS', 180),
+        'device_status_events_days' => (int) env('POS_RETENTION_DEVICE_STATUS_EVENTS_DAYS', 365),
+        'archive_access_logs_days' => (int) env('POS_RETENTION_ARCHIVE_ACCESS_LOGS_DAYS', 2555),
+        'audit_logs_days' => (int) env('POS_RETENTION_AUDIT_LOGS_DAYS', 2555),
+        'payroll_snapshots_days' => (int) env('POS_RETENTION_PAYROLL_SNAPSHOTS_DAYS', 2555),
+        'receipts_days' => (int) env('POS_RETENTION_RECEIPTS_DAYS', 2555),
+    ],
+
+    'privacy' => [
+        'export_table_limit' => (int) env('POS_PRIVACY_EXPORT_TABLE_LIMIT', 5000),
+    ],
+
+    'incidents' => [
+        'dlq_stale_minutes' => (int) env('POS_DLQ_STALE_MINUTES', 15),
+    ],
+
     'feature_flags' => [
-        'definitions' => [],
+        'definitions' => [
+            'phase2-split-tender' => [
+                'label' => 'Split Tender',
+                'self_service' => true,
+            ],
+            'phase3-workforce' => [
+                'label' => 'Workforce Operations',
+                'self_service' => true,
+            ],
+            'phase4-delivery' => [
+                'label' => 'Delivery Operations',
+                'self_service' => true,
+            ],
+            'phase4-retail' => [
+                'label' => 'Retail Operations',
+                'self_service' => true,
+            ],
+        ],
     ],
 ];

@@ -242,31 +242,39 @@ class DeviceSecurityChannel(
             return loadExistingDatabaseWrappingKey()
         }
 
-        val generator = KeyGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES,
-            ANDROID_KEYSTORE,
-        )
-        val baseBuilder = KeyGenParameterSpec.Builder(
-            DATABASE_WRAP_KEY_ALIAS,
-            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
-        ).setKeySize(256)
-            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            .setUserAuthenticationRequired(false)
+        fun buildSpec(useStrongBox: Boolean): KeyGenParameterSpec {
+            val builder = KeyGenParameterSpec.Builder(
+                DATABASE_WRAP_KEY_ALIAS,
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
+            ).setKeySize(256)
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setUserAuthenticationRequired(false)
 
-        val parameters = try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                baseBuilder.setIsStrongBoxBacked(true).build()
-            } else {
-                baseBuilder.build()
+            if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                builder.setIsStrongBoxBacked(true)
             }
-        } catch (_: Exception) {
-            baseBuilder.build()
+
+            return builder.build()
         }
 
-        generator.init(parameters)
+        fun generate(useStrongBox: Boolean): SecretKey {
+            val generator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES,
+                ANDROID_KEYSTORE,
+            )
+            generator.init(buildSpec(useStrongBox))
 
-        return generator.generateKey()
+            return generator.generateKey()
+        }
+
+        // Prefer StrongBox/TEE-backed keys, but fall back to standard keystore
+        // generation on devices/emulators where secure hardware is unavailable.
+        return try {
+            generate(useStrongBox = true)
+        } catch (_: Exception) {
+            generate(useStrongBox = false)
+        }
     }
 
     private fun loadExistingDatabaseWrappingKey(): SecretKey {
@@ -302,31 +310,38 @@ class DeviceSecurityChannel(
     )
 
     private fun generateIdentityKey(alias: String, challenge: ByteArray) {
-        val generator = KeyPairGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_EC,
-            ANDROID_KEYSTORE,
-        )
+        fun buildSpec(useStrongBox: Boolean): KeyGenParameterSpec {
+            val builder = KeyGenParameterSpec.Builder(
+                alias,
+                KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
+            ).setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
+                .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+                .setUserAuthenticationRequired(false)
+                .setAttestationChallenge(challenge)
 
-        val baseBuilder = KeyGenParameterSpec.Builder(
-            alias,
-            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
-        ).setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
-            .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
-            .setUserAuthenticationRequired(false)
-            .setAttestationChallenge(challenge)
-
-        val parameters = try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                baseBuilder.setIsStrongBoxBacked(true).build()
-            } else {
-                baseBuilder.build()
+            if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                builder.setIsStrongBoxBacked(true)
             }
-        } catch (_: Exception) {
-            baseBuilder.build()
+
+            return builder.build()
         }
 
-        generator.initialize(parameters)
-        generator.generateKeyPair()
+        fun generate(useStrongBox: Boolean) {
+            val generator = KeyPairGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_EC,
+                ANDROID_KEYSTORE,
+            )
+            generator.initialize(buildSpec(useStrongBox))
+            generator.generateKeyPair()
+        }
+
+        // Prefer StrongBox/TEE-backed keys, but fall back to standard keystore
+        // generation on devices/emulators where secure hardware is unavailable.
+        try {
+            generate(useStrongBox = true)
+        } catch (_: Exception) {
+            generate(useStrongBox = false)
+        }
     }
 
     private fun loadOrCreateAttestationChallenge(): ByteArray {

@@ -98,5 +98,97 @@ abstract interface class PosGateway {
   Future<SyncRecoveryRunSnapshot> startSyncRecoveryRun();
   Future<SyncRecoveryRunSnapshot> getSyncRecoveryRun(String recoveryRunId);
 
+  Future<List<WorkforceStaffSnapshot>> listWorkforceStaff();
+  Future<List<AppointmentSnapshot>> listAppointments({
+    String? startDate,
+    String? endDate,
+  });
+  Future<Map<String, dynamic>> claimAppointmentSlot({
+    required String staffProfileId,
+    required String startsAt,
+    required String endsAt,
+  });
+  Future<AppointmentSnapshot> createAppointment({
+    required String slotClaimId,
+    required String staffProfileId,
+    required String serviceItemId,
+    required String startsAt,
+    required String endsAt,
+    String? customerId,
+    String source,
+    int discountMinor,
+    String? notes,
+  });
+  Future<AppointmentSnapshot> checkInAppointment(String appointmentId);
+  Future<AppointmentSnapshot> completeAppointment(String appointmentId);
+  Future<ShiftSnapshot> openShift({
+    required String staffProfileId,
+    int? openingCashMinor,
+  });
+  Future<ShiftSnapshot> closeShift({
+    required String shiftId,
+    int? closingCashMinor,
+    String? notes,
+  });
+  Future<Map<String, dynamic>> getLaborAnalytics({
+    String? startDate,
+    String? endDate,
+  });
+
+  Future<List<DeliveryOrderSnapshot>> listExternalDeliveryOrders();
+  Future<DeliveryOrderSnapshot> ingestExternalDeliveryOrder({
+    required String channelKey,
+    required String externalOrderId,
+    String? externalStoreId,
+    List<Map<String, dynamic>> lines,
+    Map<String, dynamic> payload,
+  });
+  Future<DeliveryOrderSnapshot> confirmExternalDeliveryOrder(String linkId);
+  Future<DeliveryOrderSnapshot> updateExternalDeliveryOrderStatus({
+    required String linkId,
+    required String status,
+  });
+  Future<DeliveryOrderSnapshot> cancelExternalDeliveryOrder({
+    required String linkId,
+    String? reason,
+  });
+  Future<Map<String, dynamic>> setDeliveryStoreAvailability({
+    required bool isAvailable,
+    String? reason,
+  });
+  Future<Map<String, dynamic>> setDeliveryItemAvailability({
+    required String catalogItemId,
+    required bool isAvailable,
+    String? reason,
+  });
+
+  Future<RetailOperationSnapshot> lookupRetailInventory({
+    String? sku,
+    String? barcode,
+  });
+  Future<RetailOperationSnapshot> receiveRetailStock({
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? supplierName,
+    String? reason,
+  });
+  Future<RetailOperationSnapshot> transferRetailStock({
+    required String destinationStoreId,
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? reason,
+  });
+  Future<RetailOperationSnapshot> adjustRetailStock({
+    required String sku,
+    required int quantityDelta,
+    required String reason,
+    String? documentNumber,
+  });
+  Future<RetailOperationSnapshot> processRetailReturn({
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? reason,
+  });
+
   void close();
 }

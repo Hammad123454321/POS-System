@@ -2,8 +2,14 @@ PROJECT STATUS
 
 Done:
 - Phase 1a, 1b, 2, 3, and 4 implemented.
-- Phase 4 delivery and retail test suites passing.
-- Phase 1-3 regression test suites passing after Phase 4 integration.
+- Backend Phase 4 delivery and retail API surfaces are implemented.
+- Flutter Phase 3/4 gateway methods and operator surfaces are implemented.
+- Tenant RLS coverage now includes a catch-up migration for every PostgreSQL table with `merchant_id`.
+- POS API major version is derived from `/api/pos/v{major}` and no longer hard-coded in middleware.
+- Back-office privacy tools now include customer export, customer tombstone, and merchant-level export.
+- Archived-record reads are logged for receipts, audit logs, and payroll snapshots.
+- Retention pruning covers sync events, device status events, archive access logs, audit logs, payroll snapshots, and receipts.
 
 Left:
-- Android production POSLink SDK linkage (on hold).
+- External production readiness remains dependent on terminal boarding values, processor certification artifacts, live infrastructure configuration, and environment-specific DR/backup/observability provisioning.
+- Local automated verification requires PHP `pdo_pgsql`; Flutter full test execution is intentionally skipped when requested.

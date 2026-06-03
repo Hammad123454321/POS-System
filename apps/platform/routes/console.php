@@ -1,6 +1,8 @@
 <?php
 
 use App\Console\Commands\FlagStaleCardInDoubtCommand;
+use App\Console\Commands\MonitorDlqIncidentsCommand;
+use App\Console\Commands\PruneRetentionRecordsCommand;
 use App\Console\Commands\ReapEditLeasesCommand;
 use App\Console\Commands\ReconcileFiservPaymentsCommand;
 use Illuminate\Foundation\Inspiring;
@@ -21,4 +23,12 @@ Schedule::command(ReconcileFiservPaymentsCommand::class)
 
 Schedule::command(FlagStaleCardInDoubtCommand::class)
     ->everyFiveMinutes()
+    ->withoutOverlapping();
+
+Schedule::command(MonitorDlqIncidentsCommand::class)
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
+
+Schedule::command(PruneRetentionRecordsCommand::class)
+    ->dailyAt('03:10')
     ->withoutOverlapping();

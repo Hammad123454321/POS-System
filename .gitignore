@@ -32,3 +32,7 @@ apps/pos/build/
 apps/pos/windows/flutter/ephemeral/
 apps/pos/windows/runner/Debug/
 apps/pos/windows/runner/Release/
+
+client-report/
+.claude/
+.playwright-mcp/

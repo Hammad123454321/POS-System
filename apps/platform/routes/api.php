@@ -8,6 +8,7 @@ use App\Modules\Catalog\Interfaces\Http\Controllers\AdminModifierOptionControlle
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminVariantController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\PosConfigController;
 use App\Modules\CustomerValue\Interfaces\Http\Controllers\AdminCustomerController;
+use App\Modules\CustomerValue\Interfaces\Http\Controllers\AdminCustomerPrivacyController;
 use App\Modules\CustomerValue\Interfaces\Http\Controllers\CustomerSearchController;
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\AdminDeliveryChannelConfigController;
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryAvailabilityController;
@@ -27,9 +28,13 @@ use App\Modules\Payments\Interfaces\Http\Controllers\PaymentVoidController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceAuthController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceEnrollmentCodeController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceStatusEventController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminMerchantPrivacyController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\PosBootstrapController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\StoreFeatureFlagController;
+use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedAuditLogController;
+use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedPayrollSnapshotController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminDeliveryOperationalHealthController;
+use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedReceiptController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminRetailStockMovementSummaryController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\BusinessDaySummaryController;
 use App\Modules\Restaurant\Interfaces\Http\Controllers\AdminDiningTableController;
@@ -66,7 +71,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('webhooks/fiserv/trans-notify', FiservTransNotifyWebhookController::class)
     ->name('webhooks.fiserv.trans_notify');
 
-Route::prefix('pos/v1')
+Route::prefix('pos/v{major}')
+    ->whereNumber('major')
     ->middleware([EnsurePosApiHeaders::class])
     ->group(function (): void {
         Route::post('auth/enroll', [DeviceAuthController::class, 'enroll'])->name('pos.auth.enroll');
@@ -184,6 +190,12 @@ Route::prefix('admin/v1')
             ->name('admin.feature_flags.upsert');
         Route::post('stores/{store}/customers', AdminCustomerController::class)
             ->name('admin.customers.store');
+        Route::post('stores/{store}/customers/{customer}/privacy-export', [AdminCustomerPrivacyController::class, 'export'])
+            ->name('admin.customers.privacy_export');
+        Route::post('stores/{store}/customers/{customer}/tombstone', [AdminCustomerPrivacyController::class, 'tombstone'])
+            ->name('admin.customers.tombstone');
+        Route::post('merchants/{merchant}/privacy-export', [AdminMerchantPrivacyController::class, 'export'])
+            ->name('admin.merchants.privacy_export');
         Route::post('stores/{store}/discount-rules', AdminDiscountRuleController::class)
             ->name('admin.discount_rules.store');
         Route::post('stores/{store}/catalog/variants', [AdminVariantController::class, 'store'])
@@ -260,6 +272,12 @@ Route::prefix('admin/v1')
             ->name('admin.reports.delivery_health');
         Route::get('stores/{store}/reports/retail-stock-movements', AdminRetailStockMovementSummaryController::class)
             ->name('admin.reports.retail_stock_movements');
+        Route::get('stores/{store}/archive/receipts/{receipt}', AdminArchivedReceiptController::class)
+            ->name('admin.archive.receipts.show');
+        Route::get('stores/{store}/archive/audit-logs/{auditLog}', AdminArchivedAuditLogController::class)
+            ->name('admin.archive.audit_logs.show');
+        Route::get('stores/{store}/archive/payroll-snapshots/{payrollSnapshot}', AdminArchivedPayrollSnapshotController::class)
+            ->name('admin.archive.payroll_snapshots.show');
         Route::post('exception-cases/{exceptionCase}/resolve', AdminResolveExceptionCaseController::class)
             ->name('admin.exception_cases.resolve');
     });

@@ -99,6 +99,21 @@ return [
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
+        'pgsql_reporting' => [
+            'driver' => 'pgsql',
+            'url' => env('REPORTING_DB_URL'),
+            'host' => env('REPORTING_DB_HOST', env('DB_HOST', '127.0.0.1')),
+            'port' => env('REPORTING_DB_PORT', env('DB_PORT', '5432')),
+            'database' => env('REPORTING_DB_DATABASE', env('DB_DATABASE', 'laravel')),
+            'username' => env('REPORTING_DB_USERNAME', env('DB_USERNAME', 'root')),
+            'password' => env('REPORTING_DB_PASSWORD', env('DB_PASSWORD', '')),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => env('REPORTING_DB_SSLMODE', env('DB_SSLMODE', 'prefer')),
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

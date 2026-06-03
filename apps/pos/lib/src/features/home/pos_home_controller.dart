@@ -63,8 +63,13 @@ class PosHomeController extends ChangeNotifier {
   List<MembershipPlanSnapshot> _membershipPlans = const [];
   List<PrintRouteSnapshot> _printRoutes = const [];
   List<DiningTableSnapshot> _diningTables = const [];
+  List<WorkforceStaffSnapshot> _workforceStaff = const [];
+  List<AppointmentSnapshot> _appointments = const [];
+  List<DeliveryOrderSnapshot> _deliveryOrders = const [];
   BusinessDaySummarySnapshot? _businessDaySummary;
   OpenExceptionSummary? _openExceptions;
+  Map<String, dynamic>? _laborAnalytics;
+  RetailOperationSnapshot? _lastRetailOperation;
   List<CustomerSummary> _customerResults = const [];
   CustomerSummary? _selectedCustomer;
   DiscountRuleSnapshot? _selectedDiscount;
@@ -97,8 +102,13 @@ class PosHomeController extends ChangeNotifier {
   List<MembershipPlanSnapshot> get membershipPlans => _membershipPlans;
   List<PrintRouteSnapshot> get printRoutes => _printRoutes;
   List<DiningTableSnapshot> get diningTables => _diningTables;
+  List<WorkforceStaffSnapshot> get workforceStaff => _workforceStaff;
+  List<AppointmentSnapshot> get appointments => _appointments;
+  List<DeliveryOrderSnapshot> get deliveryOrders => _deliveryOrders;
   BusinessDaySummarySnapshot? get businessDaySummary => _businessDaySummary;
   OpenExceptionSummary? get openExceptions => _openExceptions;
+  Map<String, dynamic>? get laborAnalytics => _laborAnalytics;
+  RetailOperationSnapshot? get lastRetailOperation => _lastRetailOperation;
   List<CustomerSummary> get customerResults => _customerResults;
   CustomerSummary? get selectedCustomer => _selectedCustomer;
   DiscountRuleSnapshot? get selectedDiscount => _selectedDiscount;
@@ -889,6 +899,182 @@ class PosHomeController extends ChangeNotifier {
     });
   }
 
+  Future<void> refreshPhaseThreeFourOperations() async {
+    await _runBusy(() async {
+      await _refreshOperationalReads();
+      _statusMessage =
+          'Workforce, delivery, and retail operation state refreshed.';
+    });
+  }
+
+  Future<void> checkInAppointment(String appointmentId) async {
+    await _runBusy(() async {
+      await _gateway.checkInAppointment(appointmentId);
+      await _refreshOperationalReads();
+      _statusMessage = 'Appointment checked in.';
+    });
+  }
+
+  Future<void> completeAppointment(String appointmentId) async {
+    await _runBusy(() async {
+      await _gateway.completeAppointment(appointmentId);
+      await _refreshOperationalReads();
+      _statusMessage = 'Appointment completed.';
+    });
+  }
+
+  Future<void> openStaffShift({
+    required String staffProfileId,
+    int? openingCashMinor,
+  }) async {
+    await _runBusy(() async {
+      await _gateway.openShift(
+        staffProfileId: staffProfileId,
+        openingCashMinor: openingCashMinor,
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Staff shift opened.';
+    });
+  }
+
+  Future<void> closeStaffShift({
+    required String shiftId,
+    int? closingCashMinor,
+    String? notes,
+  }) async {
+    await _runBusy(() async {
+      await _gateway.closeShift(
+        shiftId: shiftId,
+        closingCashMinor: closingCashMinor,
+        notes: notes?.trim().isEmpty ?? true ? null : notes!.trim(),
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Staff shift closed.';
+    });
+  }
+
+  Future<void> setStoreDeliveryAvailability(bool isAvailable) async {
+    await _runBusy(() async {
+      await _gateway.setDeliveryStoreAvailability(
+        isAvailable: isAvailable,
+        reason: isAvailable
+            ? 'POS resumed store availability.'
+            : 'POS paused store availability.',
+      );
+      await _refreshOperationalReads();
+      _statusMessage = isAvailable
+          ? 'Delivery store availability resumed.'
+          : 'Delivery store availability paused.';
+    });
+  }
+
+  Future<void> confirmDeliveryOrder(String linkId) async {
+    await _runBusy(() async {
+      await _gateway.confirmExternalDeliveryOrder(linkId);
+      await _refreshOperationalReads();
+      _statusMessage = 'Delivery order confirmed.';
+    });
+  }
+
+  Future<void> updateDeliveryOrderStatus({
+    required String linkId,
+    required String status,
+  }) async {
+    await _runBusy(() async {
+      await _gateway.updateExternalDeliveryOrderStatus(
+        linkId: linkId,
+        status: status,
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Delivery order status updated.';
+    });
+  }
+
+  Future<void> lookupRetailInventory({String? sku, String? barcode}) async {
+    await _runBusy(() async {
+      _lastRetailOperation = await _gateway.lookupRetailInventory(
+        sku: sku,
+        barcode: barcode,
+      );
+      _statusMessage = 'Retail inventory lookup completed.';
+    });
+  }
+
+  Future<void> receiveRetailStock({
+    required String documentNumber,
+    required String sku,
+    required int quantity,
+    String? reason,
+  }) async {
+    await _runBusy(() async {
+      _lastRetailOperation = await _gateway.receiveRetailStock(
+        documentNumber: documentNumber,
+        reason: reason?.trim().isEmpty ?? true ? null : reason!.trim(),
+        lines: [
+          {'sku': sku, 'quantity': quantity},
+        ],
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Retail stock receipt submitted.';
+    });
+  }
+
+  Future<void> transferRetailStock({
+    required String destinationStoreId,
+    required String documentNumber,
+    required String sku,
+    required int quantity,
+    String? reason,
+  }) async {
+    await _runBusy(() async {
+      _lastRetailOperation = await _gateway.transferRetailStock(
+        destinationStoreId: destinationStoreId,
+        documentNumber: documentNumber,
+        reason: reason?.trim().isEmpty ?? true ? null : reason!.trim(),
+        lines: [
+          {'sku': sku, 'quantity': quantity},
+        ],
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Retail stock transfer submitted.';
+    });
+  }
+
+  Future<void> adjustRetailStock({
+    required String sku,
+    required int quantityDelta,
+    required String reason,
+  }) async {
+    await _runBusy(() async {
+      _lastRetailOperation = await _gateway.adjustRetailStock(
+        sku: sku,
+        quantityDelta: quantityDelta,
+        reason: reason,
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Retail stock adjustment submitted.';
+    });
+  }
+
+  Future<void> processRetailReturn({
+    required String documentNumber,
+    required String sku,
+    required int quantity,
+    String? reason,
+  }) async {
+    await _runBusy(() async {
+      _lastRetailOperation = await _gateway.processRetailReturn(
+        documentNumber: documentNumber,
+        reason: reason?.trim().isEmpty ?? true ? null : reason!.trim(),
+        lines: [
+          {'sku': sku, 'quantity': quantity},
+        ],
+      );
+      await _refreshOperationalReads();
+      _statusMessage = 'Retail return submitted.';
+    });
+  }
+
   Future<void> printPendingReceipts() async {
     await _runBusy(() async {
       await _printPendingReceipts();
@@ -968,8 +1154,13 @@ class PosHomeController extends ChangeNotifier {
       _membershipLookup = null;
       _lastSyncRecoveryRun = null;
       _diningTables = const [];
+      _workforceStaff = const [];
+      _appointments = const [];
+      _deliveryOrders = const [];
       _businessDaySummary = null;
       _openExceptions = null;
+      _laborAnalytics = null;
+      _lastRetailOperation = null;
       _activeRegisterSession = null;
       _syncTableLeaseHeartbeat();
       return;
@@ -978,6 +1169,8 @@ class PosHomeController extends ChangeNotifier {
     final config = _asMap(payload['config']);
     final bootstrap = _asMap(payload['bootstrap']);
     final tablesPayload = _asMap(payload['tables']);
+    final workforcePayload = _asMap(payload['workforce']);
+    final deliveryPayload = _asMap(payload['delivery']);
     final businessDaySummaryPayload = _asMap(payload['business_day_summary']);
     final exceptionsPayload = _asMap(payload['exceptions']);
 
@@ -1029,6 +1222,28 @@ class PosHomeController extends ChangeNotifier {
             (item as Map).cast<String, dynamic>(),
           ),
         )).toList(growable: false);
+    _workforceStaff =
+        ((workforcePayload['staff'] as List<dynamic>? ?? const <dynamic>[]).map(
+          (item) => WorkforceStaffSnapshot.fromJson(
+            (item as Map).cast<String, dynamic>(),
+          ),
+        )).toList(growable: false);
+    _appointments =
+        ((workforcePayload['appointments'] as List<dynamic>? ??
+                    const <dynamic>[])
+                .map(
+                  (item) => AppointmentSnapshot.fromJson(
+                    (item as Map).cast<String, dynamic>(),
+                  ),
+                ))
+            .toList(growable: false);
+    _laborAnalytics = _asMap(workforcePayload['labor_analytics']);
+    _deliveryOrders =
+        ((deliveryPayload['orders'] as List<dynamic>? ?? const <dynamic>[]).map(
+          (item) => DeliveryOrderSnapshot.fromJson(
+            (item as Map).cast<String, dynamic>(),
+          ),
+        )).toList(growable: false);
     _businessDaySummary = businessDaySummaryPayload.isEmpty
         ? null
         : BusinessDaySummarySnapshot.fromJson(businessDaySummaryPayload);
@@ -1072,6 +1287,10 @@ class PosHomeController extends ChangeNotifier {
         (_asMap(_bootstrapSnapshot?.payload['deltas'])['cursor'] as String?);
     final deltas = await _gateway.pullSyncDeltas(cursor);
     final tables = await _gateway.listDiningTables();
+    final staff = await _gateway.listWorkforceStaff();
+    final appointments = await _gateway.listAppointments();
+    final laborAnalytics = await _gateway.getLaborAnalytics();
+    final deliveryOrders = await _gateway.listExternalDeliveryOrders();
     final businessDaySummary = await _gateway.getBusinessDaySummary();
     final exceptions = await _gateway.getOpenExceptions();
 
@@ -1080,6 +1299,18 @@ class PosHomeController extends ChangeNotifier {
       config: config,
       deltas: deltas,
       tables: {'tables': tables.map(_tableToJson).toList(growable: false)},
+      workforce: {
+        'staff': staff.map(_staffToJson).toList(growable: false),
+        'appointments': appointments
+            .map(_appointmentToJson)
+            .toList(growable: false),
+        'labor_analytics': laborAnalytics,
+      },
+      delivery: {
+        'orders': deliveryOrders
+            .map(_deliveryOrderToJson)
+            .toList(growable: false),
+      },
       businessDaySummary: _businessDaySummaryToJson(businessDaySummary),
       exceptions: _openExceptionsToJson(exceptions),
     );
@@ -1087,16 +1318,36 @@ class PosHomeController extends ChangeNotifier {
 
   Future<void> _refreshOperationalReads() async {
     final tables = await _gateway.listDiningTables();
+    final staff = await _gateway.listWorkforceStaff();
+    final appointments = await _gateway.listAppointments();
+    final laborAnalytics = await _gateway.getLaborAnalytics();
+    final deliveryOrders = await _gateway.listExternalDeliveryOrders();
     final businessDaySummary = await _gateway.getBusinessDaySummary();
     final exceptions = await _gateway.getOpenExceptions();
 
     _diningTables = tables;
+    _workforceStaff = staff;
+    _appointments = appointments;
+    _laborAnalytics = laborAnalytics;
+    _deliveryOrders = deliveryOrders;
     _businessDaySummary = businessDaySummary;
     _openExceptions = exceptions;
     _syncTableLeaseHeartbeat();
 
     await _persistSnapshot(
       tables: {'tables': tables.map(_tableToJson).toList(growable: false)},
+      workforce: {
+        'staff': staff.map(_staffToJson).toList(growable: false),
+        'appointments': appointments
+            .map(_appointmentToJson)
+            .toList(growable: false),
+        'labor_analytics': laborAnalytics,
+      },
+      delivery: {
+        'orders': deliveryOrders
+            .map(_deliveryOrderToJson)
+            .toList(growable: false),
+      },
       businessDaySummary: _businessDaySummaryToJson(businessDaySummary),
       exceptions: _openExceptionsToJson(exceptions),
     );
@@ -1107,6 +1358,8 @@ class PosHomeController extends ChangeNotifier {
     Map<String, dynamic>? config,
     Map<String, dynamic>? deltas,
     Map<String, dynamic>? tables,
+    Map<String, dynamic>? workforce,
+    Map<String, dynamic>? delivery,
     Map<String, dynamic>? businessDaySummary,
     Map<String, dynamic>? exceptions,
   }) async {
@@ -1116,6 +1369,8 @@ class PosHomeController extends ChangeNotifier {
     final effectiveConfig = config ?? _asMap(currentPayload['config']);
     final effectiveDeltas = deltas ?? _asMap(currentPayload['deltas']);
     final effectiveTables = tables ?? _asMap(currentPayload['tables']);
+    final effectiveWorkforce = workforce ?? _asMap(currentPayload['workforce']);
+    final effectiveDelivery = delivery ?? _asMap(currentPayload['delivery']);
     final effectiveSummary =
         businessDaySummary ?? _asMap(currentPayload['business_day_summary']);
     final effectiveExceptions =
@@ -1136,6 +1391,8 @@ class PosHomeController extends ChangeNotifier {
         'config': effectiveConfig,
         'deltas': effectiveDeltas,
         'tables': effectiveTables,
+        'workforce': effectiveWorkforce,
+        'delivery': effectiveDelivery,
         'business_day_summary': effectiveSummary,
         'exceptions': effectiveExceptions,
       },
@@ -1253,6 +1510,37 @@ class PosHomeController extends ChangeNotifier {
         'lease_expires_at': table.lease.leaseExpiresAt?.toIso8601String(),
         'is_claimed_by_current_device': table.lease.isClaimedByCurrentDevice,
       },
+    };
+  }
+
+  Map<String, dynamic> _staffToJson(WorkforceStaffSnapshot staff) {
+    return {
+      'id': staff.id,
+      'display_name': staff.displayName,
+      'role_title': staff.roleTitle,
+    };
+  }
+
+  Map<String, dynamic> _appointmentToJson(AppointmentSnapshot appointment) {
+    return {
+      'id': appointment.id,
+      'status': appointment.status,
+      'starts_at': appointment.startsAt,
+      'ends_at': appointment.endsAt,
+      'staff_profile_id': appointment.staffProfileId,
+      'service_item_id': appointment.serviceItemId,
+      'customer_id': appointment.customerId,
+      'customer_name': appointment.customerName,
+    };
+  }
+
+  Map<String, dynamic> _deliveryOrderToJson(DeliveryOrderSnapshot order) {
+    return {
+      'id': order.id,
+      'channel_key': order.channelKey,
+      'external_order_id': order.externalOrderId,
+      'status': order.status,
+      'order_id': order.orderId,
     };
   }
 

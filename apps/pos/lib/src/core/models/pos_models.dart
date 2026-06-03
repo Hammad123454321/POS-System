@@ -833,3 +833,121 @@ class CartLineSnapshot {
 
   int get lineSubtotalMinor => item.effectivePriceMinor * quantity;
 }
+
+class WorkforceStaffSnapshot {
+  const WorkforceStaffSnapshot({
+    required this.id,
+    required this.displayName,
+    this.roleTitle,
+  });
+
+  final String id;
+  final String displayName;
+  final String? roleTitle;
+
+  factory WorkforceStaffSnapshot.fromJson(Map<String, dynamic> json) {
+    return WorkforceStaffSnapshot(
+      id: json['id'] as String,
+      displayName:
+          json['display_name'] as String? ?? json['name'] as String? ?? '',
+      roleTitle: json['role_title'] as String?,
+    );
+  }
+}
+
+class AppointmentSnapshot {
+  const AppointmentSnapshot({
+    required this.id,
+    required this.status,
+    required this.startsAt,
+    required this.endsAt,
+    this.staffProfileId,
+    this.serviceItemId,
+    this.customerId,
+    this.customerName,
+  });
+
+  final String id;
+  final String status;
+  final String startsAt;
+  final String endsAt;
+  final String? staffProfileId;
+  final String? serviceItemId;
+  final String? customerId;
+  final String? customerName;
+
+  factory AppointmentSnapshot.fromJson(Map<String, dynamic> json) {
+    return AppointmentSnapshot(
+      id: json['id'] as String,
+      status: json['status'] as String? ?? '',
+      startsAt: json['starts_at'] as String? ?? '',
+      endsAt: json['ends_at'] as String? ?? '',
+      staffProfileId: json['staff_profile_id'] as String?,
+      serviceItemId: json['service_item_id'] as String?,
+      customerId: json['customer_id'] as String?,
+      customerName: json['customer_name'] as String?,
+    );
+  }
+}
+
+class ShiftSnapshot {
+  const ShiftSnapshot({
+    required this.id,
+    required this.status,
+    this.staffProfileId,
+    this.openedAt,
+    this.closedAt,
+  });
+
+  final String id;
+  final String status;
+  final String? staffProfileId;
+  final String? openedAt;
+  final String? closedAt;
+
+  factory ShiftSnapshot.fromJson(Map<String, dynamic> json) {
+    return ShiftSnapshot(
+      id: json['id'] as String,
+      status: json['status'] as String? ?? '',
+      staffProfileId: json['staff_profile_id'] as String?,
+      openedAt: json['opened_at'] as String?,
+      closedAt: json['closed_at'] as String?,
+    );
+  }
+}
+
+class DeliveryOrderSnapshot {
+  const DeliveryOrderSnapshot({
+    required this.id,
+    required this.channelKey,
+    required this.externalOrderId,
+    required this.status,
+    this.orderId,
+  });
+
+  final String id;
+  final String channelKey;
+  final String externalOrderId;
+  final String status;
+  final String? orderId;
+
+  factory DeliveryOrderSnapshot.fromJson(Map<String, dynamic> json) {
+    return DeliveryOrderSnapshot(
+      id: json['id'] as String,
+      channelKey: json['channel_key'] as String? ?? '',
+      externalOrderId: json['external_order_id'] as String? ?? '',
+      status: json['status'] as String? ?? '',
+      orderId: json['order_id'] as String?,
+    );
+  }
+}
+
+class RetailOperationSnapshot {
+  const RetailOperationSnapshot({required this.payload});
+
+  final Map<String, dynamic> payload;
+
+  factory RetailOperationSnapshot.fromJson(Map<String, dynamic> json) {
+    return RetailOperationSnapshot(payload: json);
+  }
+}

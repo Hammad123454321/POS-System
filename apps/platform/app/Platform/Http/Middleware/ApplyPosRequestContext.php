@@ -75,7 +75,7 @@ class ApplyPosRequestContext
             'user_id' => null,
             'module' => 'pos_api',
             'route' => $request->route()?->uri(),
-            'api_version' => 'v1',
+            'api_version' => 'v'.($request->attributes->get('pos_api_major') ?? $request->route('major') ?? 1),
             'app_version' => $request->header('X-POS-App-Version'),
             'register_session_id' => $request->input('register_session_id'),
         ]);

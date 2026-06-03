@@ -1,0 +1,98 @@
+name: pos-platform
+
+# Production stack: Postgres + Redis + Laravel (FrankenPHP) + Horizon + scheduler.
+# Host nginx terminates TLS and proxies to 127.0.0.1:8000 → app container.
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+
+x-app-env: &app-env
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: pos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-pos_platform}
+      POSTGRES_USER: ${DB_USERNAME:-pos_app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in apps/platform/.env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-pos_app} -d ${DB_DATABASE:-pos_platform}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    logging: *default-logging
+
+  redis:
+    image: redis:7-alpine
+    container_name: pos-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    logging: *default-logging
+
+  app:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.production
+    image: pos-platform:latest
+    container_name: pos-app
+    restart: unless-stopped
+    env_file: ../apps/platform/.env
+    environment: *app-env
+    ports:
+      - "127.0.0.1:8000:80"
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    logging: *default-logging
+
+  horizon:
+    image: pos-platform:latest
+    container_name: pos-horizon
+    restart: unless-stopped
+    command: ["php", "artisan", "horizon"]
+    env_file: ../apps/platform/.env
+    environment: *app-env
+    depends_on:
+      app:      { condition: service_started }
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    logging: *default-logging
+
+  scheduler:
+    image: pos-platform:latest
+    container_name: pos-scheduler
+    restart: unless-stopped
+    # schedule:work runs schedule:run in a loop every minute (no host cron needed).
+    command: ["php", "artisan", "schedule:work"]
+    env_file: ../apps/platform/.env
+    environment: *app-env
+    depends_on:
+      app:      { condition: service_started }
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    logging: *default-logging
+
+volumes:
+  postgres_data:
+  redis_data:

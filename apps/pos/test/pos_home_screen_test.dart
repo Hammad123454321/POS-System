@@ -358,6 +358,9 @@ class _InMemoryLocalEncryptionBackend implements LocalEncryptionBackend {
 
 class _FakePosGateway implements PosGateway {
   @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
+  @override
   Future<MembershipLookupSnapshot> activateMembership({
     required String customerId,
     required String membershipPlanId,

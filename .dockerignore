@@ -1,0 +1,47 @@
+# Keep the production build context small and deterministic.
+# Anything listed here is invisible to `docker build`.
+
+# VCS + IDE
+.git
+.gitignore
+.gitattributes
+.github
+.idea
+.vscode
+.dart_tool
+
+# Build artifacts / installed deps (we install fresh inside the image)
+apps/platform/node_modules
+apps/platform/vendor
+apps/platform/public/build
+apps/platform/public/hot
+apps/platform/public/storage
+apps/platform/storage/app/public
+apps/platform/storage/logs
+apps/platform/storage/framework/cache
+apps/platform/storage/framework/sessions
+apps/platform/storage/framework/views
+apps/platform/storage/framework/testing
+apps/platform/bootstrap/cache/*.php
+
+# Secrets / local config — production .env is mounted at runtime, never baked in
+apps/platform/.env
+apps/platform/.env.*
+!apps/platform/.env.example
+
+# Flutter app + its build outputs are not part of the backend image
+apps/pos
+
+# Dev compose + test artifacts + reports
+infra/docker-compose.yml
+.playwright-mcp
+client-report
+docs/screenshots
+*.apk
+*.png
+*.pdf
+
+# Old / generated files
+**/*.log
+**/*.tmp
+**/.DS_Store

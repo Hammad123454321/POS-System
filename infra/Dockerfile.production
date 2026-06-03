@@ -1,0 +1,66 @@
+# syntax=docker/dockerfile:1.7
+#
+# Production image for the Laravel platform.
+# Single binary HTTP server (FrankenPHP) + Laravel app + built Vite assets.
+# Built via three stages so the runtime image carries no Node or build tooling.
+
+# ---------- Stage 1: PHP dependencies ----------------------------------------
+FROM composer:2 AS composer-stage
+WORKDIR /build
+COPY apps/platform/composer.json apps/platform/composer.lock ./
+RUN composer install \
+      --no-dev \
+      --no-scripts \
+      --no-autoloader \
+      --no-interaction \
+      --prefer-dist
+COPY apps/platform/ ./
+RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
+
+# ---------- Stage 2: front-end build -----------------------------------------
+FROM node:20-bookworm-slim AS node-stage
+WORKDIR /build
+COPY apps/platform/package.json apps/platform/package-lock.json ./
+RUN npm ci
+COPY apps/platform/ ./
+# Vendor needed because Vite plugins may import from vendor (e.g. wayfinder).
+COPY --from=composer-stage /build/vendor ./vendor
+RUN npm run build
+
+# ---------- Stage 3: runtime image -------------------------------------------
+FROM dunglas/frankenphp:1-php8.4-bookworm AS runtime
+
+# Required PHP extensions (Postgres, Redis, etc.).
+RUN install-php-extensions \
+      pdo_pgsql \
+      pgsql \
+      redis \
+      intl \
+      mbstring \
+      zip \
+      bcmath \
+      pcntl \
+      opcache
+
+WORKDIR /app
+
+# Copy the application code (apps/platform/*) into /app.
+COPY apps/platform/ ./
+
+# Drop in the optimized vendor and built front-end assets from earlier stages.
+COPY --from=composer-stage /build/vendor ./vendor
+COPY --from=node-stage     /build/public/build ./public/build
+
+# Storage / cache dirs must be writable by the FrankenPHP runtime user.
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && find storage bootstrap/cache -type d -exec chmod 775 {} \;
+
+# Entry-point warms caches and chowns storage every start, then exec's CMD.
+COPY infra/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# FrankenPHP listens on :80 inside the container; compose maps it to host 8000.
+EXPOSE 80
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]

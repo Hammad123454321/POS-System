@@ -234,6 +234,9 @@ class _CapturePosGateway implements PosGateway {
   List<Map<String, dynamic>>? lastTenders;
 
   @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+
+  @override
   Future<OrderSummary> createOrder({
     required String registerSessionId,
     required List<Map<String, dynamic>> lines,

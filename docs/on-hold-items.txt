@@ -18,3 +18,7 @@ Open on-hold items:
   - Reason: Production POSLink SDK is now integrated with real `SALE` execution, but terminal estate mapping and final boarding values are still pending from client.
   - Blocking path: Finalize dynamic terminal profile values consumed during device bootstrap/config once client list is shared.
   - Owner: Client + Engineering
+- Processor certification package:
+  - Reason: Code can implement the POSLink/Fiserv path, but production card acceptance requires acquirer certification, signed test evidence, and live credentials outside this repository.
+  - Blocking path: Complete acquirer certification scripts, submit evidence, receive approval, and load live credentials through secret management.
+  - Owner: Client + Engineering + Processor

@@ -18,6 +18,7 @@ class Customer extends Model
     {
         return [
             'is_active' => 'bool',
+            'pii_tombstoned_at' => 'immutable_datetime',
         ];
     }
 

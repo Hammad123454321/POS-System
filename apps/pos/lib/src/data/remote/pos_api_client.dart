@@ -21,6 +21,8 @@ class PosApiClient implements PosGateway {
 
   static const _appVersion = '0.1.0';
   static const _protocolVersion = '1';
+  static const _apiMajor = 1;
+  static const _apiPrefix = '/api/pos/v$_apiMajor';
 
   final DeviceCredentialsStore _credentialsStore;
   final DeviceIdentityStore _identityStore;
@@ -491,6 +493,395 @@ class PosApiClient implements PosGateway {
     );
 
     return SyncRecoveryRunSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<List<WorkforceStaffSnapshot>> listWorkforceStaff() async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/staff',
+      method: 'GET',
+    );
+
+    return _dataList(
+      response,
+    ).map(WorkforceStaffSnapshot.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<List<AppointmentSnapshot>> listAppointments({
+    String? startDate,
+    String? endDate,
+  }) async {
+    final query = Uri(
+      queryParameters: {
+        if (startDate != null && startDate.isNotEmpty) 'start_date': startDate,
+        if (endDate != null && endDate.isNotEmpty) 'end_date': endDate,
+      },
+    ).query;
+    final response = await _requestJson(
+      path:
+          '$_apiPrefix/workforce/appointments${query.isEmpty ? '' : '?$query'}',
+      method: 'GET',
+    );
+
+    return _dataList(
+      response,
+    ).map(AppointmentSnapshot.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<Map<String, dynamic>> claimAppointmentSlot({
+    required String staffProfileId,
+    required String startsAt,
+    required String endsAt,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/appointments/slot-claims',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'staff_profile_id': staffProfileId,
+        'starts_at': startsAt,
+        'ends_at': endsAt,
+      },
+    );
+
+    return _dataMap(response);
+  }
+
+  @override
+  Future<AppointmentSnapshot> createAppointment({
+    required String slotClaimId,
+    required String staffProfileId,
+    required String serviceItemId,
+    required String startsAt,
+    required String endsAt,
+    String? customerId,
+    String source = 'walk_in',
+    int discountMinor = 0,
+    String? notes,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/appointments',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'slot_claim_id': slotClaimId,
+        'staff_profile_id': staffProfileId,
+        'service_item_id': serviceItemId,
+        'starts_at': startsAt,
+        'ends_at': endsAt,
+        'source': source,
+        'discount_minor': discountMinor,
+        if (customerId != null && customerId.isNotEmpty)
+          'customer_id': customerId,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      },
+    );
+
+    return AppointmentSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<AppointmentSnapshot> checkInAppointment(String appointmentId) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/appointments/$appointmentId/check-in',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: const <String, dynamic>{},
+    );
+
+    return AppointmentSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<AppointmentSnapshot> completeAppointment(String appointmentId) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/appointments/$appointmentId/complete',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: const <String, dynamic>{},
+    );
+
+    return AppointmentSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<ShiftSnapshot> openShift({
+    required String staffProfileId,
+    int? openingCashMinor,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/shifts/open',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'staff_profile_id': staffProfileId,
+        'opening_cash_minor': ?openingCashMinor,
+      },
+    );
+
+    return ShiftSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<ShiftSnapshot> closeShift({
+    required String shiftId,
+    int? closingCashMinor,
+    String? notes,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/workforce/shifts/$shiftId/close',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'closing_cash_minor': ?closingCashMinor,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      },
+    );
+
+    return ShiftSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<Map<String, dynamic>> getLaborAnalytics({
+    String? startDate,
+    String? endDate,
+  }) async {
+    final query = Uri(
+      queryParameters: {
+        if (startDate != null && startDate.isNotEmpty) 'start_date': startDate,
+        if (endDate != null && endDate.isNotEmpty) 'end_date': endDate,
+      },
+    ).query;
+
+    return _requestJson(
+      path:
+          '$_apiPrefix/workforce/labor-analytics${query.isEmpty ? '' : '?$query'}',
+      method: 'GET',
+    );
+  }
+
+  @override
+  Future<List<DeliveryOrderSnapshot>> listExternalDeliveryOrders() async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/delivery/orders/external',
+      method: 'GET',
+    );
+
+    return _dataList(
+      response,
+    ).map(DeliveryOrderSnapshot.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<DeliveryOrderSnapshot> ingestExternalDeliveryOrder({
+    required String channelKey,
+    required String externalOrderId,
+    String? externalStoreId,
+    List<Map<String, dynamic>> lines = const <Map<String, dynamic>>[],
+    Map<String, dynamic> payload = const <String, dynamic>{},
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/delivery/orders/external/ingest',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'channel_key': channelKey,
+        'external_order_id': externalOrderId,
+        'payload': payload,
+        if (externalStoreId != null && externalStoreId.isNotEmpty)
+          'external_store_id': externalStoreId,
+        if (lines.isNotEmpty) 'lines': lines,
+      },
+    );
+
+    return DeliveryOrderSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<DeliveryOrderSnapshot> confirmExternalDeliveryOrder(
+    String linkId,
+  ) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/delivery/orders/external/$linkId/confirm',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: const <String, dynamic>{},
+    );
+
+    return DeliveryOrderSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<DeliveryOrderSnapshot> updateExternalDeliveryOrderStatus({
+    required String linkId,
+    required String status,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/delivery/orders/external/$linkId/status',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {'status': status},
+    );
+
+    return DeliveryOrderSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<DeliveryOrderSnapshot> cancelExternalDeliveryOrder({
+    required String linkId,
+    String? reason,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/delivery/orders/external/$linkId/cancel',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {if (reason != null && reason.isNotEmpty) 'reason': reason},
+    );
+
+    return DeliveryOrderSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<Map<String, dynamic>> setDeliveryStoreAvailability({
+    required bool isAvailable,
+    String? reason,
+  }) async {
+    return _requestJson(
+      path: '$_apiPrefix/delivery/store-availability',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'is_available': isAvailable,
+        if (reason != null && reason.isNotEmpty) 'reason': reason,
+      },
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> setDeliveryItemAvailability({
+    required String catalogItemId,
+    required bool isAvailable,
+    String? reason,
+  }) async {
+    return _requestJson(
+      path: '$_apiPrefix/delivery/items/$catalogItemId/availability',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'is_available': isAvailable,
+        if (reason != null && reason.isNotEmpty) 'reason': reason,
+      },
+    );
+  }
+
+  @override
+  Future<RetailOperationSnapshot> lookupRetailInventory({
+    String? sku,
+    String? barcode,
+  }) async {
+    final query = Uri(
+      queryParameters: {
+        if (sku != null && sku.isNotEmpty) 'sku': sku,
+        if (barcode != null && barcode.isNotEmpty) 'barcode': barcode,
+      },
+    ).query;
+    final response = await _requestJson(
+      path:
+          '$_apiPrefix/retail/inventory/lookup${query.isEmpty ? '' : '?$query'}',
+      method: 'GET',
+    );
+
+    return RetailOperationSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<RetailOperationSnapshot> receiveRetailStock({
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? supplierName,
+    String? reason,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/retail/inventory/receive',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'document_number': documentNumber,
+        'lines': lines,
+        if (supplierName != null && supplierName.isNotEmpty)
+          'supplier_name': supplierName,
+        if (reason != null && reason.isNotEmpty) 'reason': reason,
+      },
+    );
+
+    return RetailOperationSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<RetailOperationSnapshot> transferRetailStock({
+    required String destinationStoreId,
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? reason,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/retail/inventory/transfer',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'destination_store_id': destinationStoreId,
+        'document_number': documentNumber,
+        'lines': lines,
+        if (reason != null && reason.isNotEmpty) 'reason': reason,
+      },
+    );
+
+    return RetailOperationSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<RetailOperationSnapshot> adjustRetailStock({
+    required String sku,
+    required int quantityDelta,
+    required String reason,
+    String? documentNumber,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/retail/inventory/adjust',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'sku': sku,
+        'quantity_delta': quantityDelta,
+        'reason': reason,
+        if (documentNumber != null && documentNumber.isNotEmpty)
+          'document_number': documentNumber,
+      },
+    );
+
+    return RetailOperationSnapshot.fromJson(_dataMap(response));
+  }
+
+  @override
+  Future<RetailOperationSnapshot> processRetailReturn({
+    required String documentNumber,
+    required List<Map<String, dynamic>> lines,
+    String? reason,
+  }) async {
+    final response = await _requestJson(
+      path: '$_apiPrefix/retail/inventory/returns',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {
+        'document_number': documentNumber,
+        'lines': lines,
+        if (reason != null && reason.isNotEmpty) 'reason': reason,
+      },
+    );
+
+    return RetailOperationSnapshot.fromJson(_dataMap(response));
   }
 
   Future<DeviceCredentials> _refreshCredentials(

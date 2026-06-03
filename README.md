@@ -1,17 +1,21 @@
 # POS Platform Workspace
 
-This repository contains the approved implementation through Phase 3 of the multi-tenant POS platform:
+This repository contains the approved local implementation through Phase 4 of the multi-tenant POS platform:
 
 - [apps/platform](apps/platform) is the Laravel 12 cloud application for tenant-scoped POS state, payments, stored value, sync authority, reporting, and admin operations.
-- [apps/pos](apps/pos) is the Flutter POS client for device auth, offline cache, local queues, printing, and the Phase 2 tendering surface.
+- [apps/pos](apps/pos) is the Flutter POS client for device auth, offline cache, local queues, printing, tendering, workforce, delivery, and retail operations.
 - [infra/docker-compose.yml](infra/docker-compose.yml) provides local PostgreSQL 16 and Redis services for development.
 
-## Implemented scope (Phase 1a -> Phase 3)
+## Implemented scope (Phase 1a -> Phase 4)
 
 - Phase 1a and 1b foundations: tenancy, stores, devices, auth, sync primitives, catalog, pricing, tax, register sessions, customer basics, discounts, table leases, print routing, and business-day reporting
 - Phase 2 backend: payment boundary, cash and card tenders, split tenders, tips, refunds, voids, gift cards, memberships, sync recovery runs, audit logs, and billing metering hooks
 - Phase 2 Flutter client: cash/card/split/gift-card checkout, stored-value lookup and issue/top-up, membership activation and lookup, receipt and label spool handling, and sync recovery controls
 - Phase 3 backend: salon services, staff profiles, staff-service assignments, appointment slot claims with no-overlap enforcement, appointment lifecycle (confirm/check-in/complete), shift and attendance tracking, hourly wage rules, dynamic commission rules, weekly payroll snapshot generation, and labor analytics APIs
+- Phase 4 backend: delivery adapter framework, aggregator/Uber Eats/DoorDash adapter paths, canonical menu sync, order ingest/status updates, retail SKU/barcode inventory flows, retail promotions, and Phase 4 reporting paths
+- Phase 3/4 Flutter client: workforce, delivery, and retail operation surfaces wired to the POS API gateway
+- Back-office admin workspaces: catalog, customers, stored value, restaurant setup, workforce, delivery, retail, reporting, exceptions, feature flags, privacy exports/tombstones, and archived-record reads
+- Readiness automation: POS API version gates, reporting-replica query routing, DLQ incident monitoring, retention pruning, archive access logging, canary deployment script, and DR/failover checklist
 
 ## Prerequisites
 
@@ -96,7 +100,7 @@ For Android terminal checkout testing:
 flutter run -d android
 ```
 
-The Android `pos_app/pax_terminal` bridge is wired for the PAX flow contract and currently returns `in_doubt` unless a POSLink-backed call is linked in `PaxTerminalChannel.kt`.
+The Android `pos_app/pax_terminal` bridge is wired for POSLink-backed PAX sale execution and in-doubt recovery. Production rollout still requires terminal boarding values, acquirer certification evidence, and live estate mapping.
 
 When the POS app opens:
 

@@ -34,6 +34,14 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
   late final TextEditingController _customerSearchController;
   late final TextEditingController _tablePartyNameController;
   late final TextEditingController _tableGuestCountController;
+  late final TextEditingController _staffProfileIdController;
+  late final TextEditingController _shiftIdController;
+  late final TextEditingController _shiftCashController;
+  late final TextEditingController _retailSkuController;
+  late final TextEditingController _retailQuantityDeltaController;
+  late final TextEditingController _retailDocumentNumberController;
+  late final TextEditingController _retailDestinationStoreController;
+  late final TextEditingController _retailReasonController;
 
   @override
   void initState() {
@@ -61,6 +69,14 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
     _customerSearchController = TextEditingController();
     _tablePartyNameController = TextEditingController();
     _tableGuestCountController = TextEditingController();
+    _staffProfileIdController = TextEditingController();
+    _shiftIdController = TextEditingController();
+    _shiftCashController = TextEditingController();
+    _retailSkuController = TextEditingController();
+    _retailQuantityDeltaController = TextEditingController();
+    _retailDocumentNumberController = TextEditingController();
+    _retailDestinationStoreController = TextEditingController();
+    _retailReasonController = TextEditingController();
   }
 
   @override
@@ -86,6 +102,14 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
     _customerSearchController.dispose();
     _tablePartyNameController.dispose();
     _tableGuestCountController.dispose();
+    _staffProfileIdController.dispose();
+    _shiftIdController.dispose();
+    _shiftCashController.dispose();
+    _retailSkuController.dispose();
+    _retailQuantityDeltaController.dispose();
+    _retailDocumentNumberController.dispose();
+    _retailDestinationStoreController.dispose();
+    _retailReasonController.dispose();
     super.dispose();
   }
 
@@ -105,7 +129,7 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
           appBar: AppBar(
             backgroundColor: const Color(0xFF1F3A2E),
             foregroundColor: Colors.white,
-            title: const Text('POS Phase 2'),
+            title: const Text('POS Operations'),
             actions: [
               IconButton(
                 tooltip: 'Reload local state',
@@ -125,8 +149,8 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
                   _HeroCard(
                     title: 'Store Operations Console',
                     body: controller.isEnrolled
-                        ? 'Phase 2 keeps the approved register, table, and customer operations intact while adding split tenders, card flows, gift cards, memberships, sync recovery, and label printing on the same device surface.'
-                        : 'Enroll the device with a store-scoped code to unlock the approved Phase 2 operating surface.',
+                        ? 'Register, table, tendering, workforce, delivery, retail, sync recovery, and print operations stay on one device surface.'
+                        : 'Enroll the device with a store-scoped code to unlock the approved operating surface.',
                   ),
                   if (controller.errorMessage != null) ...[
                     const SizedBox(height: 16),
@@ -286,6 +310,92 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
                         ),
                       ),
                       onRelease: controller.releaseDiningTable,
+                    ),
+                    const SizedBox(height: 20),
+                    _SectionTitle(
+                      title: 'Workforce, Delivery & Retail',
+                      subtitle:
+                          'Phase 3/4 operations use cloud-authoritative endpoints and keep local state refreshed for offline-safe visibility.',
+                    ),
+                    const SizedBox(height: 12),
+                    _AdvancedOperationsCard(
+                      staff: controller.workforceStaff,
+                      appointments: controller.appointments,
+                      laborAnalytics: controller.laborAnalytics,
+                      deliveryOrders: controller.deliveryOrders,
+                      lastRetailOperation: controller.lastRetailOperation,
+                      staffProfileIdController: _staffProfileIdController,
+                      shiftIdController: _shiftIdController,
+                      shiftCashController: _shiftCashController,
+                      skuController: _retailSkuController,
+                      quantityDeltaController: _retailQuantityDeltaController,
+                      documentNumberController: _retailDocumentNumberController,
+                      destinationStoreController:
+                          _retailDestinationStoreController,
+                      reasonController: _retailReasonController,
+                      isBusy: isBusy,
+                      onRefresh: controller.refreshPhaseThreeFourOperations,
+                      onCheckInAppointment: controller.checkInAppointment,
+                      onCompleteAppointment: controller.completeAppointment,
+                      onOpenShift: () => controller.openStaffShift(
+                        staffProfileId: _staffProfileIdController.text,
+                        openingCashMinor: int.tryParse(
+                          _shiftCashController.text,
+                        ),
+                      ),
+                      onCloseShift: () => controller.closeStaffShift(
+                        shiftId: _shiftIdController.text,
+                        closingCashMinor: int.tryParse(
+                          _shiftCashController.text,
+                        ),
+                        notes: _retailReasonController.text,
+                      ),
+                      onPauseDelivery: () =>
+                          controller.setStoreDeliveryAvailability(false),
+                      onResumeDelivery: () =>
+                          controller.setStoreDeliveryAvailability(true),
+                      onConfirmDelivery: controller.confirmDeliveryOrder,
+                      onMarkDeliveryReady: (linkId) =>
+                          controller.updateDeliveryOrderStatus(
+                            linkId: linkId,
+                            status: 'ready',
+                          ),
+                      onLookupRetail: () => controller.lookupRetailInventory(
+                        sku: _retailSkuController.text,
+                      ),
+                      onReceiveRetail: () => controller.receiveRetailStock(
+                        documentNumber: _retailDocumentNumberController.text,
+                        sku: _retailSkuController.text,
+                        quantity:
+                            int.tryParse(_retailQuantityDeltaController.text) ??
+                            0,
+                        reason: _retailReasonController.text,
+                      ),
+                      onTransferRetail: () => controller.transferRetailStock(
+                        destinationStoreId:
+                            _retailDestinationStoreController.text,
+                        documentNumber: _retailDocumentNumberController.text,
+                        sku: _retailSkuController.text,
+                        quantity:
+                            int.tryParse(_retailQuantityDeltaController.text) ??
+                            0,
+                        reason: _retailReasonController.text,
+                      ),
+                      onAdjustRetail: () => controller.adjustRetailStock(
+                        sku: _retailSkuController.text,
+                        quantityDelta:
+                            int.tryParse(_retailQuantityDeltaController.text) ??
+                            0,
+                        reason: _retailReasonController.text,
+                      ),
+                      onReturnRetail: () => controller.processRetailReturn(
+                        documentNumber: _retailDocumentNumberController.text,
+                        sku: _retailSkuController.text,
+                        quantity:
+                            int.tryParse(_retailQuantityDeltaController.text) ??
+                            0,
+                        reason: _retailReasonController.text,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     _SectionTitle(
@@ -1750,8 +1860,7 @@ class _CatalogCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           FilledButton.tonal(
-                            onPressed:
-                                isBusy || payment.status != 'captured'
+                            onPressed: isBusy || payment.status != 'captured'
                                 ? null
                                 : () => onVoid(payment.paymentId),
                             child: const Text('Void'),
@@ -1764,6 +1873,456 @@ class _CatalogCard extends StatelessWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _AdvancedOperationsCard extends StatelessWidget {
+  const _AdvancedOperationsCard({
+    required this.staff,
+    required this.appointments,
+    required this.laborAnalytics,
+    required this.deliveryOrders,
+    required this.lastRetailOperation,
+    required this.staffProfileIdController,
+    required this.shiftIdController,
+    required this.shiftCashController,
+    required this.skuController,
+    required this.quantityDeltaController,
+    required this.documentNumberController,
+    required this.destinationStoreController,
+    required this.reasonController,
+    required this.isBusy,
+    required this.onRefresh,
+    required this.onCheckInAppointment,
+    required this.onCompleteAppointment,
+    required this.onOpenShift,
+    required this.onCloseShift,
+    required this.onPauseDelivery,
+    required this.onResumeDelivery,
+    required this.onConfirmDelivery,
+    required this.onMarkDeliveryReady,
+    required this.onLookupRetail,
+    required this.onReceiveRetail,
+    required this.onTransferRetail,
+    required this.onAdjustRetail,
+    required this.onReturnRetail,
+  });
+
+  final List<WorkforceStaffSnapshot> staff;
+  final List<AppointmentSnapshot> appointments;
+  final Map<String, dynamic>? laborAnalytics;
+  final List<DeliveryOrderSnapshot> deliveryOrders;
+  final RetailOperationSnapshot? lastRetailOperation;
+  final TextEditingController staffProfileIdController;
+  final TextEditingController shiftIdController;
+  final TextEditingController shiftCashController;
+  final TextEditingController skuController;
+  final TextEditingController quantityDeltaController;
+  final TextEditingController documentNumberController;
+  final TextEditingController destinationStoreController;
+  final TextEditingController reasonController;
+  final bool isBusy;
+  final VoidCallback onRefresh;
+  final ValueChanged<String> onCheckInAppointment;
+  final ValueChanged<String> onCompleteAppointment;
+  final VoidCallback onOpenShift;
+  final VoidCallback onCloseShift;
+  final VoidCallback onPauseDelivery;
+  final VoidCallback onResumeDelivery;
+  final ValueChanged<String> onConfirmDelivery;
+  final ValueChanged<String> onMarkDeliveryReady;
+  final VoidCallback onLookupRetail;
+  final VoidCallback onReceiveRetail;
+  final VoidCallback onTransferRetail;
+  final VoidCallback onAdjustRetail;
+  final VoidCallback onReturnRetail;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              FilledButton.icon(
+                onPressed: isBusy ? null : onRefresh,
+                icon: const Icon(Icons.sync),
+                label: const Text('Refresh Ops'),
+              ),
+              FilledButton.tonal(
+                onPressed: isBusy ? null : onPauseDelivery,
+                child: const Text('Pause Delivery'),
+              ),
+              FilledButton.tonal(
+                onPressed: isBusy ? null : onResumeDelivery,
+                child: const Text('Resume Delivery'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              _MetricPill(label: 'Staff', value: '${staff.length}'),
+              _MetricPill(
+                label: 'Appointments',
+                value: '${appointments.length}',
+              ),
+              _MetricPill(label: 'Delivery', value: '${deliveryOrders.length}'),
+              _MetricPill(
+                label: 'Labor Sales',
+                value: _formatMinor(
+                  laborAnalytics?['gross_sales_minor'] as int? ?? 0,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _OperationsPanel(
+            title: 'Appointments',
+            child: appointments.isEmpty
+                ? const Text('No appointment work is cached for this store.')
+                : Column(
+                    children: appointments
+                        .take(6)
+                        .map((appointment) {
+                          final canCheckIn =
+                              appointment.status == 'booked' ||
+                              appointment.status == 'confirmed';
+                          final canComplete =
+                              appointment.status == 'checked_in' ||
+                              appointment.status == 'in_progress';
+
+                          return _OperationListTile(
+                            title:
+                                appointment.customerName ??
+                                appointment.customerId ??
+                                'Walk-in',
+                            subtitle:
+                                '${appointment.status} - ${appointment.startsAt} to ${appointment.endsAt}',
+                            trailing: Wrap(
+                              spacing: 8,
+                              children: [
+                                TextButton(
+                                  onPressed: isBusy || !canCheckIn
+                                      ? null
+                                      : () => onCheckInAppointment(
+                                          appointment.id,
+                                        ),
+                                  child: const Text('Check in'),
+                                ),
+                                TextButton(
+                                  onPressed: isBusy || !canComplete
+                                      ? null
+                                      : () => onCompleteAppointment(
+                                          appointment.id,
+                                        ),
+                                  child: const Text('Complete'),
+                                ),
+                              ],
+                            ),
+                          );
+                        })
+                        .toList(growable: false),
+                  ),
+          ),
+          const SizedBox(height: 14),
+          _OperationsPanel(
+            title: 'Staff Shifts & Labor',
+            child: Column(
+              children: [
+                if (staff.isNotEmpty)
+                  ...staff
+                      .take(5)
+                      .map(
+                        (member) => _OperationListTile(
+                          title: member.displayName,
+                          subtitle:
+                              '${member.roleTitle ?? 'Staff'} - ${member.id}',
+                          trailing: TextButton(
+                            onPressed: isBusy
+                                ? null
+                                : () {
+                                    staffProfileIdController.text = member.id;
+                                    onOpenShift();
+                                  },
+                            child: const Text('Open shift'),
+                          ),
+                        ),
+                      )
+                else
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('No staff profiles are cached for this store.'),
+                  ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: staffProfileIdController,
+                        decoration: const InputDecoration(
+                          labelText: 'Staff Profile ID',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        controller: shiftIdController,
+                        decoration: const InputDecoration(
+                          labelText: 'Shift ID',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: shiftCashController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Cash Minor Units',
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onOpenShift,
+                      child: const Text('Open Shift'),
+                    ),
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onCloseShift,
+                      child: const Text('Close Shift'),
+                    ),
+                  ],
+                ),
+                if (laborAnalytics != null) ...[
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Labor snapshot: ${laborAnalytics.toString()}',
+                      style: const TextStyle(color: Color(0xFF4A564E)),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          if (deliveryOrders.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            _OperationsPanel(
+              title: 'Delivery Orders',
+              child: Column(
+                children: deliveryOrders
+                    .take(6)
+                    .map((order) {
+                      return _OperationListTile(
+                        title: '${order.channelKey} ${order.externalOrderId}',
+                        subtitle: '${order.status} - link ${order.id}',
+                        trailing: Wrap(
+                          spacing: 8,
+                          children: [
+                            TextButton(
+                              onPressed: isBusy
+                                  ? null
+                                  : () => onConfirmDelivery(order.id),
+                              child: const Text('Confirm'),
+                            ),
+                            TextButton(
+                              onPressed: isBusy
+                                  ? null
+                                  : () => onMarkDeliveryReady(order.id),
+                              child: const Text('Ready'),
+                            ),
+                          ],
+                        ),
+                      );
+                    })
+                    .toList(growable: false),
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+          _OperationsPanel(
+            title: 'Retail Inventory',
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: skuController,
+                        decoration: const InputDecoration(labelText: 'SKU'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        controller: quantityDeltaController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: 'Qty'),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: documentNumberController,
+                        decoration: const InputDecoration(
+                          labelText: 'Document Number',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        controller: destinationStoreController,
+                        decoration: const InputDecoration(
+                          labelText: 'Destination Store ID',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: reasonController,
+                  decoration: const InputDecoration(labelText: 'Reason'),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onLookupRetail,
+                      child: const Text('Lookup'),
+                    ),
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onReceiveRetail,
+                      child: const Text('Receive'),
+                    ),
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onTransferRetail,
+                      child: const Text('Transfer'),
+                    ),
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onAdjustRetail,
+                      child: const Text('Adjust'),
+                    ),
+                    FilledButton.tonal(
+                      onPressed: isBusy ? null : onReturnRetail,
+                      child: const Text('Return'),
+                    ),
+                  ],
+                ),
+                if (lastRetailOperation != null) ...[
+                  const SizedBox(height: 12),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      lastRetailOperation!.payload.toString(),
+                      style: const TextStyle(color: Color(0xFF4A564E)),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OperationsPanel extends StatelessWidget {
+  const _OperationsPanel({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F6EF),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE0D6C6)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Color(0xFF1F3A2E),
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: 10),
+            child,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OperationListTile extends StatelessWidget {
+  const _OperationListTile({
+    required this.title,
+    required this.subtitle,
+    required this.trailing,
+  });
+
+  final String title;
+  final String subtitle;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF1F3A2E),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Color(0xFF4A564E)),
+                ),
+              ],
+            ),
+          ),
+          trailing,
         ],
       ),
     );
