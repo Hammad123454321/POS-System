@@ -13,7 +13,8 @@ RUN composer install \
       --no-scripts \
       --no-autoloader \
       --no-interaction \
-      --prefer-dist
+      --prefer-dist \
+      --ignore-platform-reqs
 COPY apps/platform/ ./
 RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
 
