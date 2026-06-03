@@ -17,6 +17,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Host nginx terminates TLS and forwards to the FrankenPHP container
+        // on plain HTTP. Without this, Laravel treats every request as HTTP,
+        // generates HTTPS redirects (because APP_URL is https), and the browser
+        // ping-pongs between nginx and the app forever (ERR_TOO_MANY_REDIRECTS).
+        $middleware->trustProxies(at: '*', headers: \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR
+            | \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST
+            | \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT
+            | \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO
+            | \Illuminate\Http\Request::HEADER_X_FORWARDED_AWS_ELB);
+
         $middleware->statefulApi();
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
         $middleware->alias([
