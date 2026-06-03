@@ -58,6 +58,13 @@ class EnsurePosApiHeaders
 
         $request->attributes->set('pos_api_major', $requestedMajor);
 
+        // Drop the {major} URL parameter from the route now that we've captured it.
+        // If we leave it in the route parameters array, Laravel's controller
+        // dependency resolver will spill that string into a positional slot
+        // (Argument #2) and clobber typehinted model bindings further down the
+        // pipeline (e.g. RegisterSession, Appointment) with a "string given" error.
+        $request->route()?->forgetParameter('major');
+
         return $next($request);
     }
 
