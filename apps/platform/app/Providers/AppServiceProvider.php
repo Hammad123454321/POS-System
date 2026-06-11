@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Sanctum\PersonalAccessToken;
+use App\Models\User;
+use App\Modules\PlatformCore\Domain\Models\Merchant;
+use App\Modules\PlatformCore\Domain\Models\Store;
+use App\Modules\PlatformCore\Interfaces\Authorization\MerchantPolicy;
+use App\Modules\PlatformCore\Interfaces\Authorization\StorePolicy;
 use App\Modules\SalonWorkforce\Application\EloquentPayrollCalculator;
 use App\Modules\SalonWorkforce\Contracts\PayrollCalculator;
 use App\Modules\StoredValue\Application\EloquentStoredValueLedger;
@@ -12,6 +17,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Store::class, StorePolicy::class);
+        Gate::policy(Merchant::class, MerchantPolicy::class);
+        Gate::before(fn (User $user): ?bool => $user->is_super_admin ? true : null);
+
         $this->configureDefaults();
     }
 

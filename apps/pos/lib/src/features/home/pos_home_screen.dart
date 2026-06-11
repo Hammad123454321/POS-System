@@ -47,7 +47,11 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
   void initState() {
     super.initState();
     _apiBaseUrlController = TextEditingController(
-      text: widget.controller.bootstrapSnapshot?.apiBaseUrl ?? '',
+      // Prefer the already-enrolled URL; otherwise fall back to the build-time
+      // default supplied via `--dart-define=API_BASE_URL=...`. Lets us ship an
+      // APK that's pre-pointed at production while still allowing manual edits.
+      text: widget.controller.bootstrapSnapshot?.apiBaseUrl
+          ?? const String.fromEnvironment('API_BASE_URL', defaultValue: ''),
     );
     _deviceNameController = TextEditingController(text: 'Front Register');
     _enrollmentCodeController = TextEditingController();

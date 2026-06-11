@@ -42,6 +42,10 @@ class AdminMerchantPrivacyController extends Controller
 
     private function canExportMerchant(Request $request, Merchant $merchant): bool
     {
+        if ($request->user()?->is_super_admin) {
+            return true;
+        }
+
         return DB::table('user_store_role')
             ->join('roles', 'roles.id', '=', 'user_store_role.role_id')
             ->join('stores', 'stores.id', '=', 'user_store_role.store_id')

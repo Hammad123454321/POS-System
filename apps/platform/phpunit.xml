@@ -30,7 +30,9 @@
         <env name="DB_USERNAME" value="pos_app"/>
         <env name="DB_PASSWORD" value="pos_app"/>
         <env name="DB_URL" value=""/>
+        <env name="FORTIFY_REGISTRATION_ENABLED" value="true"/>
         <env name="MAIL_MAILER" value="array"/>
+        <env name="POS_REPORTING_DB_CONNECTION" value="pgsql"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="REDIS_CLIENT" value="phpredis"/>
         <env name="REDIS_HOST" value="127.0.0.1"/>

@@ -54,6 +54,10 @@ class CreateDiningTable
 
     private function canManageRestaurantConfig(User $actor, Store $store): bool
     {
+        if ($actor->is_super_admin) {
+            return true;
+        }
+
         return DB::table('user_store_role')
             ->join('roles', 'roles.id', '=', 'user_store_role.role_id')
             ->where('user_store_role.user_id', $actor->id)

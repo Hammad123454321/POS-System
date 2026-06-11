@@ -31,6 +31,7 @@ use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceEnrollmentCodeCon
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceStatusEventController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\PosBootstrapController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\StoreFeatureFlagController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\MerchantController as SuperAdminMerchantController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedAuditLogController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedPayrollSnapshotController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedReceiptController;
@@ -63,6 +64,7 @@ use App\Modules\StoredValue\Interfaces\Http\Controllers\GiftCardLookupController
 use App\Modules\StoredValue\Interfaces\Http\Controllers\GiftCardTopUpController;
 use App\Modules\StoredValue\Interfaces\Http\Controllers\MembershipActivateController;
 use App\Modules\StoredValue\Interfaces\Http\Controllers\MembershipLookupController;
+use App\Platform\Http\Middleware\ApplyAdminRequestContext;
 use App\Platform\Http\Middleware\ApplyPosRequestContext;
 use App\Platform\Http\Middleware\EnsurePosApiHeaders;
 use App\Platform\Http\Middleware\RequireIdempotencyKey;
@@ -70,6 +72,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('webhooks/fiserv/trans-notify', FiservTransNotifyWebhookController::class)
     ->name('webhooks.fiserv.trans_notify');
+
+Route::prefix('super-admin/v1')
+    ->middleware(['auth:sanctum', 'super.admin'])
+    ->group(function (): void {
+        Route::get('merchants', [SuperAdminMerchantController::class, 'index'])
+            ->name('super_admin.merchants.index');
+        Route::post('merchants', [SuperAdminMerchantController::class, 'store'])
+            ->name('super_admin.merchants.store');
+        Route::post('merchants/{merchant}/suspend', [SuperAdminMerchantController::class, 'suspend'])
+            ->name('super_admin.merchants.suspend');
+        Route::post('merchants/{merchant}/reinstate', [SuperAdminMerchantController::class, 'reinstate'])
+            ->name('super_admin.merchants.reinstate');
+    });
 
 Route::prefix('pos/v{major}')
     ->whereNumber('major')
@@ -182,7 +197,7 @@ Route::prefix('pos/v{major}')
     });
 
 Route::prefix('admin/v1')
-    ->middleware(['auth:sanctum'])
+    ->middleware(['auth:sanctum', ApplyAdminRequestContext::class])
     ->group(function (): void {
         Route::post('stores/{store}/device-enrollment-codes', DeviceEnrollmentCodeController::class)
             ->name('admin.device_enrollment_codes.store');

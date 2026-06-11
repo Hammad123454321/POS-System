@@ -81,7 +81,6 @@ jobs:
         run: vendor/bin/pint --test
 
       - name: Run tests
-        continue-on-error: true
         env:
           APP_ENV: testing
           DB_CONNECTION: pgsql
@@ -95,6 +94,7 @@ jobs:
           CACHE_STORE: array
           SESSION_DRIVER: array
           QUEUE_CONNECTION: sync
+          POS_REPORTING_DB_CONNECTION: pgsql
         run: php artisan test
 
   deploy:

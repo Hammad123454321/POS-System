@@ -4,6 +4,10 @@ import { Head } from '@inertiajs/vue3';
 
 const props = defineProps<{
     section?: string;
+    auth?: {
+        isSuperAdmin?: boolean;
+        permissions?: string[];
+    };
 }>();
 
 type FieldType = 'text' | 'number' | 'textarea';
@@ -28,6 +32,7 @@ type WorkspaceAction = {
 type Workspace = {
     key: string;
     label: string;
+    requiredPermission: string;
     eyebrow: string;
     title: string;
     description: string;
@@ -45,6 +50,7 @@ const workspaces: Workspace[] = [
     {
         key: 'catalog',
         label: 'Catalog',
+        requiredPermission: 'catalog.manage',
         eyebrow: 'Menu and pricing',
         title: 'Keep the sellable catalog tidy',
         description:
@@ -103,6 +109,7 @@ const workspaces: Workspace[] = [
     {
         key: 'customers',
         label: 'Customers',
+        requiredPermission: 'users.manage',
         eyebrow: 'Profiles and care',
         title: 'Look after customer records without touching sales history',
         description:
@@ -130,6 +137,7 @@ const workspaces: Workspace[] = [
     {
         key: 'stored-value',
         label: 'Stored Value',
+        requiredPermission: 'catalog.manage',
         eyebrow: 'Memberships',
         title: 'Manage plans that carry value over time',
         description:
@@ -165,6 +173,7 @@ const workspaces: Workspace[] = [
     {
         key: 'restaurant',
         label: 'Restaurant',
+        requiredPermission: 'stores.manage',
         eyebrow: 'Dining room and print',
         title: 'Set up tables and route tickets cleanly',
         description:
@@ -206,6 +215,7 @@ const workspaces: Workspace[] = [
     {
         key: 'workforce',
         label: 'Workforce',
+        requiredPermission: 'users.manage',
         eyebrow: 'Staff and payroll',
         title: 'Keep salon and labor operations current',
         description:
@@ -247,6 +257,7 @@ const workspaces: Workspace[] = [
     {
         key: 'delivery',
         label: 'Delivery',
+        requiredPermission: 'delivery.manage',
         eyebrow: 'Channels and availability',
         title: 'Control what delivery channels can sell',
         description:
@@ -301,6 +312,7 @@ const workspaces: Workspace[] = [
     {
         key: 'retail',
         label: 'Retail',
+        requiredPermission: 'catalog.manage',
         eyebrow: 'Inventory and promos',
         title: 'Move stock with a paper trail',
         description:
@@ -343,6 +355,7 @@ const workspaces: Workspace[] = [
     {
         key: 'reports',
         label: 'Reports',
+        requiredPermission: 'reports.view',
         eyebrow: 'Read-only insight',
         title: 'Check the business without leaning on the write database',
         description:
@@ -379,6 +392,7 @@ const workspaces: Workspace[] = [
     {
         key: 'exceptions',
         label: 'Exceptions',
+        requiredPermission: 'orders.view',
         eyebrow: 'Manual review',
         title: 'Resolve the work that needs a human',
         description:
@@ -413,6 +427,7 @@ const workspaces: Workspace[] = [
     {
         key: 'feature-flags',
         label: 'Feature Flags',
+        requiredPermission: 'stores.manage',
         eyebrow: 'Controlled rollout',
         title: 'Change rollout behavior deliberately',
         description:
@@ -457,6 +472,7 @@ const workspaces: Workspace[] = [
     {
         key: 'privacy',
         label: 'Privacy',
+        requiredPermission: 'users.manage',
         eyebrow: 'Customer trust',
         title: 'Handle privacy requests carefully',
         description:
@@ -517,6 +533,7 @@ const workspaces: Workspace[] = [
     {
         key: 'archive',
         label: 'Archive',
+        requiredPermission: 'reports.view',
         eyebrow: 'Audited reads',
         title: 'Open archived records with a reason',
         description:
@@ -576,13 +593,30 @@ const workspaces: Workspace[] = [
     },
 ];
 
-const sections = workspaces.map((workspace) => workspace.key);
+const visibleWorkspaces = computed(() => {
+    if (props.auth?.isSuperAdmin) return workspaces;
+
+    const permissions = new Set(props.auth?.permissions ?? []);
+
+    return workspaces.filter((workspace) =>
+        permissions.has(workspace.requiredPermission),
+    );
+});
+
+const sections = computed(() =>
+    visibleWorkspaces.value.map((workspace) => workspace.key),
+);
 const activeSection = computed(() =>
-    sections.includes(props.section ?? '') ? props.section! : 'catalog',
+    sections.value.includes(props.section ?? '')
+        ? props.section!
+        : (visibleWorkspaces.value[0]?.key ?? 'catalog'),
 );
 const activeWorkspace = computed(
     () =>
-        workspaces.find((workspace) => workspace.key === activeSection.value) ??
+        visibleWorkspaces.value.find(
+            (workspace) => workspace.key === activeSection.value,
+        ) ??
+        visibleWorkspaces.value[0] ??
         workspaces[0],
 );
 
@@ -743,7 +777,7 @@ const submitAction = async (action: WorkspaceAction) => {
 
             <nav class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                 <a
-                    v-for="workspace in workspaces"
+                    v-for="workspace in visibleWorkspaces"
                     :key="workspace.key"
                     :href="`/admin/${workspace.key}`"
                     class="rounded-md border px-3 py-3 text-sm transition hover:bg-muted"
