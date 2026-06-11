@@ -23,6 +23,7 @@ use App\Modules\OfflineSync\Interfaces\Http\Controllers\SyncRecoveryRunControlle
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\AdminOrderController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderCashCheckoutController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderController;
+use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderEditLeaseController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\RegisterSessionController;
 use App\Modules\Payments\Interfaces\Http\Controllers\FiservTransNotifyWebhookController;
 use App\Modules\Payments\Interfaces\Http\Controllers\OrderTenderController;
@@ -170,6 +171,9 @@ Route::prefix('pos/v{major}')
                 Route::post('register-sessions/open', [RegisterSessionController::class, 'open'])->name('pos.register.open');
                 Route::post('register-sessions/{registerSession}/close', [RegisterSessionController::class, 'close'])->name('pos.register.close');
                 Route::post('orders', [OrderController::class, 'store'])->name('pos.orders.store');
+                Route::post('orders/{order}/edit-lease', [OrderEditLeaseController::class, 'claim'])->name('pos.orders.edit_lease.claim');
+                Route::post('orders/{order}/edit-lease/heartbeat', [OrderEditLeaseController::class, 'heartbeat'])->name('pos.orders.edit_lease.heartbeat');
+                Route::post('orders/{order}/edit-lease/release', [OrderEditLeaseController::class, 'release'])->name('pos.orders.edit_lease.release');
                 Route::post('orders/{order}/tenders', [OrderTenderController::class, 'store'])->name('pos.orders.tenders.store');
                 Route::post('orders/{order}/cash-checkout', [OrderCashCheckoutController::class, 'store'])->name('pos.orders.cash_checkout');
                 Route::post('payments/{payment}/refunds', [PaymentRefundController::class, 'store'])->name('pos.payments.refunds.store');

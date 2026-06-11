@@ -74,6 +74,8 @@ return [
     'leases' => [
         'table_assignment_ttl_seconds' => 30,
         'table_assignment_heartbeat_seconds' => 10,
+        'order_edit_ttl_seconds' => 45,
+        'order_edit_heartbeat_seconds' => 15,
     ],
 
     'exceptions' => [

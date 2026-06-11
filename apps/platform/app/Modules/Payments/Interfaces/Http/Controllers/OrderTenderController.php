@@ -5,10 +5,12 @@ namespace App\Modules\Payments\Interfaces\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\ExceptionQueue\Application\Actions\OpenExceptionCase;
 use App\Modules\ExceptionQueue\Domain\Models\ExceptionCase;
+use App\Modules\OrderRegister\Application\Concurrency\AssertOrderEditLease;
 use App\Modules\OrderRegister\Domain\Models\Order;
 use App\Modules\Payments\Application\Actions\TenderOrder;
 use App\Modules\Payments\Application\Exceptions\CardInDoubtException;
 use App\Modules\Payments\Interfaces\Http\Requests\TenderOrderRequest;
+use App\Modules\PlatformCore\Application\Concurrency\EditLeaseException;
 use App\Modules\PlatformCore\Domain\Models\Device;
 use DomainException;
 use Illuminate\Http\JsonResponse;
@@ -20,11 +22,14 @@ class OrderTenderController extends Controller
         Order $order,
         TenderOrder $action,
         OpenExceptionCase $openExceptionCase,
+        AssertOrderEditLease $assertLease,
     ): JsonResponse {
         /** @var Device $device */
         $device = $request->user();
 
         try {
+            $assertLease->handle($device, $order);
+
             $receipt = $action->handle(
                 $device,
                 $order,
@@ -92,6 +97,14 @@ class OrderTenderController extends Controller
                 'message' => $exception->getMessage(),
                 'error_code' => 'CARD_IN_DOUBT',
             ], 409);
+        } catch (EditLeaseException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'error_code' => $exception->errorCode,
+                'lease_version' => $exception->leaseVersion,
+                'current_holder_device_id' => $exception->currentHolderDeviceId,
+                'lease_expires_at' => $exception->leaseExpiresAt,
+            ], $exception->status);
         } catch (DomainException $exception) {
             return response()->json(['message' => $exception->getMessage()], 422);
         }
