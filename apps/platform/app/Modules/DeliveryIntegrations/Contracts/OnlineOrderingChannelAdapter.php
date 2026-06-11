@@ -52,4 +52,17 @@ interface OnlineOrderingChannelAdapter
      * @return array<string, mixed>
      */
     public function cancelOrder(array $channelConfig, array $payload): array;
+
+    /**
+     * Verify the HMAC signature on an inbound provider webhook.
+     *
+     * @param  array<string, mixed>  $channelConfig
+     * @param  array<string, string>  $headers  Lower-cased header name => value
+     */
+    public function verifyWebhookSignature(array $channelConfig, string $rawBody, array $headers): bool;
+
+    /**
+     * The lower-cased HTTP header carrying this channel's webhook signature.
+     */
+    public function webhookSignatureHeader(): string;
 }

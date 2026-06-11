@@ -15,6 +15,7 @@ use App\Modules\CustomerValue\Interfaces\Http\Controllers\CustomerSearchControll
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\AdminDeliveryChannelConfigController;
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryAvailabilityController;
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryOrderController;
+use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryWebhookController;
 use App\Modules\ExceptionQueue\Interfaces\Http\Controllers\AdminResolveExceptionCaseController;
 use App\Modules\ExceptionQueue\Interfaces\Http\Controllers\OpenExceptionCaseController;
 use App\Modules\Identity\Interfaces\Http\Controllers\AdminStoreUserController;
@@ -82,6 +83,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('webhooks/fiserv/trans-notify', FiservTransNotifyWebhookController::class)
     ->name('webhooks.fiserv.trans_notify');
+
+Route::post('webhooks/delivery/{channel}', DeliveryWebhookController::class)
+    ->whereIn('channel', ['uber_eats', 'door_dash'])
+    ->name('webhooks.delivery.ingest');
 
 Route::prefix('super-admin/v1')
     ->middleware(['auth:sanctum', 'super.admin'])

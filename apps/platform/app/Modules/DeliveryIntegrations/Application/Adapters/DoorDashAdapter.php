@@ -52,4 +52,9 @@ class DoorDashAdapter extends AggregatorAdapter
             'order_status' => $providerStatus,
         ];
     }
+
+    public function webhookSignatureHeader(): string
+    {
+        return 'x-doordash-signature';
+    }
 }

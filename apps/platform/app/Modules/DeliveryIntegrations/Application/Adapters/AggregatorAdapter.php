@@ -73,4 +73,28 @@ class AggregatorAdapter implements OnlineOrderingChannelAdapter
             'reason' => $payload['reason'] ?? null,
         ];
     }
+
+    public function webhookSignatureHeader(): string
+    {
+        return 'x-webhook-signature';
+    }
+
+    public function verifyWebhookSignature(array $channelConfig, string $rawBody, array $headers): bool
+    {
+        $secret = (string) ($channelConfig['credentials']['webhook_secret'] ?? '');
+
+        if ($secret === '') {
+            return false;
+        }
+
+        $provided = (string) ($headers[$this->webhookSignatureHeader()] ?? '');
+
+        if ($provided === '') {
+            return false;
+        }
+
+        $expected = hash_hmac('sha256', $rawBody, $secret);
+
+        return hash_equals($expected, strtolower($provided));
+    }
 }
