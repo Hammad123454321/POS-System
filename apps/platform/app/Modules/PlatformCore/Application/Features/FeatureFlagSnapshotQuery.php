@@ -19,6 +19,11 @@ class FeatureFlagSnapshotQuery
             return [];
         }
 
+        $globalFlags = FeatureFlag::query()
+            ->whereNull('merchant_id')
+            ->get()
+            ->keyBy('flag_key');
+
         $merchantFlags = FeatureFlag::query()
             ->where('merchant_id', $device->merchant_id)
             ->get()
@@ -34,6 +39,16 @@ class FeatureFlagSnapshotQuery
 
         foreach ($definitions as $flagKey => $definition) {
             $value = $definition['default'] ?? false;
+
+            // Platform-wide override (merchant_id NULL) sits beneath merchant flags.
+            /** @var FeatureFlag|null $globalFlag */
+            $globalFlag = $globalFlags->get($flagKey);
+
+            if ($globalFlag !== null) {
+                $value = $globalFlag->is_enabled
+                    ? $this->decodeValue($globalFlag->value_json, true)
+                    : false;
+            }
 
             /** @var FeatureFlag|null $merchantFlag */
             $merchantFlag = $merchantFlags->get($flagKey);

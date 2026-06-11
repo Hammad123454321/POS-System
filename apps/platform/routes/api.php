@@ -31,6 +31,7 @@ use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceEnrollmentCodeCon
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceStatusEventController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\PosBootstrapController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\StoreFeatureFlagController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\FeatureFlagController as SuperAdminFeatureFlagController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\MerchantController as SuperAdminMerchantController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedAuditLogController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedPayrollSnapshotController;
@@ -84,6 +85,10 @@ Route::prefix('super-admin/v1')
             ->name('super_admin.merchants.suspend');
         Route::post('merchants/{merchant}/reinstate', [SuperAdminMerchantController::class, 'reinstate'])
             ->name('super_admin.merchants.reinstate');
+        Route::get('feature-flags', [SuperAdminFeatureFlagController::class, 'index'])
+            ->name('super_admin.feature_flags.index');
+        Route::post('feature-flags/{flagKey}', [SuperAdminFeatureFlagController::class, 'upsert'])
+            ->name('super_admin.feature_flags.upsert');
     });
 
 Route::prefix('pos/v{major}')

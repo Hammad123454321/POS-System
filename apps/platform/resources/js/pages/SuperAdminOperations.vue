@@ -104,7 +104,7 @@ const createMerchant = async () => {
                     <h2 class="text-xl font-bold">Workspaces</h2>
                     <ul class="mt-4 space-y-3 text-sm text-slate-300">
                         <li>Merchants API: `/api/super-admin/v1/merchants`</li>
-                        <li>Global flags: planned next on this surface</li>
+                        <li>Global flags API: `/api/super-admin/v1/feature-flags`</li>
                         <li>Invitations: managed through role workflow</li>
                     </ul>
                 </aside>
