@@ -15,6 +15,7 @@ use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryAvailab
 use App\Modules\DeliveryIntegrations\Interfaces\Http\Controllers\DeliveryOrderController;
 use App\Modules\ExceptionQueue\Interfaces\Http\Controllers\AdminResolveExceptionCaseController;
 use App\Modules\ExceptionQueue\Interfaces\Http\Controllers\OpenExceptionCaseController;
+use App\Modules\Identity\Interfaces\Http\Controllers\AdminStoreUserController;
 use App\Modules\OfflineSync\Interfaces\Http\Controllers\SyncController;
 use App\Modules\OfflineSync\Interfaces\Http\Controllers\SyncRecoveryRunController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderCashCheckoutController;
@@ -216,6 +217,16 @@ Route::prefix('admin/v1')
             ->name('admin.stores.store');
         Route::get('device-profiles', [AdminDeviceProfileController::class, 'index'])
             ->name('admin.device_profiles.index');
+        Route::get('stores/{store}/users', [AdminStoreUserController::class, 'index'])
+            ->name('admin.users.index');
+        Route::get('stores/{store}/roles', [AdminStoreUserController::class, 'roles'])
+            ->name('admin.users.roles');
+        Route::post('stores/{store}/users/invitations', [AdminStoreUserController::class, 'invite'])
+            ->name('admin.users.invite');
+        Route::post('stores/{store}/users/{user}/roles', [AdminStoreUserController::class, 'assignRole'])
+            ->name('admin.users.roles.assign');
+        Route::delete('stores/{store}/users/{user}/roles/{role}', [AdminStoreUserController::class, 'revokeRole'])
+            ->name('admin.users.roles.revoke');
         Route::get('stores/{store}/devices', [AdminDeviceController::class, 'index'])
             ->name('admin.devices.index');
         Route::post('stores/{store}/devices/{device}/deactivate', [AdminDeviceController::class, 'deactivate'])
