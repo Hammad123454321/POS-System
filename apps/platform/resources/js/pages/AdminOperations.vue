@@ -169,6 +169,44 @@ const workspaces: Workspace[] = [
         ],
         actions: [
             {
+                title: 'List Catalog Items',
+                method: 'GET',
+                path: '/api/admin/v1/stores/{store_id}/catalog/items',
+                intent: 'Browse catalog items for a store.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'category_id', label: 'Category ID filter' },
+                    { key: 'q', label: 'Name/SKU search' },
+                ],
+            },
+            {
+                title: 'Create Catalog Item',
+                method: 'POST',
+                path: '/api/admin/v1/stores/{store_id}/catalog/items',
+                intent: 'Add a sellable product or service.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'name', label: 'Name', required: true },
+                    { key: 'type', label: 'Type (product/service)', required: true },
+                    { key: 'base_price_minor', label: 'Base Price Minor', type: 'number', required: true },
+                    { key: 'currency', label: 'Currency (e.g. USD)', required: true },
+                    { key: 'sku', label: 'SKU' },
+                    { key: 'category_id', label: 'Category ID' },
+                    { key: 'tax_rule_id', label: 'Tax Rule ID' },
+                ],
+            },
+            {
+                title: 'Create Category',
+                method: 'POST',
+                path: '/api/admin/v1/stores/{store_id}/catalog/categories',
+                intent: 'Add a category to group catalog items.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'name', label: 'Category Name', required: true },
+                    { key: 'sort_order', label: 'Sort Order', type: 'number' },
+                ],
+            },
+            {
                 title: 'Create Variant',
                 method: 'POST',
                 path: '/api/admin/v1/stores/{store_id}/catalog/variants',

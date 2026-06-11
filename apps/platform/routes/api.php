@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminCatalogItemAddOnController;
+use App\Modules\Catalog\Interfaces\Http\Controllers\AdminCatalogItemController;
+use App\Modules\Catalog\Interfaces\Http\Controllers\AdminCategoryController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminComboPackageController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminDiscountRuleController;
 use App\Modules\Catalog\Interfaces\Http\Controllers\AdminModifierGroupController;
@@ -250,6 +252,22 @@ Route::prefix('admin/v1')
             ->name('admin.merchants.privacy_export');
         Route::post('stores/{store}/discount-rules', AdminDiscountRuleController::class)
             ->name('admin.discount_rules.store');
+        Route::get('stores/{store}/catalog/items', [AdminCatalogItemController::class, 'index'])
+            ->name('admin.catalog.items.index');
+        Route::post('stores/{store}/catalog/items', [AdminCatalogItemController::class, 'store'])
+            ->name('admin.catalog.items.store');
+        Route::put('stores/{store}/catalog/items/{catalogItem}', [AdminCatalogItemController::class, 'update'])
+            ->name('admin.catalog.items.update');
+        Route::post('stores/{store}/catalog/items/{catalogItem}/deactivate', [AdminCatalogItemController::class, 'deactivate'])
+            ->name('admin.catalog.items.deactivate');
+        Route::get('stores/{store}/catalog/categories', [AdminCategoryController::class, 'index'])
+            ->name('admin.catalog.categories.index');
+        Route::post('stores/{store}/catalog/categories', [AdminCategoryController::class, 'store'])
+            ->name('admin.catalog.categories.store');
+        Route::put('stores/{store}/catalog/categories/{category}', [AdminCategoryController::class, 'update'])
+            ->name('admin.catalog.categories.update');
+        Route::post('stores/{store}/catalog/categories/{category}/deactivate', [AdminCategoryController::class, 'deactivate'])
+            ->name('admin.catalog.categories.deactivate');
         Route::post('stores/{store}/catalog/variants', [AdminVariantController::class, 'store'])
             ->name('admin.catalog.variants.store');
         Route::put('stores/{store}/catalog/variants/{variant}', [AdminVariantController::class, 'update'])
