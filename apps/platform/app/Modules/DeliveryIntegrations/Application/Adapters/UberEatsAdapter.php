@@ -5,6 +5,7 @@ namespace App\Modules\DeliveryIntegrations\Application\Adapters;
 use App\Modules\DeliveryIntegrations\Application\Transformers\UberEats\UberEatsMenuTransformer;
 use App\Modules\DeliveryIntegrations\Application\Transformers\UberEats\UberEatsOrderTransformer;
 use App\Modules\DeliveryIntegrations\Application\Transformers\UberEats\UberEatsStatusTransformer;
+use App\Modules\DeliveryIntegrations\Infrastructure\Http\DeliveryHttpClient;
 use Carbon\CarbonImmutable;
 
 class UberEatsAdapter extends AggregatorAdapter
@@ -13,11 +14,14 @@ class UberEatsAdapter extends AggregatorAdapter
         private readonly UberEatsMenuTransformer $menuTransformer,
         private readonly UberEatsOrderTransformer $orderTransformer,
         private readonly UberEatsStatusTransformer $statusTransformer,
+        private readonly DeliveryHttpClient $httpClient,
     ) {}
 
     public function publishMenu(array $channelConfig, array $canonicalMenu): array
     {
         $providerMenu = $this->menuTransformer->toProviderMenu($canonicalMenu);
+
+        $transport = $this->httpClient->send('uber_eats', $channelConfig, 'PUT', '/v1/eats/stores/menu', $providerMenu);
 
         return [
             'channel_key' => 'uber_eats',
@@ -25,6 +29,7 @@ class UberEatsAdapter extends AggregatorAdapter
             'published_at' => CarbonImmutable::now('UTC')->toIso8601String(),
             'item_count' => count($providerMenu['menus'][0]['items'] ?? []),
             'payload' => $providerMenu,
+            'transport' => $transport['transport'] ?? 'stub',
         ];
     }
 

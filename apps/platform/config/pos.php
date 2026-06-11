@@ -35,6 +35,22 @@ return [
         'queue' => env('POS_DELIVERY_QUEUE', 'delivery'),
     ],
 
+    'delivery_channels' => [
+        'sandbox' => (bool) env('POS_DELIVERY_SANDBOX', true),
+        'timeout_seconds' => (int) env('POS_DELIVERY_TIMEOUT_SECONDS', 10),
+        'connect_timeout_seconds' => (int) env('POS_DELIVERY_CONNECT_TIMEOUT_SECONDS', 3),
+        'retries' => (int) env('POS_DELIVERY_RETRIES', 3),
+        'retry_backoff_ms' => (int) env('POS_DELIVERY_RETRY_BACKOFF_MS', 250),
+        'uber_eats' => [
+            'base_url' => env('UBER_EATS_BASE_URL'),
+            'sandbox_base_url' => env('UBER_EATS_SANDBOX_URL'),
+        ],
+        'door_dash' => [
+            'base_url' => env('DOOR_DASH_BASE_URL'),
+            'sandbox_base_url' => env('DOOR_DASH_SANDBOX_URL'),
+        ],
+    ],
+
     'payments' => [
         'default_provider' => env('POS_DEFAULT_PAYMENT_PROVIDER', 'fiserv_bluepay'),
         'terminal_tip_adjust_supported' => false,
