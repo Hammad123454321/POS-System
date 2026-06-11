@@ -25,12 +25,16 @@ use App\Modules\Payments\Interfaces\Http\Controllers\OrderTenderController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentInquiryController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentRefundController;
 use App\Modules\Payments\Interfaces\Http\Controllers\PaymentVoidController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminDeviceController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminDeviceProfileController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminMerchantPrivacyController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\AdminStoreController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceAuthController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceEnrollmentCodeController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\DeviceStatusEventController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\PosBootstrapController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\StoreFeatureFlagController;
+use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\DeviceProfileController as SuperAdminDeviceProfileController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\FeatureFlagController as SuperAdminFeatureFlagController;
 use App\Modules\PlatformCore\Interfaces\Http\Controllers\SuperAdmin\MerchantController as SuperAdminMerchantController;
 use App\Modules\Reporting\Interfaces\Http\Controllers\AdminArchivedAuditLogController;
@@ -89,6 +93,8 @@ Route::prefix('super-admin/v1')
             ->name('super_admin.feature_flags.index');
         Route::post('feature-flags/{flagKey}', [SuperAdminFeatureFlagController::class, 'upsert'])
             ->name('super_admin.feature_flags.upsert');
+        Route::post('device-profiles', [SuperAdminDeviceProfileController::class, 'store'])
+            ->name('super_admin.device_profiles.store');
     });
 
 Route::prefix('pos/v{major}')
@@ -204,6 +210,16 @@ Route::prefix('pos/v{major}')
 Route::prefix('admin/v1')
     ->middleware(['auth:sanctum', ApplyAdminRequestContext::class])
     ->group(function (): void {
+        Route::get('merchants/{merchant}/stores', [AdminStoreController::class, 'index'])
+            ->name('admin.stores.index');
+        Route::post('merchants/{merchant}/stores', [AdminStoreController::class, 'store'])
+            ->name('admin.stores.store');
+        Route::get('device-profiles', [AdminDeviceProfileController::class, 'index'])
+            ->name('admin.device_profiles.index');
+        Route::get('stores/{store}/devices', [AdminDeviceController::class, 'index'])
+            ->name('admin.devices.index');
+        Route::post('stores/{store}/devices/{device}/deactivate', [AdminDeviceController::class, 'deactivate'])
+            ->name('admin.devices.deactivate');
         Route::post('stores/{store}/device-enrollment-codes', DeviceEnrollmentCodeController::class)
             ->name('admin.device_enrollment_codes.store');
         Route::post('stores/{store}/feature-flags/{flagKey}', StoreFeatureFlagController::class)

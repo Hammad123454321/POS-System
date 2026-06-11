@@ -48,6 +48,73 @@ type OperationState = {
 
 const workspaces: Workspace[] = [
     {
+        key: 'onboarding',
+        label: 'Onboarding',
+        requiredPermission: 'stores.manage',
+        eyebrow: 'Stores and devices',
+        title: 'Bring stores and registers online',
+        description:
+            'Create stores under your merchant, review device profiles, list registers, and mint single-use enrollment codes for new POS devices.',
+        highlights: [
+            'New stores inherit your merchant roles automatically.',
+            'Enrollment codes are single-use and expire in 15 minutes.',
+            'Deactivating a device blocks it from future sync.',
+        ],
+        actions: [
+            {
+                title: 'Create Store',
+                method: 'POST',
+                path: '/api/admin/v1/merchants/{merchant_id}/stores',
+                intent: 'Add a new store location to your merchant.',
+                fields: [
+                    { key: 'merchant_id', label: 'Merchant ID', required: true },
+                    { key: 'name', label: 'Store Name', required: true },
+                    { key: 'code', label: 'Store Code' },
+                    { key: 'mode', label: 'Mode (restaurant/retail/salon)', required: true },
+                    { key: 'timezone', label: 'Timezone (e.g. America/New_York)', required: true },
+                    { key: 'business_day_cutoff', label: 'Business Day Cutoff (HH:MM)', required: true },
+                ],
+            },
+            {
+                title: 'List Device Profiles',
+                method: 'GET',
+                path: '/api/admin/v1/device-profiles',
+                intent: 'See available device profiles for enrollment.',
+                fields: [],
+            },
+            {
+                title: 'List Store Devices',
+                method: 'GET',
+                path: '/api/admin/v1/stores/{store_id}/devices',
+                intent: 'List registers enrolled in a store.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'status', label: 'Status filter (optional)' },
+                ],
+            },
+            {
+                title: 'Mint Enrollment Code',
+                method: 'POST',
+                path: '/api/admin/v1/stores/{store_id}/device-enrollment-codes',
+                intent: 'Generate a single-use code to enroll a new device.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'device_profile_id', label: 'Device Profile ID', required: true },
+                ],
+            },
+            {
+                title: 'Deactivate Device',
+                method: 'POST',
+                path: '/api/admin/v1/stores/{store_id}/devices/{device_id}/deactivate',
+                intent: 'Disable a register so it can no longer sync.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'device_id', label: 'Device ID', required: true },
+                ],
+            },
+        ],
+    },
+    {
         key: 'catalog',
         label: 'Catalog',
         requiredPermission: 'catalog.manage',
