@@ -115,6 +115,46 @@ const workspaces: Workspace[] = [
         ],
     },
     {
+        key: 'orders',
+        label: 'Orders',
+        requiredPermission: 'orders.view',
+        eyebrow: 'Sales ledger',
+        title: 'Browse orders and their details',
+        description:
+            'List orders for a store with filters by status and business date, then open a single order to see its lines, payments, refunds, voids, and receipt.',
+        highlights: [
+            'Reads from the reporting connection so it never loads the write primary.',
+            'Filter by status, device, business-date range, or order number.',
+            'Order detail includes payments with refunds and voids.',
+        ],
+        actions: [
+            {
+                title: 'List Orders',
+                method: 'GET',
+                path: '/api/admin/v1/stores/{store_id}/orders',
+                intent: 'Browse a paginated list of orders for a store.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'status', label: 'Status (open/paid/voided)' },
+                    { key: 'business_date_from', label: 'Business Date From (YYYY-MM-DD)' },
+                    { key: 'business_date_to', label: 'Business Date To (YYYY-MM-DD)' },
+                    { key: 'q', label: 'Order Number Search' },
+                    { key: 'per_page', label: 'Per Page (max 100)', type: 'number' },
+                ],
+            },
+            {
+                title: 'Order Detail',
+                method: 'GET',
+                path: '/api/admin/v1/stores/{store_id}/orders/{order_id}',
+                intent: 'Open a single order with lines, payments, refunds, and voids.',
+                fields: [
+                    { key: 'store_id', label: 'Store ID', required: true },
+                    { key: 'order_id', label: 'Order ID', required: true },
+                ],
+            },
+        ],
+    },
+    {
         key: 'catalog',
         label: 'Catalog',
         requiredPermission: 'catalog.manage',

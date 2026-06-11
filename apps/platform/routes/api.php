@@ -18,6 +18,7 @@ use App\Modules\ExceptionQueue\Interfaces\Http\Controllers\OpenExceptionCaseCont
 use App\Modules\Identity\Interfaces\Http\Controllers\AdminStoreUserController;
 use App\Modules\OfflineSync\Interfaces\Http\Controllers\SyncController;
 use App\Modules\OfflineSync\Interfaces\Http\Controllers\SyncRecoveryRunController;
+use App\Modules\OrderRegister\Interfaces\Http\Controllers\AdminOrderController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderCashCheckoutController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\RegisterSessionController;
@@ -217,6 +218,10 @@ Route::prefix('admin/v1')
             ->name('admin.stores.store');
         Route::get('device-profiles', [AdminDeviceProfileController::class, 'index'])
             ->name('admin.device_profiles.index');
+        Route::get('stores/{store}/orders', [AdminOrderController::class, 'index'])
+            ->name('admin.orders.index');
+        Route::get('stores/{store}/orders/{order}', [AdminOrderController::class, 'show'])
+            ->name('admin.orders.show');
         Route::get('stores/{store}/users', [AdminStoreUserController::class, 'index'])
             ->name('admin.users.index');
         Route::get('stores/{store}/roles', [AdminStoreUserController::class, 'roles'])
