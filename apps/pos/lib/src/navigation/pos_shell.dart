@@ -6,6 +6,7 @@ import '../features/checkout/register_screen.dart';
 import '../features/checkout/tender_screen.dart';
 import '../features/home/pos_home_screen.dart';
 import '../features/home/pos_home_controller.dart';
+import '../features/security/device_lock_screen.dart';
 import '../features/tables/tables_screen.dart';
 
 /// Top-level navigation surface. Branches on controller state:
@@ -47,6 +48,11 @@ class _PosShellState extends State<PosShell> {
 
         if (controller.isLoading && controller.bootstrapSnapshot == null) {
           return const _SplashScreen();
+        }
+
+        // Revoked device → full-screen lock takes over the entire UI.
+        if (controller.requiresReauth) {
+          return DeviceLockScreen(controller: controller);
         }
 
         // Until the dedicated register/tables/appointments + lock screens land,
