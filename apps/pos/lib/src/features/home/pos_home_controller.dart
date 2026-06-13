@@ -923,6 +923,47 @@ class PosHomeController extends ChangeNotifier {
     });
   }
 
+  /// Book an appointment: claim the staff slot, then create the appointment on
+  /// the claim (the PRD's two-step online slot-claim flow).
+  Future<void> bookAppointment({
+    required String staffProfileId,
+    required String serviceItemId,
+    required String startsAt,
+    required String endsAt,
+    String? customerId,
+    String? notes,
+  }) async {
+    await _runBusy(() async {
+      final claim = await _gateway.claimAppointmentSlot(
+        staffProfileId: staffProfileId,
+        startsAt: startsAt,
+        endsAt: endsAt,
+      );
+
+      final slotClaimId =
+          (claim['slot_claim_id'] ?? claim['id'] ?? claim['resource_id'])
+              as String?;
+
+      if (slotClaimId == null) {
+        _errorMessage = 'Slot claim did not return an identifier.';
+        return;
+      }
+
+      await _gateway.createAppointment(
+        slotClaimId: slotClaimId,
+        staffProfileId: staffProfileId,
+        serviceItemId: serviceItemId,
+        startsAt: startsAt,
+        endsAt: endsAt,
+        customerId: customerId,
+        notes: notes,
+      );
+
+      await _refreshOperationalReads();
+      _statusMessage = 'Appointment booked.';
+    });
+  }
+
   Future<void> openStaffShift({
     required String staffProfileId,
     int? openingCashMinor,

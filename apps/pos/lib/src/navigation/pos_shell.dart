@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app/pos_theme.dart';
+import '../features/appointments/appointments_screen.dart';
 import '../features/checkout/register_screen.dart';
 import '../features/checkout/tender_screen.dart';
 import '../features/home/pos_home_screen.dart';
@@ -71,10 +72,12 @@ class _PosShellState extends State<PosShell> {
                   title: 'Tables',
                   message: 'Enroll this device to manage tables.',
                 ),
-          const _PlaceholderTab(
-            title: 'Appointments',
-            message: 'The appointment day-view is coming next.',
-          ),
+          controller.isEnrolled
+              ? AppointmentsScreen(controller: controller)
+              : const _PlaceholderTab(
+                  title: 'Appointments',
+                  message: 'Enroll this device to manage appointments.',
+                ),
           PosHomeScreen(controller: controller, embedded: true),
         ];
 
