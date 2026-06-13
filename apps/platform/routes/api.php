@@ -25,6 +25,7 @@ use App\Modules\OrderRegister\Interfaces\Http\Controllers\AdminOrderController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderCashCheckoutController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\OrderEditLeaseController;
+use App\Modules\OrderRegister\Interfaces\Http\Controllers\ReceiptEmailController;
 use App\Modules\OrderRegister\Interfaces\Http\Controllers\RegisterSessionController;
 use App\Modules\Payments\Interfaces\Http\Controllers\FiservTransNotifyWebhookController;
 use App\Modules\Payments\Interfaces\Http\Controllers\OrderTenderController;
@@ -181,6 +182,7 @@ Route::prefix('pos/v{major}')
                 Route::post('orders/{order}/edit-lease/release', [OrderEditLeaseController::class, 'release'])->name('pos.orders.edit_lease.release');
                 Route::post('orders/{order}/tenders', [OrderTenderController::class, 'store'])->name('pos.orders.tenders.store');
                 Route::post('orders/{order}/cash-checkout', [OrderCashCheckoutController::class, 'store'])->name('pos.orders.cash_checkout');
+                Route::post('receipts/{receipt}/email', ReceiptEmailController::class)->name('pos.receipts.email');
                 Route::post('payments/{payment}/refunds', [PaymentRefundController::class, 'store'])->name('pos.payments.refunds.store');
                 Route::post('payments/{payment}/void', [PaymentVoidController::class, 'store'])->name('pos.payments.void');
                 Route::post('gift-cards/issue', GiftCardIssueController::class)->name('pos.gift_cards.issue');
