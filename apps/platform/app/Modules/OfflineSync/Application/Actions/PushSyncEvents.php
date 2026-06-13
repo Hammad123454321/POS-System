@@ -2,12 +2,17 @@
 
 namespace App\Modules\OfflineSync\Application\Actions;
 
+use App\Modules\OfflineSync\Application\Arbitration\ArbitrateSyncEvent;
 use App\Modules\OfflineSync\Domain\Models\SyncEvent;
 use App\Modules\PlatformCore\Domain\Models\Device;
 use Carbon\CarbonImmutable;
 
 class PushSyncEvents
 {
+    public function __construct(
+        private readonly ArbitrateSyncEvent $arbitrate,
+    ) {}
+
     /**
      * @param  array<int, array{local_event_id: string, entity_type: string, entity_id?: string|null, action: string, payload: array<string, mixed>}>  $events
      * @return array<int, array<string, mixed>>
@@ -32,6 +37,8 @@ class PushSyncEvents
                 continue;
             }
 
+            $verdict = $this->arbitrate->handle($device, $event);
+
             $syncEvent = SyncEvent::query()->create([
                 'merchant_id' => $device->merchant_id,
                 'store_id' => $device->store_id,
@@ -41,7 +48,8 @@ class PushSyncEvents
                 'entity_id' => $event['entity_id'] ?? null,
                 'action' => $event['action'],
                 'payload' => $event['payload'],
-                'status' => 'accepted',
+                'status' => $verdict['status'],
+                'conflict_code' => $verdict['conflict_code'],
                 'received_at' => CarbonImmutable::now('UTC'),
                 'processed_at' => CarbonImmutable::now('UTC'),
             ]);
@@ -49,6 +57,8 @@ class PushSyncEvents
             $accepted[] = [
                 'local_event_id' => $syncEvent->local_event_id,
                 'status' => $syncEvent->status,
+                'conflict_code' => $verdict['conflict_code'],
+                'server_status_seq' => $verdict['server_status_seq'] ?? null,
                 'sync_event_id' => $syncEvent->id,
             ];
         }
