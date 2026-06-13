@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app/pos_theme.dart';
 import '../features/checkout/register_screen.dart';
+import '../features/checkout/tender_screen.dart';
 import '../features/home/pos_home_screen.dart';
 import '../features/home/pos_home_controller.dart';
 
@@ -57,7 +58,8 @@ class _PosShellState extends State<PosShell> {
                 )
               : const _PlaceholderTab(
                   title: 'Register',
-                  message: 'Enroll this device from the Operations tab to begin.',
+                  message:
+                      'Enroll this device from the Operations tab to begin.',
                 ),
           const _PlaceholderTab(
             title: 'Tables',
@@ -86,8 +88,8 @@ class _PosShellState extends State<PosShell> {
                 onPressed: controller.isBusy
                     ? null
                     : (controller.isEnrolled
-                        ? controller.refreshCloudState
-                        : controller.load),
+                          ? controller.refreshCloudState
+                          : controller.load),
                 icon: const Icon(Icons.refresh),
               ),
             ],
@@ -119,10 +121,7 @@ class _PosShellState extends State<PosShell> {
                   onDestinationSelected: (i) => setState(() => _index = i),
                   destinations: [
                     for (final d in _destinations)
-                      NavigationDestination(
-                        icon: Icon(d.icon),
-                        label: d.label,
-                      ),
+                      NavigationDestination(icon: Icon(d.icon), label: d.label),
                   ],
                 ),
         );
@@ -137,26 +136,24 @@ Future<void> _onCharge(
 ) async {
   // No open register yet → prompt for an opening float.
   if (controller.activeRegisterSession == null) {
-    final float = await _promptAmount(context, 'Open Register', 'Opening float');
+    final float = await _promptAmount(
+      context,
+      'Open Register',
+      'Opening float',
+    );
     if (float != null) {
       await controller.openRegister(float);
     }
     return;
   }
 
-  // Interim cash checkout until the full tender flow (B-5) lands.
-  final tendered =
-      await _promptAmount(context, 'Cash Checkout', 'Cash tendered');
-  if (tendered != null) {
-    await controller.checkoutCash(tendered);
-  }
+  // Open the full tender flow.
+  await Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => TenderScreen(controller: controller)),
+  );
 }
 
-Future<int?> _promptAmount(
-  BuildContext context,
-  String title,
-  String label,
-) {
+Future<int?> _promptAmount(BuildContext context, String title, String label) {
   final controller = TextEditingController();
   return showDialog<int>(
     context: context,

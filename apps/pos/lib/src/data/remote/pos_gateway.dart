@@ -73,6 +73,8 @@ abstract interface class PosGateway {
 
   Future<VoidSummary> voidPayment({required String paymentId, String? reason});
 
+  Future<void> emailReceipt({required String receiptId, required String email});
+
   Future<GiftCardSnapshot> lookupGiftCard(String code);
   Future<GiftCardSnapshot> issueGiftCard({
     required int amountMinor,

@@ -318,6 +318,19 @@ class PosApiClient implements PosGateway {
   }
 
   @override
+  Future<void> emailReceipt({
+    required String receiptId,
+    required String email,
+  }) async {
+    await _requestJson(
+      path: '/api/pos/v1/receipts/$receiptId/email',
+      method: 'POST',
+      idempotencyKey: _randomToken(),
+      body: {'email': email},
+    );
+  }
+
+  @override
   Future<ReceiptSummary> cashCheckout({
     required String orderId,
     required int tenderedMinor,

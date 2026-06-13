@@ -1153,6 +1153,18 @@ class PosHomeController extends ChangeNotifier {
     return sorted;
   }
 
+  /// Email a receipt to the supplied address via the cloud receipt-email API.
+  Future<void> emailReceipt(String receiptId, String email) async {
+    try {
+      await _gateway.emailReceipt(receiptId: receiptId, email: email);
+      _statusMessage = 'Receipt emailed to $email.';
+      _errorMessage = null;
+    } catch (error) {
+      _errorMessage = 'Could not email the receipt: $error';
+    }
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _tableLeaseHeartbeatTimer?.cancel();

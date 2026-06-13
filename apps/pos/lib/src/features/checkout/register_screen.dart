@@ -8,11 +8,7 @@ import '../home/pos_home_controller.dart';
 /// Cashier register: a category-filtered product grid on the left and a cart
 /// panel on the right (wide) or a bottom total bar opening a cart sheet (narrow).
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({
-    required this.controller,
-    this.onCharge,
-    super.key,
-  });
+  const RegisterScreen({required this.controller, this.onCharge, super.key});
 
   final PosHomeController controller;
 
@@ -107,7 +103,8 @@ class _ProductArea extends StatelessWidget {
     final categories = ['All', ...controller.catalogCategories];
     final term = search.trim().toLowerCase();
     final items = controller.catalogItems.where((item) {
-      final matchesCategory = category == 'All' || item.categoryName == category;
+      final matchesCategory =
+          category == 'All' || item.categoryName == category;
       final matchesSearch =
           term.isEmpty || item.name.toLowerCase().contains(term);
       return matchesCategory && matchesSearch;
@@ -151,8 +148,7 @@ class _ProductArea extends StatelessWidget {
               ? const Center(child: Text('No items'))
               : GridView.builder(
                   padding: const EdgeInsets.all(12),
-                  gridDelegate:
-                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 180,
                     childAspectRatio: 1.1,
                     crossAxisSpacing: 12,
@@ -205,8 +201,10 @@ class _ProductTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    formatMinor(item.effectivePriceMinor,
-                        currency: item.currency),
+                    formatMinor(
+                      item.effectivePriceMinor,
+                      currency: item.currency,
+                    ),
                     style: const TextStyle(color: PosColors.forest),
                   ),
                 ],
@@ -217,8 +215,10 @@ class _ProductTile extends StatelessWidget {
                 child: Container(
                   color: Colors.black.withValues(alpha: 0.45),
                   alignment: Alignment.center,
-                  child: const Text('SOLD OUT',
-                      style: TextStyle(color: Colors.white)),
+                  child: const Text(
+                    'SOLD OUT',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             if (quantity > 0)
@@ -228,9 +228,10 @@ class _ProductTile extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 12,
                   backgroundColor: PosColors.forest,
-                  child: Text('$quantity',
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 12)),
+                  child: Text(
+                    '$quantity',
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  ),
                 ),
               ),
           ],
@@ -311,8 +312,9 @@ class _CartLineTile extends StatelessWidget {
     return ListTile(
       dense: true,
       title: Text(line.item.name),
-      subtitle: Text(formatMinor(line.lineSubtotalMinor,
-          currency: line.item.currency)),
+      subtitle: Text(
+        formatMinor(line.lineSubtotalMinor, currency: line.item.currency),
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -397,13 +399,14 @@ class _TotalBar extends StatelessWidget {
               child: TextButton.icon(
                 onPressed: onOpenCart,
                 icon: const Icon(Icons.shopping_cart_outlined),
-                label: Text('${lines.length} items · '
-                    '${formatMinor(controller.cartEstimatedTotalMinor)}'),
+                label: Text(
+                  '${lines.length} items · '
+                  '${formatMinor(controller.cartEstimatedTotalMinor)}',
+                ),
               ),
             ),
             FilledButton(
-              onPressed:
-                  (lines.isEmpty || controller.isBusy) ? null : onCharge,
+              onPressed: (lines.isEmpty || controller.isBusy) ? null : onCharge,
               child: Text(hasOpenRegister ? 'Charge' : 'Open Register'),
             ),
           ],
