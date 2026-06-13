@@ -5,6 +5,7 @@ import '../features/checkout/register_screen.dart';
 import '../features/checkout/tender_screen.dart';
 import '../features/home/pos_home_screen.dart';
 import '../features/home/pos_home_controller.dart';
+import '../features/tables/tables_screen.dart';
 
 /// Top-level navigation surface. Branches on controller state:
 ///  - loading            -> splash
@@ -61,10 +62,15 @@ class _PosShellState extends State<PosShell> {
                   message:
                       'Enroll this device from the Operations tab to begin.',
                 ),
-          const _PlaceholderTab(
-            title: 'Tables',
-            message: 'The floor plan view is coming next.',
-          ),
+          controller.isEnrolled
+              ? TablesScreen(
+                  controller: controller,
+                  onOpenOrder: () => setState(() => _index = 0),
+                )
+              : const _PlaceholderTab(
+                  title: 'Tables',
+                  message: 'Enroll this device to manage tables.',
+                ),
           const _PlaceholderTab(
             title: 'Appointments',
             message: 'The appointment day-view is coming next.',
