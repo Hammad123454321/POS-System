@@ -5,6 +5,7 @@ namespace App\Modules\Payments\Application\Actions;
 use App\Modules\Audit\Application\AuditLogger;
 use App\Modules\Billing\Application\RecordUsage;
 use App\Modules\ExceptionQueue\Domain\Models\ExceptionCase;
+use App\Modules\OrderRegister\Domain\Events\OrderPaid;
 use App\Modules\OrderRegister\Domain\Models\CashMovement;
 use App\Modules\OrderRegister\Domain\Models\Order;
 use App\Modules\OrderRegister\Domain\Models\Payment;
@@ -17,6 +18,7 @@ use App\Modules\StoredValue\Contracts\StoredValueLedger;
 use Carbon\CarbonImmutable;
 use DomainException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 
 class TenderOrder
@@ -123,6 +125,16 @@ class TenderOrder
                 'paid_minor' => (int) $order->total_minor + $tipMinor,
                 'closed_at' => $capturedAt,
             ])->save();
+
+            // Meter the paid order via a domain event after the tx commits, so
+            // billing/usage runs out-of-band on the reporting queue.
+            $paidTotal = (int) $order->paid_minor;
+            DB::afterCommit(fn () => Event::dispatch(new OrderPaid(
+                orderId: $order->id,
+                merchantId: $order->merchant_id,
+                storeId: $order->store_id,
+                totalMinor: $paidTotal,
+            )));
 
             $order->loadMissing('lines', 'customer');
 

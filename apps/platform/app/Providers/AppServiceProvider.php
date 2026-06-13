@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Sanctum\PersonalAccessToken;
 use App\Models\User;
+use App\Modules\Billing\Application\Listeners\RecordOrderPaidUsage;
+use App\Modules\OrderRegister\Domain\Events\OrderPaid;
 use App\Modules\PlatformCore\Domain\Models\Merchant;
 use App\Modules\PlatformCore\Domain\Models\Store;
 use App\Modules\PlatformCore\Interfaces\Authorization\MerchantPolicy;
@@ -17,6 +19,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
@@ -43,6 +46,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Store::class, StorePolicy::class);
         Gate::policy(Merchant::class, MerchantPolicy::class);
         Gate::before(fn (User $user): ?bool => $user->is_super_admin ? true : null);
+
+        // Module event paths are not auto-discovered — register explicitly.
+        Event::listen(OrderPaid::class, RecordOrderPaidUsage::class);
 
         $this->configureDefaults();
     }
