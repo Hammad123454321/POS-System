@@ -2,6 +2,7 @@
 
 use App\Modules\ExceptionQueue\Domain\Models\ExceptionCase;
 use App\Modules\OrderRegister\Domain\Models\Order;
+use App\Modules\Retail\Domain\Models\InventoryBalance;
 use Laravel\Sanctum\Sanctum;
 
 function seedOrder($device, $session, string $status = 'open', int $seq = 1): Order
@@ -84,6 +85,34 @@ it('rejects an illegal transition on a fresh base', function () {
 
     expect($order->fresh()->status)->toBe('paid');
     expect(ExceptionCase::query()->where('code', 'order_illegal_transition')->exists())->toBeTrue();
+});
+
+it('rejects an absolute inventory set on a stale ledger sequence', function () {
+    [$device, $session, $item] = buildPosOrderContext();
+    Sanctum::actingAs($device, ['pos:access']);
+
+    InventoryBalance::query()->create([
+        'merchant_id' => $device->merchant_id,
+        'store_id' => $device->store_id,
+        'sku' => 'WIDGET-1',
+        'on_hand_quantity' => 10,
+        'reserved_quantity' => 0,
+        'available_quantity' => 10,
+        'inventory_ledger_seq' => 7,
+    ]);
+
+    $this->withHeaders(posHeaders() + ['Idempotency-Key' => 'sa-inv-1'])
+        ->postJson('/api/pos/v1/sync/events', [
+            'events' => [[
+                'local_event_id' => 'sa-inv-1',
+                'entity_type' => 'inventory',
+                'entity_id' => null,
+                'action' => 'set_on_hand',
+                'payload' => ['sku' => 'WIDGET-1', 'base_ledger_seq' => 3, 'on_hand' => 99],
+            ]],
+        ])->assertSuccessful();
+
+    expect(ExceptionCase::query()->where('code', 'inventory_conflict')->exists())->toBeTrue();
 });
 
 it('accepts unrelated entity types unchanged', function () {

@@ -6,6 +6,7 @@ use App\Modules\ExceptionQueue\Application\Actions\OpenExceptionCase;
 use App\Modules\PlatformCore\Domain\Models\Device;
 use App\Modules\Retail\Domain\Models\InventoryAdjustment;
 use App\Modules\Retail\Domain\Models\InventoryBalance;
+use App\Modules\Retail\Domain\Models\InventoryLedgerEntry;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
@@ -140,6 +141,22 @@ class ApplyInventoryLedgerAdjustment
                 }
             }
 
+            // Append to the canonical append-only ledger, reusing the same
+            // per-balance lock and sequence so (store, sku, seq) is gap-free.
+            InventoryLedgerEntry::query()->create([
+                'merchant_id' => $device->merchant_id,
+                'store_id' => $device->store_id,
+                'sku' => $sku,
+                'catalog_item_id' => $balance->catalog_item_id,
+                'seq' => $nextSeq,
+                'delta_quantity' => $quantityDelta,
+                'reason' => $this->ledgerReason($adjustmentType),
+                'source_type' => $referenceType,
+                'source_id' => $referenceId,
+                'device_id' => $device->id,
+                'occurred_at' => CarbonImmutable::now('UTC'),
+            ]);
+
             return InventoryAdjustment::query()->create([
                 'merchant_id' => $device->merchant_id,
                 'store_id' => $device->store_id,
@@ -164,5 +181,21 @@ class ApplyInventoryLedgerAdjustment
         });
 
         return $adjustment;
+    }
+
+    /**
+     * Map a descriptive adjustment type to the canonical ledger reason
+     * (sale|receive|transfer_in|transfer_out|adjust|return).
+     */
+    private function ledgerReason(string $adjustmentType): string
+    {
+        return match ($adjustmentType) {
+            'receiving', 'receive' => 'receive',
+            'transfer_in' => 'transfer_in',
+            'transfer_out' => 'transfer_out',
+            'sale' => 'sale',
+            'return', 'customer_return' => 'return',
+            default => 'adjust',
+        };
     }
 }

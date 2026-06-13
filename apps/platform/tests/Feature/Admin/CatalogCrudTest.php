@@ -8,6 +8,7 @@ use App\Modules\PlatformCore\Domain\Models\DeviceProfile;
 use App\Modules\PlatformCore\Domain\Models\Merchant;
 use App\Modules\PlatformCore\Domain\Models\Store;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 
 function catalogCtx(string $code = 'C1'): array
@@ -135,6 +136,44 @@ it('hides deactivated items from the POS config payload', function () {
     $skus = collect($config['items'] ?? [])->pluck('sku')->all();
 
     expect($skus)->not->toContain('HID-1');
+});
+
+it('includes barcode and category_name in the POS config item payload', function () {
+    [$merchant, $store] = catalogCtx();
+    $admin = catalogAdmin($store);
+    Sanctum::actingAs($admin);
+
+    $category = $this->postJson("/api/admin/v1/stores/{$store->id}/catalog/categories", [
+        'name' => 'Beverages',
+    ])->json('data');
+
+    $item = $this->postJson("/api/admin/v1/stores/{$store->id}/catalog/items", [
+        'name' => 'Cola', 'type' => 'product', 'base_price_minor' => 250, 'currency' => 'USD',
+        'sku' => 'COLA-1', 'category_id' => $category['id'],
+    ])->json('data');
+
+    // Primary barcode lives in the Retail-owned barcode_records table.
+    DB::table('barcode_records')->insert([
+        'id' => (string) Str::ulid(),
+        'merchant_id' => $merchant->id, 'store_id' => $store->id,
+        'catalog_item_id' => $item['id'], 'sku' => 'COLA-1',
+        'barcode' => '0123456789012', 'is_primary' => true,
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    $profile = DeviceProfile::query()->create(['name' => 'P', 'type' => 'tablet', 'capabilities' => []]);
+    $device = Device::query()->create([
+        'merchant_id' => $merchant->id, 'store_id' => $store->id, 'device_profile_id' => $profile->id,
+        'name' => 'Reg', 'platform' => 'android', 'status' => 'active',
+    ]);
+    Sanctum::actingAs($device, ['pos:access']);
+
+    $config = $this->withHeaders(posHeaders())->getJson('/api/pos/v1/config')->assertOk()->json();
+    $payloadItem = collect($config['items'] ?? [])->firstWhere('sku', 'COLA-1');
+
+    expect($payloadItem)->not->toBeNull();
+    expect($payloadItem['barcode'])->toBe('0123456789012');
+    expect($payloadItem['category_name'])->toBe('Beverages');
 });
 
 it('returns 404 updating an item from another merchant', function () {

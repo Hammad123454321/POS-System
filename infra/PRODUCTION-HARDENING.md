@@ -4,6 +4,19 @@ Right-sized operational hardening for the single-VPS deployment. Multi-region
 warm standby / Route 53 failover / canary deploys are intentionally deferred
 (client infra decision, PRD DR section).
 
+## Known scope boundary — sale-driven inventory decrement
+
+The append-only inventory ledger (`inventory_ledger_entries`) captures every
+**stock-management** movement (receive / transfer / adjust / return) via the
+single `ApplyInventoryLedgerAdjustment` chokepoint, and sync arbitration handles
+absolute "set on-hand" conflicts against it. POS **sales do not decrement
+inventory** — the system has never tracked sell-through against retail stock
+(orders carry no inventory side effect anywhere in the codebase). Adding
+sale-time deduction is a deliberate, separate feature (which SKUs are
+stock-tracked, reservation/oversell policy, refund restock) and is intentionally
+out of scope here. The `reason` enum already includes `sale` so the ledger is
+ready for it when that feature is built.
+
 ## 1. Offsite backups
 
 The nightly backup (`infra/backup.sh`) keeps 14 days locally and, when

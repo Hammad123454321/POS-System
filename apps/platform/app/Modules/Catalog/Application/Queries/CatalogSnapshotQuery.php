@@ -11,6 +11,7 @@ use App\Modules\Catalog\Domain\Models\TaxRule;
 use App\Modules\Catalog\Domain\Models\Variant;
 use App\Modules\PlatformCore\Domain\Models\Device;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\DB;
 
 class CatalogSnapshotQuery
 {
@@ -53,6 +54,22 @@ class CatalogSnapshotQuery
             ])
             ->get(['id', 'category_id', 'name', 'sku', 'type', 'base_price_minor', 'currency', 'tax_rule_id', 'sold_out']);
 
+        // Resolve the primary barcode per item from the store's barcode_records
+        // (a separate Retail-owned table). Queried directly to avoid a cross-module
+        // model dependency; store-scoped, primary preferred.
+        $barcodesByItem = DB::table('barcode_records')
+            ->where('store_id', $device->store_id)
+            ->whereIn('catalog_item_id', $items->pluck('id'))
+            ->orderByDesc('is_primary')
+            ->get(['catalog_item_id', 'barcode'])
+            ->reduce(function (array $carry, object $row): array {
+                $carry[$row->catalog_item_id] ??= $row->barcode;
+
+                return $carry;
+            }, []);
+
+        $categoryNames = $categories->pluck('name', 'id');
+
         $combos = ComboPackage::query()
             ->forMerchant($device->merchant_id)
             ->where('is_active', true)
@@ -83,15 +100,17 @@ class CatalogSnapshotQuery
                 'rate_basis_points' => $rule->rate_basis_points,
                 'is_inclusive' => $rule->is_inclusive,
             ])->values()->all(),
-            'items' => $items->map(function (CatalogItem $item): array {
+            'items' => $items->map(function (CatalogItem $item) use ($barcodesByItem, $categoryNames): array {
                 /** @var PriceRule|null $activePrice */
                 $activePrice = $item->priceRules->first();
 
                 return [
                     'id' => $item->id,
                     'category_id' => $item->category_id,
+                    'category_name' => $item->category_id !== null ? $categoryNames->get($item->category_id) : null,
                     'name' => $item->name,
                     'sku' => $item->sku,
+                    'barcode' => $barcodesByItem[$item->id] ?? null,
                     'type' => $item->type,
                     'currency' => $item->currency,
                     'base_price_minor' => $item->base_price_minor,

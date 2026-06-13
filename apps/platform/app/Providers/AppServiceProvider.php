@@ -4,7 +4,11 @@ namespace App\Providers;
 
 use App\Models\Sanctum\PersonalAccessToken;
 use App\Models\User;
+use App\Modules\Billing\Application\Listeners\RecordDeliveryOrderUsage;
+use App\Modules\Billing\Application\Listeners\RecordGiftCardIssuedUsage;
 use App\Modules\Billing\Application\Listeners\RecordOrderPaidUsage;
+use App\Modules\Billing\Application\Listeners\RecordPayrollSnapshotUsage;
+use App\Modules\DeliveryIntegrations\Domain\Events\DeliveryOrderIngested;
 use App\Modules\OrderRegister\Domain\Events\OrderPaid;
 use App\Modules\PlatformCore\Domain\Models\Merchant;
 use App\Modules\PlatformCore\Domain\Models\Store;
@@ -12,8 +16,10 @@ use App\Modules\PlatformCore\Interfaces\Authorization\MerchantPolicy;
 use App\Modules\PlatformCore\Interfaces\Authorization\StorePolicy;
 use App\Modules\SalonWorkforce\Application\EloquentPayrollCalculator;
 use App\Modules\SalonWorkforce\Contracts\PayrollCalculator;
+use App\Modules\SalonWorkforce\Domain\Events\PayrollSnapshotGenerated;
 use App\Modules\StoredValue\Application\EloquentStoredValueLedger;
 use App\Modules\StoredValue\Contracts\StoredValueLedger;
+use App\Modules\StoredValue\Domain\Events\GiftCardIssued;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -49,6 +55,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Module event paths are not auto-discovered — register explicitly.
         Event::listen(OrderPaid::class, RecordOrderPaidUsage::class);
+        Event::listen(DeliveryOrderIngested::class, RecordDeliveryOrderUsage::class);
+        Event::listen(GiftCardIssued::class, RecordGiftCardIssuedUsage::class);
+        Event::listen(PayrollSnapshotGenerated::class, RecordPayrollSnapshotUsage::class);
 
         $this->configureDefaults();
     }

@@ -4,12 +4,13 @@ namespace App\Modules\SalonWorkforce\Application\Actions;
 
 use App\Models\User;
 use App\Modules\Audit\Application\AuditLogger;
-use App\Modules\Billing\Application\RecordUsage;
 use App\Modules\PlatformCore\Domain\Models\Store;
 use App\Modules\SalonWorkforce\Application\Support\WorkforceAuthorization;
 use App\Modules\SalonWorkforce\Contracts\PayrollCalculator;
+use App\Modules\SalonWorkforce\Domain\Events\PayrollSnapshotGenerated;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Event;
 
 class GenerateWeeklyPayrollSnapshot
 {
@@ -17,7 +18,6 @@ class GenerateWeeklyPayrollSnapshot
         private readonly WorkforceAuthorization $authorization,
         private readonly PayrollCalculator $payrollCalculator,
         private readonly AuditLogger $auditLogger,
-        private readonly RecordUsage $recordUsage,
     ) {}
 
     /**
@@ -62,7 +62,13 @@ class GenerateWeeklyPayrollSnapshot
             null,
             $actor->id,
         );
-        $this->recordUsage->handle($store->merchant_id, $store->id, 'salon.payroll_snapshot.generated');
+        // Meter via the domain event (idempotent on the snapshot id), replacing
+        // the previous direct, non-idempotent RecordUsage call.
+        Event::dispatch(new PayrollSnapshotGenerated(
+            payrollSnapshotId: (string) $snapshot->id,
+            merchantId: $store->merchant_id,
+            storeId: $store->id,
+        ));
 
         return [
             'id' => $snapshot->id,

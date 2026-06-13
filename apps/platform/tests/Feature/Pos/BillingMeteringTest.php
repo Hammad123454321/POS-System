@@ -1,9 +1,15 @@
 <?php
 
+use App\Modules\Billing\Application\Listeners\RecordDeliveryOrderUsage;
+use App\Modules\Billing\Application\Listeners\RecordGiftCardIssuedUsage;
 use App\Modules\Billing\Application\Listeners\RecordOrderPaidUsage;
+use App\Modules\Billing\Application\Listeners\RecordPayrollSnapshotUsage;
 use App\Modules\Billing\Application\RecordUsage;
 use App\Modules\Billing\Domain\Models\UsageRecord;
+use App\Modules\DeliveryIntegrations\Domain\Events\DeliveryOrderIngested;
 use App\Modules\OrderRegister\Domain\Events\OrderPaid;
+use App\Modules\SalonWorkforce\Domain\Events\PayrollSnapshotGenerated;
+use App\Modules\StoredValue\Domain\Events\GiftCardIssued;
 use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
 
@@ -54,4 +60,29 @@ it('keeps source_ref idempotency only when provided', function () {
     $usage->handle(null, null, 'manual.metric', 1);
 
     expect(UsageRecord::query()->where('metric_key', 'manual.metric')->count())->toBe(2);
+});
+
+it('meters delivery.orders.ingested idempotently via the listener', function () {
+    // merchant/store left null to keep the unit test FK-free; idempotency is on source_ref.
+    $event = new DeliveryOrderIngested('link-1', null, null, 'uber_eats');
+    app(RecordDeliveryOrderUsage::class)->handle($event);
+    app(RecordDeliveryOrderUsage::class)->handle($event);
+
+    expect(UsageRecord::query()->where('metric_key', 'delivery.orders.ingested')->where('source_ref', 'link-1')->count())->toBe(1);
+});
+
+it('meters gift_cards.issued idempotently via the listener', function () {
+    $event = new GiftCardIssued('gc-1', null, null, 5000);
+    app(RecordGiftCardIssuedUsage::class)->handle($event);
+    app(RecordGiftCardIssuedUsage::class)->handle($event);
+
+    expect(UsageRecord::query()->where('metric_key', 'gift_cards.issued')->where('source_ref', 'gc-1')->count())->toBe(1);
+});
+
+it('meters payroll.snapshots.generated idempotently via the listener', function () {
+    $event = new PayrollSnapshotGenerated('ps-1', null, null);
+    app(RecordPayrollSnapshotUsage::class)->handle($event);
+    app(RecordPayrollSnapshotUsage::class)->handle($event);
+
+    expect(UsageRecord::query()->where('metric_key', 'payroll.snapshots.generated')->where('source_ref', 'ps-1')->count())->toBe(1);
 });

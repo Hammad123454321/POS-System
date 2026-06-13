@@ -4,6 +4,7 @@ use App\Modules\ExceptionQueue\Domain\Models\ExceptionCase;
 use App\Modules\PlatformCore\Domain\Models\Store;
 use App\Modules\Retail\Domain\Models\InventoryAdjustment;
 use App\Modules\Retail\Domain\Models\InventoryBalance;
+use App\Modules\Retail\Domain\Models\InventoryLedgerEntry;
 use App\Modules\Retail\Domain\Models\InventoryTransfer;
 use App\Modules\Retail\Domain\Models\ReceivingRecord;
 use Laravel\Sanctum\Sanctum;
@@ -73,6 +74,15 @@ it('handles receiving lookup adjustment transfer and returns through retail pos 
     expect(InventoryBalance::query()->where('store_id', $device->store_id)->where('sku', $item->sku)->firstOrFail()->on_hand_quantity)->toBe(4);
     expect(InventoryBalance::query()->where('store_id', $secondStore->id)->where('sku', $item->sku)->firstOrFail()->on_hand_quantity)->toBe(4);
     expect(InventoryAdjustment::query()->where('store_id', $device->store_id)->where('sku', $item->sku)->count())->toBeGreaterThan(2);
+
+    // Every stock movement also appends to the canonical append-only ledger,
+    // sequenced per (store, sku).
+    $ledger = InventoryLedgerEntry::query()
+        ->where('store_id', $device->store_id)->where('sku', $item->sku)
+        ->orderBy('seq')->get();
+    expect($ledger->count())->toBeGreaterThan(2);
+    expect($ledger->pluck('seq')->all())->toBe($ledger->pluck('seq')->sort()->values()->all());
+    expect($ledger->pluck('reason')->unique()->contains('receive'))->toBeTrue();
 });
 
 it('creates retail exception cases for duplicate documents and negative stock', function () {

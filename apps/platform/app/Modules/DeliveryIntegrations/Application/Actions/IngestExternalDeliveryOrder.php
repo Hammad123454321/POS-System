@@ -4,6 +4,7 @@ namespace App\Modules\DeliveryIntegrations\Application\Actions;
 
 use App\Modules\Catalog\Domain\Models\CatalogItem;
 use App\Modules\DeliveryIntegrations\Application\DeliveryAdapterRegistry;
+use App\Modules\DeliveryIntegrations\Domain\Events\DeliveryOrderIngested;
 use App\Modules\DeliveryIntegrations\Domain\Models\DeliveryChannelConfig;
 use App\Modules\DeliveryIntegrations\Domain\Models\ExternalOrderLink;
 use App\Modules\ExceptionQueue\Application\Actions\OpenExceptionCase;
@@ -13,6 +14,7 @@ use App\Modules\PlatformCore\Domain\Models\Device;
 use Carbon\CarbonImmutable;
 use DomainException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class IngestExternalDeliveryOrder
 {
@@ -137,6 +139,15 @@ class IngestExternalDeliveryOrder
 
             return $externalLink->refresh();
         });
+
+        // Meter the ingestion (idempotent on the link id, so replays/retries
+        // never double-count).
+        DB::afterCommit(fn () => Event::dispatch(new DeliveryOrderIngested(
+            externalOrderLinkId: $externalLink->id,
+            merchantId: $externalLink->merchant_id,
+            storeId: $externalLink->store_id,
+            channelKey: $externalLink->channel_key,
+        )));
 
         return $externalLink;
     }

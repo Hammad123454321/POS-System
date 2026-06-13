@@ -4,6 +4,8 @@ namespace App\Modules\StoredValue\Application\Actions;
 
 use App\Modules\PlatformCore\Domain\Models\Device;
 use App\Modules\StoredValue\Contracts\StoredValueLedger;
+use App\Modules\StoredValue\Domain\Events\GiftCardIssued;
+use Illuminate\Support\Facades\Event;
 
 class IssueGiftCard
 {
@@ -26,6 +28,14 @@ class IssueGiftCard
             $amountMinor,
             $requestedCode,
         );
+
+        // Meter the issuance (idempotent on the gift-card id).
+        Event::dispatch(new GiftCardIssued(
+            giftCardId: (string) $giftCard['id'],
+            merchantId: $device->merchant_id,
+            storeId: $device->store_id,
+            amountMinor: $amountMinor,
+        ));
 
         return [
             ...$giftCard,

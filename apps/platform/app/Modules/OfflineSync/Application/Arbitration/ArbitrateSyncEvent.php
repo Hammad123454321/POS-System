@@ -6,13 +6,20 @@ use App\Modules\ExceptionQueue\Application\Actions\OpenExceptionCase;
 use App\Modules\OrderRegister\Domain\Models\Order;
 use App\Modules\OrderRegister\Domain\OrderStatus;
 use App\Modules\PlatformCore\Domain\Models\Device;
+use App\Modules\Retail\Domain\Models\InventoryBalance;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Server-authoritative conflict arbitration for inbound sync events. Returns a
  * status string ('accepted' | 'conflict_superseded' | 'conflict_rejected') plus
  * an optional conflict_code. Only order status_change and inventory absolute
- * sets are arbitrated; everything else is accepted unchanged.
+ * on-hand sets are arbitrated; everything else is accepted unchanged.
+ *
+ * Note: relative inventory movements (receive/transfer/adjust/return) are
+ * commutative and append to the inventory ledger directly via
+ * ApplyInventoryLedgerAdjustment — they are never in conflict, so they are
+ * accepted here unchanged. Only an absolute "set on-hand" event carries a
+ * base_ledger_seq and is arbitrated against the live balance sequence.
  */
 class ArbitrateSyncEvent
 {
@@ -30,7 +37,65 @@ class ArbitrateSyncEvent
             return $this->arbitrateOrderStatus($device, $event);
         }
 
+        if ($event['entity_type'] === 'inventory' && $event['action'] === 'set_on_hand') {
+            return $this->arbitrateInventorySet($device, $event);
+        }
+
         return ['status' => 'accepted', 'conflict_code' => null];
+    }
+
+    /**
+     * Arbitrate an absolute "set on-hand" inventory event. Stale base sequence
+     * (a concurrent movement already advanced the balance) → rejected so the
+     * device re-reads, plus an exception case for an operator to reconcile.
+     *
+     * @param  array{entity_id?: string|null, payload: array<string, mixed>}  $event
+     * @return array{status: string, conflict_code: ?string, server_ledger_seq?: int}
+     */
+    private function arbitrateInventorySet(Device $device, array $event): array
+    {
+        $sku = (string) ($event['payload']['sku'] ?? '');
+        $baseLedgerSeq = (int) ($event['payload']['base_ledger_seq'] ?? 0);
+
+        if ($sku === '') {
+            return ['status' => 'accepted', 'conflict_code' => null];
+        }
+
+        return DB::transaction(function () use ($device, $sku, $baseLedgerSeq): array {
+            /** @var InventoryBalance|null $balance */
+            $balance = InventoryBalance::query()
+                ->where('store_id', $device->store_id)
+                ->where('sku', $sku)
+                ->lockForUpdate()
+                ->first();
+
+            // No balance yet → nothing to conflict with; accept (the apply path
+            // will create it).
+            if ($balance === null) {
+                return ['status' => 'accepted', 'conflict_code' => null];
+            }
+
+            $serverSeq = (int) $balance->inventory_ledger_seq;
+
+            if ($baseLedgerSeq < $serverSeq) {
+                $this->openExceptionCase->handle(
+                    merchantId: $balance->merchant_id,
+                    storeId: $balance->store_id,
+                    module: 'sync',
+                    code: 'inventory_conflict',
+                    severity: 'medium',
+                    title: 'An absolute inventory set arrived on a stale ledger sequence.',
+                    details: ['sku' => $sku, 'base_ledger_seq' => $baseLedgerSeq, 'server_ledger_seq' => $serverSeq],
+                    relatedType: 'inventory_balance',
+                    relatedId: $balance->id,
+                    openedByDeviceId: $device->id,
+                );
+
+                return ['status' => 'conflict_rejected', 'conflict_code' => 'stale_ledger_seq', 'server_ledger_seq' => $serverSeq];
+            }
+
+            return ['status' => 'accepted', 'conflict_code' => null, 'server_ledger_seq' => $serverSeq];
+        });
     }
 
     /**
