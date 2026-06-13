@@ -5,6 +5,7 @@ use App\Console\Commands\MonitorDlqIncidentsCommand;
 use App\Console\Commands\PruneRetentionRecordsCommand;
 use App\Console\Commands\ReapEditLeasesCommand;
 use App\Console\Commands\ReconcileFiservPaymentsCommand;
+use App\Console\Commands\RefreshReportSummariesCommand;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -31,4 +32,12 @@ Schedule::command(MonitorDlqIncidentsCommand::class)
 
 Schedule::command(PruneRetentionRecordsCommand::class)
     ->dailyAt('03:10')
+    ->withoutOverlapping();
+
+Schedule::command(RefreshReportSummariesCommand::class)
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
+
+Schedule::command(RefreshReportSummariesCommand::class, ['--finalize'])
+    ->dailyAt('04:30')
     ->withoutOverlapping();

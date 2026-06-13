@@ -102,6 +102,7 @@ return [
     'reporting' => [
         'connection' => env('POS_REPORTING_DB_CONNECTION', 'pgsql_reporting'),
         'fallback_to_primary' => filter_var(env('POS_REPORTING_FALLBACK_TO_PRIMARY', true), FILTER_VALIDATE_BOOL),
+        'summary_staleness_seconds' => (int) env('POS_REPORTING_SUMMARY_STALENESS_SECONDS', 300),
     ],
 
     'retention' => [
