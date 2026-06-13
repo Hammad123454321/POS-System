@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Modules\Identity\Application\ProvisionMerchantRoles;
 use App\Modules\Identity\Domain\Models\Role;
 use App\Modules\PlatformCore\Application\DeviceAuth\CreateEnrollmentCode;
 use App\Modules\PlatformCore\Domain\Models\Device;
@@ -36,11 +37,8 @@ it('creates device enrollment codes for authorized store admins', function () {
         'capabilities' => ['receipt_printer' => true],
     ]);
 
-    $role = Role::query()->create([
-        'merchant_id' => $merchant->id,
-        'name' => 'Store Admin',
-        'scope' => 'store',
-    ]);
+    app(ProvisionMerchantRoles::class)->handle($merchant);
+    $role = Role::query()->where('merchant_id', $merchant->id)->where('name', 'Store Admin')->firstOrFail();
 
     DB::table('user_store_role')->insert([
         'user_id' => $user->id,
@@ -88,11 +86,8 @@ it('enrolls a device, allows bootstrap, and rotates refresh tokens', function ()
         'capabilities' => ['receipt_printer' => true],
     ]);
 
-    $role = Role::query()->create([
-        'merchant_id' => $merchant->id,
-        'name' => 'Store Admin',
-        'scope' => 'store',
-    ]);
+    app(ProvisionMerchantRoles::class)->handle($merchant);
+    $role = Role::query()->where('merchant_id', $merchant->id)->where('name', 'Store Admin')->firstOrFail();
 
     DB::table('user_store_role')->insert([
         'user_id' => $user->id,
@@ -197,11 +192,8 @@ it('rejects non-android device enrollment requests', function () {
         'capabilities' => ['receipt_printer' => true],
     ]);
 
-    $role = Role::query()->create([
-        'merchant_id' => $merchant->id,
-        'name' => 'Store Admin',
-        'scope' => 'store',
-    ]);
+    app(ProvisionMerchantRoles::class)->handle($merchant);
+    $role = Role::query()->where('merchant_id', $merchant->id)->where('name', 'Store Admin')->firstOrFail();
 
     DB::table('user_store_role')->insert([
         'user_id' => $user->id,
