@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app/pos_theme.dart';
+import '../features/checkout/register_screen.dart';
 import '../features/home/pos_home_screen.dart';
 import '../features/home/pos_home_controller.dart';
 
@@ -49,12 +50,15 @@ class _PosShellState extends State<PosShell> {
         // the embedded console covers enrollment, reauth, and operations. The
         // shell still provides the navigation frame around it.
         final tabs = <Widget>[
-          _PlaceholderTab(
-            title: 'Register',
-            message: controller.isEnrolled
-                ? 'The cashier register surface is being assembled. Use the Operations tab to ring up sales for now.'
-                : 'Enroll this device from the Operations tab to begin.',
-          ),
+          controller.isEnrolled
+              ? RegisterScreen(
+                  controller: controller,
+                  onCharge: () => _onCharge(context, controller),
+                )
+              : const _PlaceholderTab(
+                  title: 'Register',
+                  message: 'Enroll this device from the Operations tab to begin.',
+                ),
           const _PlaceholderTab(
             title: 'Tables',
             message: 'The floor plan view is coming next.',
@@ -125,6 +129,60 @@ class _PosShellState extends State<PosShell> {
       },
     );
   }
+}
+
+Future<void> _onCharge(
+  BuildContext context,
+  PosHomeController controller,
+) async {
+  // No open register yet → prompt for an opening float.
+  if (controller.activeRegisterSession == null) {
+    final float = await _promptAmount(context, 'Open Register', 'Opening float');
+    if (float != null) {
+      await controller.openRegister(float);
+    }
+    return;
+  }
+
+  // Interim cash checkout until the full tender flow (B-5) lands.
+  final tendered =
+      await _promptAmount(context, 'Cash Checkout', 'Cash tendered');
+  if (tendered != null) {
+    await controller.checkoutCash(tendered);
+  }
+}
+
+Future<int?> _promptAmount(
+  BuildContext context,
+  String title,
+  String label,
+) {
+  final controller = TextEditingController();
+  return showDialog<int>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        autofocus: true,
+        decoration: InputDecoration(labelText: '$label (minor units)'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () {
+            final value = int.tryParse(controller.text.trim());
+            Navigator.pop(context, value);
+          },
+          child: const Text('Confirm'),
+        ),
+      ],
+    ),
+  );
 }
 
 class _ShellDestination {
