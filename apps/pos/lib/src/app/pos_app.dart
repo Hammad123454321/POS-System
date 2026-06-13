@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../bootstrap/app_bootstrapper.dart';
-import '../features/home/pos_home_screen.dart';
+import '../navigation/pos_shell.dart';
 import 'pos_theme.dart';
 
 class PosApp extends StatefulWidget {
@@ -26,7 +26,7 @@ class _PosAppState extends State<PosApp> {
       debugShowCheckedModeBanner: false,
       title: 'POS Device Shell',
       theme: PosTheme.light(),
-      home: PosHomeScreen(controller: widget.bootstrap.controller),
+      home: PosShell(controller: widget.bootstrap.controller),
     );
   }
 }

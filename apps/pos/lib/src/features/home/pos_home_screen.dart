@@ -4,9 +4,13 @@ import '../../core/models/pos_models.dart';
 import 'pos_home_controller.dart';
 
 class PosHomeScreen extends StatefulWidget {
-  const PosHomeScreen({required this.controller, super.key});
+  const PosHomeScreen({required this.controller, this.embedded = false, super.key});
 
   final PosHomeController controller;
+
+  /// When true the screen renders its body only (no Scaffold/AppBar), so it can
+  /// be hosted as a tab inside [PosShell].
+  final bool embedded;
 
   @override
   State<PosHomeScreen> createState() => _PosHomeScreenState();
@@ -128,21 +132,7 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
         final snapshot = controller.bootstrapSnapshot;
         final isBusy = controller.isBusy || controller.isLoading;
 
-        return Scaffold(
-          backgroundColor: const Color(0xFFF4F0E8),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF1F3A2E),
-            foregroundColor: Colors.white,
-            title: const Text('POS Operations'),
-            actions: [
-              IconButton(
-                tooltip: 'Reload local state',
-                onPressed: isBusy ? null : controller.load,
-                icon: const Icon(Icons.refresh),
-              ),
-            ],
-          ),
-          body: SafeArea(
+        final body = SafeArea(
             child: RefreshIndicator(
               onRefresh: controller.isEnrolled
                   ? controller.refreshCloudState
@@ -564,7 +554,27 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
                 ],
               ),
             ),
+          );
+
+        if (widget.embedded) {
+          return body;
+        }
+
+        return Scaffold(
+          backgroundColor: const Color(0xFFF4F0E8),
+          appBar: AppBar(
+            backgroundColor: const Color(0xFF1F3A2E),
+            foregroundColor: Colors.white,
+            title: const Text('POS Operations'),
+            actions: [
+              IconButton(
+                tooltip: 'Reload local state',
+                onPressed: isBusy ? null : controller.load,
+                icon: const Icon(Icons.refresh),
+              ),
+            ],
           ),
+          body: body,
         );
       },
     );
