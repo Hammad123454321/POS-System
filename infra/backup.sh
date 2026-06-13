@@ -36,7 +36,18 @@ if [[ $(stat -c %s "$OUT") -lt 1024 ]]; then
   exit 1
 fi
 
-# Prune.
+# Offsite copy (optional). Set BACKUP_RCLONE_REMOTE in the environment (e.g.
+# "b2:my-bucket/pos-backups") and have rclone configured for the cron user.
+if [[ -n "${BACKUP_RCLONE_REMOTE:-}" ]] && command -v rclone >/dev/null 2>&1; then
+  echo "[$(date -Is)] Pushing offsite to $BACKUP_RCLONE_REMOTE"
+  if rclone copy "$OUT" "$BACKUP_RCLONE_REMOTE"; then
+    echo "[$(date -Is)] Offsite copy OK"
+  else
+    echo "[$(date -Is)] WARNING: offsite copy failed (local backup retained)" >&2
+  fi
+fi
+
+# Prune local copies (offsite retention is managed by the bucket lifecycle).
 find "$DEST" -name '*.sql.gz' -type f -mtime "+$RETENTION_DAYS" -print -delete
 
 echo "[$(date -Is)] Backup OK ($(du -h "$OUT" | cut -f1))"
