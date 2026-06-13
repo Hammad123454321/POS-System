@@ -19,6 +19,10 @@ RUN apt-get update \
     && docker-php-ext-install redis \
     && rm -rf /var/lib/apt/lists/*
 
+# The full Pest suite accumulates memory across files in a sequential run; give
+# the CLI headroom so the runner can print its final summary without OOMing.
+RUN echo "memory_limit=1024M" > /usr/local/etc/php/conf.d/zz-memory.ini
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /workspace/apps/platform

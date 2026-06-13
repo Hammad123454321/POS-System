@@ -124,6 +124,9 @@ class CatalogItemSnapshot {
     required this.effectivePriceMinor,
     required this.soldOut,
     this.taxRuleId,
+    this.categoryId,
+    this.categoryName,
+    this.sku,
   });
 
   final String id;
@@ -132,6 +135,9 @@ class CatalogItemSnapshot {
   final int effectivePriceMinor;
   final bool soldOut;
   final String? taxRuleId;
+  final String? categoryId;
+  final String? categoryName;
+  final String? sku;
 
   factory CatalogItemSnapshot.fromJson(Map<String, dynamic> json) {
     return CatalogItemSnapshot(
@@ -141,6 +147,10 @@ class CatalogItemSnapshot {
       effectivePriceMinor: json['effective_price_minor'] as int,
       soldOut: json['sold_out'] as bool? ?? false,
       taxRuleId: json['tax_rule_id'] as String?,
+      // Null-safe: old cached payloads (pre-category) keep working.
+      categoryId: json['category_id'] as String?,
+      categoryName: json['category_name'] as String?,
+      sku: json['sku'] as String?,
     );
   }
 }

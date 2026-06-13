@@ -1111,6 +1111,48 @@ class PosHomeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Remove an entire cart line regardless of its quantity.
+  void removeLine(CatalogItemSnapshot item) {
+    if (_cart.remove(item.id) != null) {
+      notifyListeners();
+    }
+  }
+
+  /// Set the absolute quantity for an item (0 removes it).
+  void setItemQuantity(CatalogItemSnapshot item, int quantity) {
+    if (quantity <= 0) {
+      _cart.remove(item.id);
+    } else {
+      _cart[item.id] = quantity;
+    }
+    notifyListeners();
+  }
+
+  /// Current quantity of an item id in the cart.
+  int quantityOf(String itemId) => _cart[itemId] ?? 0;
+
+  /// Clear all cart lines.
+  void clearCart() {
+    if (_cart.isEmpty) {
+      return;
+    }
+    _cart.clear();
+    notifyListeners();
+  }
+
+  /// Distinct, sorted category names present in the loaded catalog.
+  List<String> get catalogCategories {
+    final names = <String>{};
+    for (final item in _catalogItems) {
+      final name = item.categoryName;
+      if (name != null && name.isNotEmpty) {
+        names.add(name);
+      }
+    }
+    final sorted = names.toList()..sort();
+    return sorted;
+  }
+
   @override
   void dispose() {
     _tableLeaseHeartbeatTimer?.cancel();
