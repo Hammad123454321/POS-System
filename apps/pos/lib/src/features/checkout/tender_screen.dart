@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../core/hardware/barcode_scanner.dart';
 import '../../core/support/money_format.dart';
 import '../home/pos_home_controller.dart';
 import 'receipt_confirmation_screen.dart';
@@ -10,9 +13,17 @@ enum _TenderKind { cash, card, split, giftCard }
 /// capabilities. On success (detected by a new lastReceipt id) it replaces
 /// itself with the receipt confirmation screen.
 class TenderScreen extends StatefulWidget {
-  const TenderScreen({required this.controller, super.key});
+  const TenderScreen({
+    required this.controller,
+    this.barcodeScanner,
+    super.key,
+  });
 
   final PosHomeController controller;
+
+  /// Optional scanner. When the Gift Card tab is active, a scan autofills the
+  /// gift-card code field. Null in tests.
+  final BarcodeScanner? barcodeScanner;
 
   @override
   State<TenderScreen> createState() => _TenderScreenState();
@@ -24,15 +35,23 @@ class _TenderScreenState extends State<TenderScreen> {
   final _cardTipController = TextEditingController();
   final _giftController = TextEditingController();
   int _tipPercent = 0;
+  StreamSubscription<String>? _scanSub;
 
   @override
   void initState() {
     super.initState();
     _kind = _available().first;
+    _scanSub = widget.barcodeScanner?.scans.listen(_onScan);
+  }
+
+  void _onScan(String code) {
+    if (_kind != _TenderKind.giftCard) return;
+    setState(() => _giftController.text = code.trim());
   }
 
   @override
   void dispose() {
+    _scanSub?.cancel();
     _cashController.dispose();
     _cardTipController.dispose();
     _giftController.dispose();

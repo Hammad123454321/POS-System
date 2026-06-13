@@ -282,6 +282,7 @@ class _PosHomeScreenState extends State<PosHomeScreen> {
                       onClose: () => controller.closeRegister(
                         int.tryParse(_countedCashController.text) ?? 0,
                       ),
+                      onNoSale: controller.noSaleOpenDrawer,
                     ),
                     const SizedBox(height: 20),
                     _SectionTitle(
@@ -921,6 +922,7 @@ class _RegisterCard extends StatelessWidget {
     required this.isBusy,
     required this.onOpen,
     required this.onClose,
+    required this.onNoSale,
   });
 
   final RegisterSessionSnapshot? session;
@@ -929,6 +931,7 @@ class _RegisterCard extends StatelessWidget {
   final bool isBusy;
   final VoidCallback onOpen;
   final VoidCallback onClose;
+  final VoidCallback onNoSale;
 
   @override
   Widget build(BuildContext context) {
@@ -984,14 +987,32 @@ class _RegisterCard extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 16),
-          FilledButton.icon(
-            onPressed: isBusy
-                ? null
-                : session == null
-                ? onOpen
-                : onClose,
-            icon: Icon(session == null ? Icons.lock_open : Icons.lock_outline),
-            label: Text(session == null ? 'Open Register' : 'Close Register'),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: isBusy
+                      ? null
+                      : session == null
+                      ? onOpen
+                      : onClose,
+                  icon: Icon(
+                    session == null ? Icons.lock_open : Icons.lock_outline,
+                  ),
+                  label: Text(
+                    session == null ? 'Open Register' : 'Close Register',
+                  ),
+                ),
+              ),
+              if (session != null) ...[
+                const SizedBox(width: 12),
+                OutlinedButton.icon(
+                  onPressed: isBusy ? null : onNoSale,
+                  icon: const Icon(Icons.money_off),
+                  label: const Text('No Sale'),
+                ),
+              ],
+            ],
           ),
         ],
       ),

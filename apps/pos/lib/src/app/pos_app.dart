@@ -26,7 +26,10 @@ class _PosAppState extends State<PosApp> {
       debugShowCheckedModeBanner: false,
       title: 'POS Device Shell',
       theme: PosTheme.light(),
-      home: PosShell(controller: widget.bootstrap.controller),
+      home: PosShell(
+        controller: widget.bootstrap.controller,
+        barcodeScanner: widget.bootstrap.barcodeScanner,
+      ),
     );
   }
 }

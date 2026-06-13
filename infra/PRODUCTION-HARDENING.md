@@ -71,7 +71,30 @@ The scheduled `pos:dlq-monitor` command already opens a critical exception case
 when a job sits in the DLQ too long — make sure the scheduler container is
 running (`docker compose ... ps` shows `pos-scheduler` up).
 
-## 5. Quarterly restore drill
+## 5. POS hardware bring-up (B-8)
+
+The Flutter app ships real hardware adapters that are code-complete but can only
+be verified against physical hardware:
+
+- **Network receipt printer** (`NetworkEscPosReceiptPrinter`) — RAW/JetDirect ESC/POS
+  over TCP (port 9100). The byte rendering is unit-tested; the socket send is not.
+- **Cash drawer** (`PrinterKickCashDrawer`) — pulses the drawer via the printer's
+  kick connector. Fires automatically on cash/split success and on the **No Sale**
+  button (Operations tab, audited to the sync outbox).
+- **Barcode scanner** (`HidKeyboardBarcodeScanner`) — HID keyboard-wedge; scans add
+  catalog items by SKU/id in the Register, and autofill the gift-card field in Tender.
+
+These are selected automatically in **release** builds; debug builds use the
+no-op stubs so nothing requires hardware in dev/tests.
+
+**On-device setup:** each station must map its logical printer name to a
+`host:port` (the print routes carry no network address). This is stored locally
+via `PrinterEndpointStore` (secure storage). Until a per-station settings UI is
+added, seed the map programmatically or add the endpoints during device bring-up.
+Verify on real hardware: print a receipt, fire the drawer, and scan a barcode
+before going live at each station.
+
+## 6. Quarterly restore drill
 
 Backups are only as good as a tested restore. Run this every quarter:
 

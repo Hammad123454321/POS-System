@@ -1,7 +1,14 @@
+import 'package:flutter/foundation.dart';
+
+import '../core/hardware/barcode_scanner.dart';
+import '../core/hardware/cash_drawer.dart';
+import '../core/hardware/network_esc_pos_receipt_printer.dart';
+import '../core/hardware/printer_endpoint_store.dart';
 import '../core/services/device_security_state_store.dart';
 import '../core/services/local_encryption_key_store.dart';
 import '../core/services/local_data_protection_service.dart';
 import '../core/services/debug_receipt_printer.dart';
+import '../core/services/receipt_printer.dart';
 import '../core/services/device_credentials_store.dart';
 import '../core/services/device_identity_store.dart';
 import '../core/services/pax_terminal_gateway.dart';
@@ -17,14 +24,17 @@ class AppBootstrap {
     required this.database,
     required this.controller,
     required this.apiClient,
+    required this.barcodeScanner,
   });
 
   final PosDatabase database;
   final PosHomeController controller;
   final PosApiClient apiClient;
+  final BarcodeScanner barcodeScanner;
 
   Future<void> dispose() async {
     controller.dispose();
+    barcodeScanner.dispose();
     apiClient.close();
     await database.close();
   }
@@ -53,6 +63,22 @@ class AppBootstrapper {
       identityStore: identityStore,
     );
 
+    // Hardware adapters: real network/HID impls in release builds, debug stubs
+    // in debug builds (and tests) so nothing requires physical hardware locally.
+    final ReceiptPrinter receiptPrinter;
+    final CashDrawer cashDrawer;
+    final BarcodeScanner barcodeScanner;
+    if (kDebugMode) {
+      receiptPrinter = DebugReceiptPrinter();
+      cashDrawer = DebugCashDrawer();
+      barcodeScanner = DebugBarcodeScanner();
+    } else {
+      final endpointStore = PrinterEndpointStore();
+      receiptPrinter = NetworkEscPosReceiptPrinter(endpointStore: endpointStore);
+      cashDrawer = PrinterKickCashDrawer(endpointStore: endpointStore);
+      barcodeScanner = HidKeyboardBarcodeScanner();
+    }
+
     final controller = PosHomeController(
       bootstrapCacheRepository: bootstrapCacheRepository,
       syncOutboxRepository: syncOutboxRepository,
@@ -61,8 +87,9 @@ class AppBootstrapper {
       securityStateStore: securityStateStore,
       gateway: apiClient,
       terminalGateway: terminalGateway,
-      receiptPrinter: DebugReceiptPrinter(),
+      receiptPrinter: receiptPrinter,
       dataProtectionService: dataProtectionService,
+      cashDrawer: cashDrawer,
     );
 
     await controller.load();
@@ -71,6 +98,7 @@ class AppBootstrapper {
       database: database,
       controller: controller,
       apiClient: apiClient,
+      barcodeScanner: barcodeScanner,
     );
   }
 }

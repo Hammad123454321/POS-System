@@ -70,6 +70,26 @@ void main() {
   test('catalogCategories returns distinct sorted category names', () {
     expect(controller.catalogCategories, ['Mains']);
   });
+
+  test('addItemByScanCode matches by SKU (case-insensitive) and adds', () {
+    expect(controller.addItemByScanCode('brg'), isTrue);
+    expect(controller.quantityOf('item-1'), 1);
+  });
+
+  test('addItemByScanCode matches by item id', () {
+    expect(controller.addItemByScanCode('item-1'), isTrue);
+    expect(controller.quantityOf('item-1'), 1);
+  });
+
+  test('addItemByScanCode returns false when nothing matches', () {
+    expect(controller.addItemByScanCode('GIFT-9999'), isFalse);
+    expect(controller.cartLines, isEmpty);
+  });
+
+  test('noSaleOpenDrawer without an open register surfaces an error', () async {
+    await controller.noSaleOpenDrawer();
+    expect(controller.errorMessage, contains('Open a register session'));
+  });
 }
 
 Future<void> _seedBootstrap(PosDatabase database) {

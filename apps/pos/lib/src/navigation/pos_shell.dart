@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../app/pos_theme.dart';
+import '../core/hardware/barcode_scanner.dart';
 import '../features/appointments/appointments_screen.dart';
 import '../features/checkout/register_screen.dart';
 import '../features/checkout/tender_screen.dart';
@@ -21,9 +24,13 @@ import '../features/tables/tables_screen.dart';
 /// NavigationBar. The legacy console survives as the "Operations" tab via
 /// PosHomeScreen(embedded: true).
 class PosShell extends StatefulWidget {
-  const PosShell({required this.controller, super.key});
+  const PosShell({required this.controller, this.barcodeScanner, super.key});
 
   final PosHomeController controller;
+
+  /// Optional hardware scanner. When present, scans add catalog items to the
+  /// cart (matched by SKU/id) from anywhere in the shell. Null in tests.
+  final BarcodeScanner? barcodeScanner;
 
   @override
   State<PosShell> createState() => _PosShellState();
@@ -31,6 +38,32 @@ class PosShell extends StatefulWidget {
 
 class _PosShellState extends State<PosShell> {
   int _index = 0;
+  StreamSubscription<String>? _scanSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _scanSub = widget.barcodeScanner?.scans.listen(_onScan);
+  }
+
+  @override
+  void dispose() {
+    _scanSub?.cancel();
+    super.dispose();
+  }
+
+  void _onScan(String code) {
+    final controller = widget.controller;
+    if (!controller.isEnrolled) return;
+    final matched = controller.addItemByScanCode(code);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(matched ? 'Scanned $code added' : 'No item for "$code"'),
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
 
   static const _destinations = <_ShellDestination>[
     _ShellDestination('Register', Icons.point_of_sale),
@@ -62,7 +95,8 @@ class _PosShellState extends State<PosShell> {
           controller.isEnrolled
               ? RegisterScreen(
                   controller: controller,
-                  onCharge: () => _onCharge(context, controller),
+                  onCharge: () =>
+                      _onCharge(context, controller, widget.barcodeScanner),
                 )
               : const _PlaceholderTab(
                   title: 'Register',
@@ -148,6 +182,7 @@ class _PosShellState extends State<PosShell> {
 Future<void> _onCharge(
   BuildContext context,
   PosHomeController controller,
+  BarcodeScanner? barcodeScanner,
 ) async {
   // No open register yet → prompt for an opening float.
   if (controller.activeRegisterSession == null) {
@@ -164,7 +199,12 @@ Future<void> _onCharge(
 
   // Open the full tender flow.
   await Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => TenderScreen(controller: controller)),
+    MaterialPageRoute(
+      builder: (_) => TenderScreen(
+        controller: controller,
+        barcodeScanner: barcodeScanner,
+      ),
+    ),
   );
 }
 

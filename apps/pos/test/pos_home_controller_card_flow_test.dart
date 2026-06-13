@@ -5,6 +5,7 @@ import 'package:pos_app/src/core/services/device_credentials_store.dart';
 import 'package:pos_app/src/core/services/device_security_state_store.dart';
 import 'package:pos_app/src/core/services/local_data_protection_service.dart';
 import 'package:pos_app/src/core/services/local_encryption_key_store.dart';
+import 'package:pos_app/src/core/hardware/cash_drawer.dart';
 import 'package:pos_app/src/core/services/pax_terminal_gateway.dart';
 import 'package:pos_app/src/core/services/receipt_printer.dart';
 import 'package:pos_app/src/data/local/pos_database.dart';
@@ -142,6 +143,117 @@ void main() {
       await database.close();
     },
   );
+
+  test('checkoutCash opens the cash drawer on success', () async {
+    final database = PosDatabase.memory();
+    await _seedBootstrap(database);
+
+    final drawer = DebugCashDrawer();
+    final controller = PosHomeController(
+      bootstrapCacheRepository: BootstrapCacheRepository(database),
+      syncOutboxRepository: SyncOutboxRepository(database),
+      receiptPrintQueueRepository: ReceiptPrintQueueRepository(database),
+      credentialsStore: _FakeDeviceCredentialsStore(_credentials()),
+      securityStateStore: _FakeDeviceSecurityStateStore(),
+      gateway: _CapturePosGateway(),
+      terminalGateway: _FakeCardTerminalGateway(
+        TerminalCheckoutResult(
+          status: TerminalCheckoutStatus.approved,
+          providerKey: 'fiserv_bluepay',
+          providerTransactionId: '1',
+          authCode: 'A',
+          maskedPan: '************1111',
+          terminalId: 'PAX',
+          entryMode: 'chip',
+          applicationLabel: 'VISA',
+          aid: 'A0',
+          tvr: '0',
+          tsi: '0',
+          terminalStatusCode: 'approved',
+          terminalResultCode: '00',
+          terminalTimestamp: DateTime.utc(2026, 4, 24, 12),
+          terminalReference: 'REF',
+        ),
+      ),
+      receiptPrinter: _FakeReceiptPrinter(),
+      dataProtectionService: LocalDataProtectionService(
+        keyStore: LocalEncryptionKeyStore(
+          backend: _InMemoryLocalEncryptionBackend(),
+          clock: () => DateTime.utc(2026, 4, 24, 12),
+        ),
+        database: database,
+        clock: () => DateTime.utc(2026, 4, 24, 12),
+      ),
+      cashDrawer: drawer,
+    );
+
+    await controller.load();
+    controller.addItem(controller.catalogItems.first);
+    await controller.checkoutCash(1500);
+
+    expect(drawer.openCount, 1);
+
+    controller.dispose();
+    await database.close();
+  });
+
+  test('noSaleOpenDrawer opens the drawer and queues an audit event', () async {
+    final database = PosDatabase.memory();
+    await _seedBootstrap(database);
+
+    final drawer = DebugCashDrawer();
+    final outbox = SyncOutboxRepository(database);
+    final controller = PosHomeController(
+      bootstrapCacheRepository: BootstrapCacheRepository(database),
+      syncOutboxRepository: outbox,
+      receiptPrintQueueRepository: ReceiptPrintQueueRepository(database),
+      credentialsStore: _FakeDeviceCredentialsStore(_credentials()),
+      securityStateStore: _FakeDeviceSecurityStateStore(),
+      gateway: _CapturePosGateway(),
+      terminalGateway: _FakeCardTerminalGateway(
+        TerminalCheckoutResult(
+          status: TerminalCheckoutStatus.approved,
+          providerKey: 'fiserv_bluepay',
+          providerTransactionId: '1',
+          authCode: 'A',
+          maskedPan: '************1111',
+          terminalId: 'PAX',
+          entryMode: 'chip',
+          applicationLabel: 'VISA',
+          aid: 'A0',
+          tvr: '0',
+          tsi: '0',
+          terminalStatusCode: 'approved',
+          terminalResultCode: '00',
+          terminalTimestamp: DateTime.utc(2026, 4, 24, 12),
+          terminalReference: 'REF',
+        ),
+      ),
+      receiptPrinter: _FakeReceiptPrinter(),
+      dataProtectionService: LocalDataProtectionService(
+        keyStore: LocalEncryptionKeyStore(
+          backend: _InMemoryLocalEncryptionBackend(),
+          clock: () => DateTime.utc(2026, 4, 24, 12),
+        ),
+        database: database,
+        clock: () => DateTime.utc(2026, 4, 24, 12),
+      ),
+      cashDrawer: drawer,
+    );
+
+    await controller.load();
+    await controller.noSaleOpenDrawer();
+
+    expect(drawer.openCount, 1);
+    final pending = await outbox.pending();
+    expect(
+      pending.any((e) => e.action == 'no_sale_drawer_open'),
+      isTrue,
+    );
+
+    controller.dispose();
+    await database.close();
+  });
 }
 
 Future<void> _seedBootstrap(PosDatabase database) {

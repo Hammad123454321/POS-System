@@ -9,6 +9,7 @@ import '../../core/services/pax_terminal_gateway.dart';
 import '../../core/services/device_security_state_store.dart';
 import '../../core/services/local_data_protection_service.dart';
 import '../../core/services/receipt_printer.dart';
+import '../../core/hardware/cash_drawer.dart';
 import '../../core/support/minor_amount.dart';
 import '../../data/remote/pos_gateway.dart';
 import '../../data/repositories/bootstrap_cache_repository.dart';
@@ -26,7 +27,9 @@ class PosHomeController extends ChangeNotifier {
     required CardTerminalGateway terminalGateway,
     required ReceiptPrinter receiptPrinter,
     required LocalDataProtectionService dataProtectionService,
-  }) : _bootstrapCacheRepository = bootstrapCacheRepository,
+    CashDrawer? cashDrawer,
+  }) : _cashDrawer = cashDrawer ?? DebugCashDrawer(),
+       _bootstrapCacheRepository = bootstrapCacheRepository,
        _syncOutboxRepository = syncOutboxRepository,
        _receiptPrintQueueRepository = receiptPrintQueueRepository,
        _credentialsStore = credentialsStore,
@@ -45,6 +48,7 @@ class PosHomeController extends ChangeNotifier {
   final CardTerminalGateway _terminalGateway;
   final ReceiptPrinter _receiptPrinter;
   final LocalDataProtectionService _dataProtectionService;
+  final CashDrawer _cashDrawer;
 
   final Map<String, int> _cart = <String, int>{};
 
@@ -464,6 +468,7 @@ class PosHomeController extends ChangeNotifier {
 
     await _checkoutOrder(
       successMessage: 'Cash checkout completed and receipt queued.',
+      openDrawerAfter: true,
       buildTenders: (order) async => [
         {
           'method': 'cash',
@@ -578,6 +583,7 @@ class PosHomeController extends ChangeNotifier {
 
     await _checkoutOrder(
       successMessage: 'Split tender checkout completed and receipt queued.',
+      openDrawerAfter: true,
       onInDoubt: () {
         final order = inDoubtOrder;
         final terminalResult = inDoubtResult;
@@ -1136,6 +1142,25 @@ class PosHomeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Adds a catalog item matched by a scanned code (SKU or item id). Returns
+  /// true if an item matched and was added; false if no catalog item matched
+  /// (callers may then treat the code as a gift-card/other code).
+  bool addItemByScanCode(String code) {
+    final trimmed = code.trim();
+    if (trimmed.isEmpty) return false;
+
+    final match = _catalogItems.where((item) {
+      return item.id == trimmed ||
+          (item.sku != null && item.sku!.toLowerCase() == trimmed.toLowerCase());
+    }).cast<CatalogItemSnapshot?>().firstWhere((_) => true, orElse: () => null);
+
+    if (match == null) {
+      return false;
+    }
+    addItem(match);
+    return true;
+  }
+
   void removeItem(CatalogItemSnapshot item) {
     final current = _cart[item.id];
 
@@ -1683,11 +1708,41 @@ class PosHomeController extends ChangeNotifier {
     return const <String, dynamic>{};
   }
 
+  /// Opens the cash drawer without a sale (e.g. to make change). Records an
+  /// audit event in the sync outbox so the back office can see who opened the
+  /// drawer and when.
+  Future<void> noSaleOpenDrawer() async {
+    final session = _activeRegisterSession;
+    if (session == null) {
+      _errorMessage = 'Open a register session before opening the drawer.';
+      notifyListeners();
+      return;
+    }
+
+    await _runBusy(() async {
+      try {
+        await _cashDrawer.open();
+      } catch (error) {
+        debugPrint('No-sale drawer open failed: $error');
+      }
+      await _syncOutboxRepository.enqueue(
+        localEventId: _localEventId(),
+        entityType: 'register',
+        action: 'no_sale_drawer_open',
+        payload: {
+          'register_session_id': session.id,
+        },
+      );
+      _statusMessage = 'Cash drawer opened (no sale).';
+    });
+  }
+
   Future<void> _checkoutOrder({
     required Future<List<Map<String, dynamic>>> Function(OrderSummary order)
     buildTenders,
     required String successMessage,
     VoidCallback? onInDoubt,
+    bool openDrawerAfter = false,
   }) async {
     final session = _activeRegisterSession;
 
@@ -1766,6 +1821,14 @@ class PosHomeController extends ChangeNotifier {
       _lastReceipt = receipt;
       _cart.clear();
       await _printPendingReceipts();
+      if (openDrawerAfter) {
+        // Best-effort: a drawer that fails to open must not fail the sale.
+        try {
+          await _cashDrawer.open();
+        } catch (error) {
+          debugPrint('Cash drawer open failed: $error');
+        }
+      }
       await _refreshCounts();
       await _refreshCloudStateInternal();
       _inDoubtOrderId = null;
