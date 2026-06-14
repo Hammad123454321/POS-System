@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { dashboard, login, register } from '@/routes';
+import { dashboard, login } from '@/routes';
+
+// Registration is invite-only by default, so Wayfinder may not export a
+// `register` route. Fall back to the static path so this page always compiles
+// (the link itself is only shown when canRegister is true).
+const register = () => '/register';
 
 withDefaults(
     defineProps<{

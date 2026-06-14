@@ -8,7 +8,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
-import { store } from '@/routes/register';
+
+// Registration is invite-only by default (FORTIFY_REGISTRATION_ENABLED=false),
+// so Wayfinder may not generate a `routes/register` module. Post to the static
+// Fortify endpoint directly so this page compiles regardless of the flag.
+const store = {
+    form: () => ({ action: '/register', method: 'post' as const }),
+};
 
 defineOptions({
     layout: {
